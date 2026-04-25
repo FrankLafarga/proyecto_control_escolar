@@ -13,7 +13,7 @@ public class AuthController {
 	
 	public void login()
 	{
-		//vista.login();
+		vista.login();
 	}
 
 }

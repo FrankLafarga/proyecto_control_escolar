@@ -17,8 +17,6 @@ import java.awt.Toolkit;
 import java.awt.Color;
 import javax.swing.SwingConstants;
 import java.awt.BorderLayout;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
