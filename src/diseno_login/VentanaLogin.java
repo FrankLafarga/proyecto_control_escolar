@@ -22,12 +22,17 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.border.LineBorder;
+import javax.swing.JButton;
 
 public class VentanaLogin {
 
 	private JFrame frmEducadex;
-	Color azul_titulos= new Color(14,48,170);
+	Color azul_principal= new Color(14,48,170);
+	
 	private JTextField textField;
+	private JTextField textField_1;
+	private JTextField textField_2;
+	private JTextField textField_3;
 	/**
 	 * Launch the application.
 	 */
@@ -56,11 +61,12 @@ public class VentanaLogin {
 	 */
 	private void initialize() {
 		frmEducadex = new JFrame();
+		frmEducadex.getContentPane().setBackground(new Color(255, 255, 255));
 		frmEducadex.setTitle("Educadex");
 		frmEducadex.setBackground(new Color(255, 255, 255));
 		frmEducadex.setIconImage(Toolkit.getDefaultToolkit().getImage(VentanaLogin.class.getResource("/resources/logo_virrete-32x32.png")));
 		frmEducadex.setExtendedState(Frame.MAXIMIZED_BOTH);
-		frmEducadex.setMinimumSize(new Dimension(800, 600));
+		frmEducadex.setMinimumSize(new Dimension(1200, 800));
 		frmEducadex.setMaximumSize(new Dimension(1920, 1080));
 		frmEducadex.setBounds(100, 100, 1920,1080);
 		frmEducadex.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -111,86 +117,132 @@ public class VentanaLogin {
 		derecho.setFocusable(false);
 		derecho.setBackground(new Color(255, 255, 255));
 		frmEducadex.getContentPane().add(derecho);
-		derecho.setLayout(new GridLayout(12, 1, 0, 0));
-		
-		JPanel panel = new JPanel();
-		panel.setOpaque(false);
-		panel.setFocusable(false);
-		panel.setVisible(false);
-		derecho.add(panel);
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setFocusable(false);
-		panel_1.setOpaque(false);
-		panel_1.setVisible(false);
-		derecho.add(panel_1);
+		GridBagLayout gbl_derecho = new GridBagLayout();
+		gbl_derecho.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_derecho.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_derecho.columnWeights = new double[]{1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_derecho.rowWeights = new double[]{1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
+		derecho.setLayout(gbl_derecho);
 		
 		JLabel lblNewLabel = new JLabel("Iniciar sesión");
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.gridwidth = 7;
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel.gridx = 4;
+		gbc_lblNewLabel.gridy = 5;
+		derecho.add(lblNewLabel, gbc_lblNewLabel);
 		lblNewLabel.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setForeground(new Color(14, 38, 145));
 		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD, 48));
-		derecho.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Ingresa tus credenciales para acceder");
-		lblNewLabel_1.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		derecho.add(lblNewLabel_1);
-		
-		JPanel panel_2 = new JPanel();
-		derecho.add(panel_2);
-		panel_2.setLayout(new GridLayout(0, 3, 0, 0));
-		
-		JPanel panel_6 = new JPanel();
-		panel_2.add(panel_6);
+		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
+		gbc_lblNewLabel_1.gridwidth = 7;
+		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_1.gridx = 4;
+		gbc_lblNewLabel_1.gridy = 8;
+		derecho.add(lblNewLabel_1, gbc_lblNewLabel_1);
 		
 		JLabel lblNewLabel_2 = new JLabel("Usuario");
+		lblNewLabel_2.setVerticalTextPosition(SwingConstants.BOTTOM);
 		lblNewLabel_2.setVerticalAlignment(SwingConstants.BOTTOM);
-		lblNewLabel_2.setFont(new Font("Segoe UI", Font.BOLD, 20));
-		panel_2.add(lblNewLabel_2);
+		lblNewLabel_2.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
+		gbc_lblNewLabel_2.anchor = GridBagConstraints.SOUTHWEST;
+		gbc_lblNewLabel_2.gridwidth = 3;
+		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_2.gridx = 4;
+		gbc_lblNewLabel_2.gridy = 12;
+		derecho.add(lblNewLabel_2, gbc_lblNewLabel_2);
 		
-		JPanel panel_7 = new JPanel();
-		panel_2.add(panel_7);
-		
-		JPanel panel_3 = new JPanel();
-		derecho.add(panel_3);
-		GridBagLayout gbl_panel_3 = new GridBagLayout();
-		gbl_panel_3.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_panel_3.rowHeights = new int[]{0, 0};
-		gbl_panel_3.columnWeights = new double[]{1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_panel_3.rowWeights = new double[]{1.0, Double.MIN_VALUE};
-		panel_3.setLayout(gbl_panel_3);
-		
-		JPanel panel_5 = new JPanel();
-		GridBagConstraints gbc_panel_5 = new GridBagConstraints();
-		gbc_panel_5.insets = new Insets(0, 0, 0, 5);
-		gbc_panel_5.fill = GridBagConstraints.BOTH;
-		gbc_panel_5.gridx = 0;
-		gbc_panel_5.gridy = 0;
-		panel_3.add(panel_5, gbc_panel_5);
+		ImageIcon iconoOriginal = new ImageIcon(VentanaLogin.class.getResource("/resources/usuario_logo.png"));
+		Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+		ImageIcon iconoFinal = new ImageIcon(imagenEscalada);
+
+		JLabel lblNewLabel_3 = new JLabel("");
+		lblNewLabel_3.setIcon(iconoFinal);
+
+		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
+		gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_3.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel_3.gridx = 3;
+		gbc_lblNewLabel_3.gridy = 13;
+		derecho.add(lblNewLabel_3, gbc_lblNewLabel_3);
 		
 		textField = new JTextField();
 		textField.setPreferredSize(new Dimension(7, 40));
 		textField.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		textField.setColumns(10);
-		textField.setBorder(new LineBorder(new Color(221, 221, 221), 1, true));
+		textField.setBorder(new LineBorder(new Color(203, 213, 225), 2, true));
 		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.gridwidth = 14;
-		gbc_textField.insets = new Insets(0, 0, 0, 5);
+		gbc_textField.gridwidth = 7;
+		gbc_textField.insets = new Insets(0, 0, 5, 5);
 		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 9;
-		gbc_textField.gridy = 0;
-		panel_3.add(textField, gbc_textField);
+		gbc_textField.gridx = 4;
+		gbc_textField.gridy = 13;
+		derecho.add(textField, gbc_textField);
 		
-		JPanel panel_4 = new JPanel();
-		GridBagConstraints gbc_panel_4 = new GridBagConstraints();
-		gbc_panel_4.fill = GridBagConstraints.BOTH;
-		gbc_panel_4.gridx = 31;
-		gbc_panel_4.gridy = 0;
-		panel_3.add(panel_4, gbc_panel_4);
-	
-		frmEducadex.repaint();
-		frmEducadex.setVisible(true);
+		JLabel lblNewLabel_2_1 = new JLabel("Contraseña");
+		lblNewLabel_2_1.setVerticalTextPosition(SwingConstants.BOTTOM);
+		lblNewLabel_2_1.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblNewLabel_2_1.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		GridBagConstraints gbc_lblNewLabel_2_1 = new GridBagConstraints();
+		gbc_lblNewLabel_2_1.anchor = GridBagConstraints.WEST;
+		gbc_lblNewLabel_2_1.gridwidth = 3;
+		gbc_lblNewLabel_2_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_2_1.gridx = 4;
+		gbc_lblNewLabel_2_1.gridy = 15;
+		derecho.add(lblNewLabel_2_1, gbc_lblNewLabel_2_1);
+		
+		ImageIcon iconoOriginal4 = new ImageIcon(VentanaLogin.class.getResource("/resources/contraseña_logo.png"));
+		Image imagenEscalada4 = iconoOriginal4.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+		ImageIcon iconoFinal4 = new ImageIcon(imagenEscalada4);
+
+		JLabel lblNewLabel_4 = new JLabel("");
+		lblNewLabel_4.setIcon(iconoFinal4);
+
+		GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
+		gbc_lblNewLabel_4.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_4.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel_4.gridx = 3;
+		gbc_lblNewLabel_4.gridy = 16;
+		derecho.add(lblNewLabel_4, gbc_lblNewLabel_4);
+		
+		textField_3 = new JTextField();
+		textField_3.setPreferredSize(new Dimension(7, 40));
+		textField_3.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+		textField_3.setColumns(10);
+		textField_3.setBorder(new LineBorder(new Color(203, 213, 225), 2, true));
+		GridBagConstraints gbc_textField_3 = new GridBagConstraints();
+		gbc_textField_3.gridwidth = 7;
+		gbc_textField_3.insets = new Insets(0, 0, 5, 5);
+		gbc_textField_3.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_3.gridx = 4;
+		gbc_textField_3.gridy = 16;
+		derecho.add(textField_3, gbc_textField_3);
+		
+		JPanel panel_9 = new JPanel();
+		panel_9.setFocusable(false);
+		panel_9.setBorder(new LineBorder(new Color(14, 48, 170), 8, true));
+		panel_9.setBackground(new Color(255, 255, 255));
+		GridBagConstraints gbc_panel_9 = new GridBagConstraints();
+		gbc_panel_9.gridwidth = 7;
+		gbc_panel_9.insets = new Insets(0, 0, 5, 5);
+		gbc_panel_9.fill = GridBagConstraints.HORIZONTAL;
+		gbc_panel_9.gridx = 4;
+		gbc_panel_9.gridy = 18;
+		derecho.add(panel_9, gbc_panel_9);
+		panel_9.setLayout(new BorderLayout(0, 0));
+		
+		JButton btnNewButton = new JButton("Iniciar sesión");
+		btnNewButton.setBorder(null);
+		btnNewButton.setFocusable(false);
+		btnNewButton.setForeground(Color.WHITE);
+		btnNewButton.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+		btnNewButton.setBackground(new Color(14, 48, 170));
+		panel_9.add(btnNewButton);
 	}
 }

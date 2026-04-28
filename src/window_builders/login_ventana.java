@@ -1,16 +1,14 @@
-package views;
+package window_builders;
 
-import javax.swing.JFrame;
 import java.awt.EventQueue;
+import javax.swing.JFrame;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -24,79 +22,108 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.border.LineBorder;
-
-import controllers.AuthController;
-
 import javax.swing.JButton;
-import models.AuthModel;
 
-public class AuthView extends JFrame {
+public class login_ventana {
 
-	Color azul_principal = new Color(14, 48, 170);
+	private JFrame frmEducadex;
+	Color azul_principal= new Color(14,48,170);
+	
 	private JTextField textField;
-	private JPasswordField textField_3;
-	
-	private AuthModel model;
-	private AuthController controller;
-	
-	public AuthView() {
-		model = new AuthModel();
-		controller = new AuthController(model, this);
+	private JTextField textField_1;
+	private JTextField textField_2;
+	private JTextField textField_3;
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					login_ventana window = new login_ventana();
+					window.frmEducadex.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
-	public void login() {
+	/**
+	 * Create the application.
+	 */
+	public login_ventana() {
+		initialize();
+	}
 
-		this.getContentPane().setBackground(new Color(255, 255, 255));
-		this.setTitle("Educadex");
-		this.setBackground(new Color(255, 255, 255));
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage(AuthView.class.getResource("/resources/logo_virrete-32x32.png")));
-		this.setExtendedState(Frame.MAXIMIZED_BOTH);
-		this.setMinimumSize(new Dimension(1200, 800));
-		this.setMaximumSize(new Dimension(1920, 1080));
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.getContentPane().setLayout(new GridLayout(0, 2, 0, 0));
-
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmEducadex = new JFrame();
+		frmEducadex.getContentPane().setBackground(new Color(255, 255, 255));
+		frmEducadex.setTitle("Educadex");
+		frmEducadex.setBackground(new Color(255, 255, 255));
+		frmEducadex.setIconImage(Toolkit.getDefaultToolkit().getImage(login_ventana.class.getResource("/resources/logo_virrete-32x32.png")));
+		frmEducadex.setExtendedState(Frame.MAXIMIZED_BOTH);
+		frmEducadex.setMinimumSize(new Dimension(1200, 800));
+		frmEducadex.setMaximumSize(new Dimension(1920, 1080));
+		frmEducadex.setBounds(100, 100, 1920,1080);
+		frmEducadex.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmEducadex.getContentPane().setLayout(new GridLayout(0, 2, 0, 0));
+		
 		JPanel izquierdo = new JPanel();
 		izquierdo.setBackground(new Color(14, 48, 170));
-		this.getContentPane().add(izquierdo);
+		frmEducadex.getContentPane().add(izquierdo);
 		izquierdo.setLayout(new BorderLayout(0, 0));
-
+		
 		JLabel icono = new JLabel() {
-			Image img = new ImageIcon(AuthView.class.getResource("/resources/logo_educadex.png")).getImage();
+		    Image img = new ImageIcon(
+		    		login_ventana.class.getResource("/resources/logo_educadex.png")
+		    ).getImage();
 
-			@Override
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				Graphics2D g2 = (Graphics2D) g;
-				g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-				int width = getWidth();
-				int height = getHeight();
-				int imgW = img.getWidth(this);
-				int imgH = img.getHeight(this);
-				double scale = Math.max((double) width / imgW, (double) height / imgH);
-				int newW = (int) (imgW * scale);
-				int newH = (int) (imgH * scale);
-				int x = (width - newW) / 2;
-				int y = (height - newH) / 2;
-				g2.drawImage(img, x, y, newW, newH, this);
-			}
+		    @Override
+		    protected void paintComponent(Graphics g) {
+		        super.paintComponent(g);
+
+		        Graphics2D g2 = (Graphics2D) g;
+		        g2.setRenderingHint(
+		            RenderingHints.KEY_INTERPOLATION,
+		            RenderingHints.VALUE_INTERPOLATION_BILINEAR
+		        );
+
+		        int width = getWidth();
+		        int height = getHeight();
+
+		        int imgW = img.getWidth(this);
+		        int imgH = img.getHeight(this);
+
+		        double scale = Math.max((double) width / imgW, (double) height / imgH);
+
+		        int newW = (int) (imgW * scale);
+		        int newH = (int) (imgH * scale);
+
+		        int x = (width - newW) / 2;
+		        int y = (height - newH) / 2;
+
+		        g2.drawImage(img, x, y, newW, newH, this);
+		    }
 		};
 		izquierdo.add(icono, BorderLayout.CENTER);
-
+		
 		JPanel derecho = new JPanel();
 		derecho.setOpaque(false);
 		derecho.setRequestFocusEnabled(false);
 		derecho.setFocusable(false);
 		derecho.setBackground(new Color(255, 255, 255));
-		this.getContentPane().add(derecho);
-		
+		frmEducadex.getContentPane().add(derecho);
 		GridBagLayout gbl_derecho = new GridBagLayout();
-		gbl_derecho.columnWidths = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-		gbl_derecho.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-		gbl_derecho.columnWeights = new double[] { 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE };
-		gbl_derecho.rowWeights = new double[] { 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, Double.MIN_VALUE };
+		gbl_derecho.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_derecho.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_derecho.columnWeights = new double[]{1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_derecho.rowWeights = new double[]{1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
 		derecho.setLayout(gbl_derecho);
-
+		
 		JLabel lblNewLabel = new JLabel("Iniciar sesión");
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.gridwidth = 7;
@@ -108,7 +135,7 @@ public class AuthView extends JFrame {
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setForeground(new Color(14, 38, 145));
 		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD, 48));
-
+		
 		JLabel lblNewLabel_1 = new JLabel("Ingresa tus credenciales para acceder");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setFont(new Font("Segoe UI", Font.PLAIN, 20));
@@ -118,7 +145,7 @@ public class AuthView extends JFrame {
 		gbc_lblNewLabel_1.gridx = 4;
 		gbc_lblNewLabel_1.gridy = 8;
 		derecho.add(lblNewLabel_1, gbc_lblNewLabel_1);
-
+		
 		JLabel lblNewLabel_2 = new JLabel("Usuario");
 		lblNewLabel_2.setVerticalTextPosition(SwingConstants.BOTTOM);
 		lblNewLabel_2.setVerticalAlignment(SwingConstants.BOTTOM);
@@ -130,8 +157,8 @@ public class AuthView extends JFrame {
 		gbc_lblNewLabel_2.gridx = 4;
 		gbc_lblNewLabel_2.gridy = 12;
 		derecho.add(lblNewLabel_2, gbc_lblNewLabel_2);
-
-		ImageIcon iconoOriginal = new ImageIcon(AuthView.class.getResource("/resources/usuario_logo.png"));
+		
+		ImageIcon iconoOriginal = new ImageIcon(login_ventana.class.getResource("/resources/usuario_logo.png"));
 		Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
 		ImageIcon iconoFinal = new ImageIcon(imagenEscalada);
 
@@ -144,7 +171,7 @@ public class AuthView extends JFrame {
 		gbc_lblNewLabel_3.gridx = 3;
 		gbc_lblNewLabel_3.gridy = 13;
 		derecho.add(lblNewLabel_3, gbc_lblNewLabel_3);
-
+		
 		textField = new JTextField();
 		textField.setPreferredSize(new Dimension(7, 40));
 		textField.setFont(new Font("Segoe UI", Font.PLAIN, 20));
@@ -157,7 +184,7 @@ public class AuthView extends JFrame {
 		gbc_textField.gridx = 4;
 		gbc_textField.gridy = 13;
 		derecho.add(textField, gbc_textField);
-
+		
 		JLabel lblNewLabel_2_1 = new JLabel("Contraseña");
 		lblNewLabel_2_1.setVerticalTextPosition(SwingConstants.BOTTOM);
 		lblNewLabel_2_1.setVerticalAlignment(SwingConstants.BOTTOM);
@@ -169,8 +196,8 @@ public class AuthView extends JFrame {
 		gbc_lblNewLabel_2_1.gridx = 4;
 		gbc_lblNewLabel_2_1.gridy = 15;
 		derecho.add(lblNewLabel_2_1, gbc_lblNewLabel_2_1);
-
-		ImageIcon iconoOriginal4 = new ImageIcon(AuthView.class.getResource("/resources/contraseña_logo.png"));
+		
+		ImageIcon iconoOriginal4 = new ImageIcon(login_ventana.class.getResource("/resources/contraseña_logo.png"));
 		Image imagenEscalada4 = iconoOriginal4.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
 		ImageIcon iconoFinal4 = new ImageIcon(imagenEscalada4);
 
@@ -183,8 +210,8 @@ public class AuthView extends JFrame {
 		gbc_lblNewLabel_4.gridx = 3;
 		gbc_lblNewLabel_4.gridy = 16;
 		derecho.add(lblNewLabel_4, gbc_lblNewLabel_4);
-
-		textField_3 = new JPasswordField();
+		
+		textField_3 = new JTextField();
 		textField_3.setPreferredSize(new Dimension(7, 40));
 		textField_3.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		textField_3.setColumns(10);
@@ -196,10 +223,10 @@ public class AuthView extends JFrame {
 		gbc_textField_3.gridx = 4;
 		gbc_textField_3.gridy = 16;
 		derecho.add(textField_3, gbc_textField_3);
-
+		
 		JPanel panel_9 = new JPanel();
 		panel_9.setFocusable(false);
-		panel_9.setBorder(new LineBorder(new Color(14, 48, 170), 5, true));
+		panel_9.setBorder(new LineBorder(new Color(14, 48, 170), 8, true));
 		panel_9.setBackground(new Color(255, 255, 255));
 		GridBagConstraints gbc_panel_9 = new GridBagConstraints();
 		gbc_panel_9.gridwidth = 7;
@@ -209,49 +236,13 @@ public class AuthView extends JFrame {
 		gbc_panel_9.gridy = 18;
 		derecho.add(panel_9, gbc_panel_9);
 		panel_9.setLayout(new BorderLayout(0, 0));
-
+		
 		JButton btnNewButton = new JButton("Iniciar sesión");
 		btnNewButton.setBorder(null);
 		btnNewButton.setFocusable(false);
 		btnNewButton.setForeground(Color.WHITE);
 		btnNewButton.setFont(new Font("Segoe UI", Font.PLAIN, 24));
 		btnNewButton.setBackground(new Color(14, 48, 170));
-		btnNewButton.addActionListener(e->{
-			String usuario = textField.getText();
-		    String password = new String(textField_3.getPassword());
-		    if(!controller.login(usuario, password)) {
-		    	
-		    	textField_3.setBorder(new LineBorder(new Color(255, 0, 0), 2, true));
-		    	textField_3.setForeground(new Color(255, 0, 0));
-		    	
-		    	textField.setBorder(new LineBorder(new Color(255, 0, 0), 2, true));
-		    	textField.setForeground(new Color(255, 0, 0));
-		    	
-		    	mostrarMensaje("Usuario o contraseña incorrectos");
-		    }else {
-				textField_3.setBorder(new LineBorder(new Color(203, 213, 225), 2, true));
-				textField.setBorder(new LineBorder(new Color(203, 213, 225), 2, true));
-				textField.setForeground(new Color(0, 0, 0));
-				textField_3.setForeground(new Color(0, 0, 0));
-		    }
-		});
-		
 		panel_9.add(btnNewButton);
-		
-		this.setVisible(true);
-		
-		
 	}
-	
-	public void mostrarMensaje(String mensaje) {
-	    JOptionPane.showMessageDialog(this, mensaje);
-	}
-	
-	public void setController(AuthController controller) {
-	    this.controller = controller;
-	}
-	
-	
-	
-	
 }

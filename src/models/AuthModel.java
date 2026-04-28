@@ -6,7 +6,7 @@ public class AuthModel {
 		
 	}
 	
-	public boolean login(String user,String password) {
+	public boolean validarUsuario(String user,String password) {
 		
 		if(user.equals("admin") ) {
 			if(password.equals("12345")) {
