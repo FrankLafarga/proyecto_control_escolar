@@ -1,7 +1,6 @@
 package views;
 
 import javax.swing.JFrame;
-import java.awt.EventQueue;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -18,6 +17,8 @@ import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.Color;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridBagLayout;
@@ -32,20 +33,24 @@ import models.AuthModel;
 
 public class AuthView extends JFrame {
 
+	
 	Color azul_principal = new Color(14, 48, 170);
 	private JTextField textField;
 	private JPasswordField textField_3;
 	
-	private AuthModel model;
 	private AuthController controller;
 	
 	public AuthView() {
-		model = new AuthModel();
-		controller = new AuthController(model, this);
 	}
 
 	public void login() {
-
+		UIManager.put("OptionPane.background", Color.WHITE);
+		UIManager.put("Panel.background", Color.WHITE);
+		UIManager.put("OptionPane.messageForeground", new Color(14, 48, 170));
+		UIManager.put("OptionPane.messageFont", new Font("Segoe UI", Font.PLAIN, 14));
+		UIManager.put("Button.background", new Color(14, 48, 170));
+		UIManager.put("Button.foreground", Color.WHITE);
+		UIManager.put("Button.font", new Font("Segoe UI", Font.PLAIN, 14));
 		this.getContentPane().setBackground(new Color(255, 255, 255));
 		this.setTitle("Educadex");
 		this.setBackground(new Color(255, 255, 255));
@@ -186,7 +191,6 @@ public class AuthView extends JFrame {
 
 		textField_3 = new JPasswordField();
 		textField_3.setPreferredSize(new Dimension(7, 40));
-		textField_3.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 		textField_3.setColumns(10);
 		textField_3.setBorder(new LineBorder(new Color(203, 213, 225), 2, true));
 		GridBagConstraints gbc_textField_3 = new GridBagConstraints();
@@ -197,21 +201,15 @@ public class AuthView extends JFrame {
 		gbc_textField_3.gridy = 16;
 		derecho.add(textField_3, gbc_textField_3);
 
-		JPanel panel_9 = new JPanel();
-		panel_9.setFocusable(false);
-		panel_9.setBorder(new LineBorder(new Color(14, 48, 170), 5, true));
-		panel_9.setBackground(new Color(255, 255, 255));
 		GridBagConstraints gbc_panel_9 = new GridBagConstraints();
 		gbc_panel_9.gridwidth = 7;
 		gbc_panel_9.insets = new Insets(0, 0, 5, 5);
 		gbc_panel_9.fill = GridBagConstraints.HORIZONTAL;
 		gbc_panel_9.gridx = 4;
 		gbc_panel_9.gridy = 18;
-		derecho.add(panel_9, gbc_panel_9);
-		panel_9.setLayout(new BorderLayout(0, 0));
 
 		JButton btnNewButton = new JButton("Iniciar sesión");
-		btnNewButton.setBorder(null);
+		btnNewButton.setBorder(new LineBorder(new Color(255, 255, 255), 1, true));
 		btnNewButton.setFocusable(false);
 		btnNewButton.setForeground(Color.WHITE);
 		btnNewButton.setFont(new Font("Segoe UI", Font.PLAIN, 24));
@@ -219,13 +217,12 @@ public class AuthView extends JFrame {
 		btnNewButton.addActionListener(e->{
 			String usuario = textField.getText();
 		    String password = new String(textField_3.getPassword());
-		    if(!controller.login(usuario, password)) {
+		    controller=new AuthController();
+		    if(!controller.autenticar(usuario, password)) {
 		    	
 		    	textField_3.setBorder(new LineBorder(new Color(255, 0, 0), 2, true));
-		    	textField_3.setForeground(new Color(255, 0, 0));
 		    	
 		    	textField.setBorder(new LineBorder(new Color(255, 0, 0), 2, true));
-		    	textField.setForeground(new Color(255, 0, 0));
 		    	
 		    	mostrarMensaje("Usuario o contraseña incorrectos");
 		    }else {
@@ -233,10 +230,10 @@ public class AuthView extends JFrame {
 				textField.setBorder(new LineBorder(new Color(203, 213, 225), 2, true));
 				textField.setForeground(new Color(0, 0, 0));
 				textField_3.setForeground(new Color(0, 0, 0));
+				this.dispose();
 		    }
 		});
-		
-		panel_9.add(btnNewButton);
+		derecho.add(btnNewButton, gbc_panel_9);
 		
 		this.setVisible(true);
 		
@@ -245,10 +242,6 @@ public class AuthView extends JFrame {
 	
 	public void mostrarMensaje(String mensaje) {
 	    JOptionPane.showMessageDialog(this, mensaje);
-	}
-	
-	public void setController(AuthController controller) {
-	    this.controller = controller;
 	}
 	
 	

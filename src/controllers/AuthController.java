@@ -1,25 +1,34 @@
 package controllers;
 import models.AuthModel;
+import views.AppView;
 import views.AuthView;
 
 public class AuthController {
 
     private AuthModel model;
     private AuthView view;
+    private AppView app=new AppView();
+    
 
-    public AuthController(AuthModel model, AuthView view) {
-        this.model = model;
-        this.view = view;
+    public AuthController() {
+    	model= new AuthModel();
+    	view= new AuthView();
+    }
+    
+    public void login() {
+    	view.login();
     }
 
-    public boolean login(String usuario, String password) {
+    public boolean autenticar(String usuario, String password) {
         boolean valido = model.validarUsuario(usuario, password);
 
         if (valido) {            
         	view.mostrarMensaje("Login correcto");          
-        	//view.inicio();
+        	app.inicio();
             return true;
         } else { return false; 
         	}
     }
+    
+    
 }
