@@ -8,8 +8,8 @@ public class AuthModel {
 	
 	public boolean validarUsuario(String user,String password) {
 		
-		if(user.equals("admin") ) {
-			if(password.equals("12345")) {
+		if(user.equals("") ) {
+			if(password.equals("")) {
 				return true; 
 				
 			}else {return false;}

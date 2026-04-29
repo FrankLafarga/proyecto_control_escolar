@@ -30,5 +30,9 @@ public class AuthController {
         	}
     }
     
+    public void logout() {
+        //usuarioActual = null;
+    }
+    
     
 }
