@@ -234,6 +234,7 @@ public class prueba {
 		panel_9.setLayout(new BorderLayout(0, 0));
 
 		JButton btnNewButton = new JButton("Iniciar sesión");
+		btnNewButton.setPreferredSize(new Dimension(95, 15));
 		btnNewButton.setBorder(new LineBorder(new Color(255, 255, 255), 1, true));
 		btnNewButton.setFocusable(false);
 		btnNewButton.setForeground(Color.WHITE);
@@ -244,6 +245,15 @@ public class prueba {
 		panel_9.add(btnNewButton);
 				
 		
+		
+		
+		
 	}
+	
+	
+	
+	
+	
+	
 
 }

@@ -22,19 +22,22 @@ import javax.swing.border.LineBorder;
 
 import constructor_ventanas.App;
 import controllers.AppController;
+import models.UserModel;
 
 public class AppView extends JFrame{
+	
 	private AppController controller;
 	
 	Color azul_principal = new Color(14, 48, 170);
 	Color azul_hover = new Color(53,82,189);
 	Color dorado = new Color(208,135,0);
 	private JButton botonActivo;
-	private boolean inicio=true;
+	private JPanel panel_centro,panel_9;
+	private JLabel descripcion_titulo,titulo_panel,lblNewLabel_4;
     JButton b = new JButton();
 
 
-	public void inicio() {
+	public void ventana() {
 	this.setMinimumSize(new Dimension(1200, 800));
 	this.setMaximumSize(new Dimension(1920, 1080));
 	this.setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -115,16 +118,18 @@ public class AppView extends JFrame{
         }
     });
     
-	btnNewButton.addActionListener(e->{
-		int opcion = JOptionPane.showConfirmDialog(this,
-			"¿Está seguro que desea salir del sistema de control escolar?\nTendrá que volver a ingresar sus credenciales.",
-			"Confirmar salida",JOptionPane.YES_NO_OPTION);
+    btnNewButton.addActionListener(e -> {
+        int opcion = JOptionPane.showConfirmDialog(
+            this,
+            "¿Está seguro que desea salir del sistema de control escolar?\nTendrá que volver a ingresar sus credenciales.",
+            "Confirmar salida",
+            JOptionPane.YES_NO_OPTION
+        );
 
-			if (opcion == JOptionPane.YES_OPTION) {
-			    controller=new AppController();
-			    controller.cerrarSesion(this);
-			}
-	});
+        if (opcion == JOptionPane.YES_OPTION) {
+            controller.cerrarSesion();
+        }
+    });
 	panel_1_1.add(btnNewButton);
 	
 	JPanel panel_4 = new JPanel();
@@ -174,6 +179,27 @@ public class AppView extends JFrame{
     JButton botonAlumnos = crearBoton("Alumnos", hoverListener, action);
     JButton botonGrupos = crearBoton("Grupos", hoverListener, action);
     JButton botonAsignaturas = crearBoton("Asignaturas", hoverListener, action);
+    
+    botonInicio.addActionListener(e -> {
+    	inicio();
+    });
+
+    botonDocentes.addActionListener(e -> {
+    	docentes();
+    });
+
+    botonAlumnos.addActionListener(e -> {
+    	alumnos();
+    });
+
+    botonGrupos.addActionListener(e -> {
+    	grupos();
+    
+    });
+
+    botonAsignaturas.addActionListener(e -> {
+    	asignaturas();
+    });
 
     botonInicio.setIcon(new ImageIcon(App.class.getResource("/resources/icono_inicio_dorado.png")));
     botonInicio.setBackground(azul_hover);
@@ -182,13 +208,15 @@ public class AppView extends JFrame{
     botonInicio.setBorderPainted(true);
     b=botonInicio;
     botonActivo=b;
+    
+    
     panel_8.add(botonInicio);
     panel_8.add(botonDocentes);
     panel_8.add(botonAlumnos);
     panel_8.add(botonGrupos);
     panel_8.add(botonAsignaturas);
     
-    JPanel panel_9 = new JPanel();
+    panel_9 = new JPanel();
     this.getContentPane().add(panel_9, BorderLayout.CENTER);
     panel_9.setLayout(new BorderLayout(0, 0));
     
@@ -203,19 +231,19 @@ public class AppView extends JFrame{
     panel_10.add(panel_13);
     panel_13.setLayout(new GridLayout(0, 1, 0, 0));
     
-    JLabel lblNewLabel_3 = new JLabel("    Inicio");
-    lblNewLabel_3.setVerticalAlignment(SwingConstants.BOTTOM);
-    lblNewLabel_3.setIconTextGap(20);
-    lblNewLabel_3.setHorizontalTextPosition(SwingConstants.LEFT);
-    lblNewLabel_3.setHorizontalAlignment(SwingConstants.LEFT);
-    lblNewLabel_3.setForeground(azul_principal);
-    lblNewLabel_3.setFont(new Font("Times New Roman", Font.BOLD, 40));
-    panel_13.add(lblNewLabel_3);
+    titulo_panel = new JLabel("    Inicio");
+    titulo_panel.setVerticalAlignment(SwingConstants.BOTTOM);
+    titulo_panel.setIconTextGap(20);
+    titulo_panel.setHorizontalTextPosition(SwingConstants.LEFT);
+    titulo_panel.setHorizontalAlignment(SwingConstants.LEFT);
+    titulo_panel.setForeground(azul_principal);
+    titulo_panel.setFont(new Font("Times New Roman", Font.BOLD, 40));
+    panel_13.add(titulo_panel);
     
-    JLabel lblNewLabel_2 = new JLabel("       Bienvenido al sistema de control escolar");
-    lblNewLabel_2.setVerticalAlignment(SwingConstants.TOP);
-    lblNewLabel_2.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 20));
-    panel_13.add(lblNewLabel_2);
+    descripcion_titulo = new JLabel("       Bienvenido al sistema de control escolar");
+    descripcion_titulo.setVerticalAlignment(SwingConstants.TOP);
+    descripcion_titulo.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 20));
+    panel_13.add(descripcion_titulo);
     
     JPanel panel_12 = new JPanel();
     panel_12.setBackground(new Color(255, 255, 255));
@@ -236,19 +264,94 @@ public class AppView extends JFrame{
     lblNewLabel_5.setIcon(new ImageIcon(App.class.getResource("/resources/logo_virrete-32x32.png")));
     panel_15.add(lblNewLabel_5);
     
-    JLabel lblNewLabel_4 = new JLabel("nombre usuario");
+    lblNewLabel_4 = new JLabel("nombre usuario");
     lblNewLabel_4.setHorizontalAlignment(SwingConstants.CENTER);
     lblNewLabel_4.setVerticalAlignment(SwingConstants.TOP);
     lblNewLabel_4.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 20));
     panel_15.add(lblNewLabel_4);
     
-    JPanel panel_11 = new JPanel();
-    panel_11.setBackground(new Color(240,240,240));
-    panel_9.add(panel_11, BorderLayout.CENTER);
-    
+    panel_centro = new JPanel();
+    panel_centro.setBackground(new Color(2,240,240));
+    panel_9.add(panel_centro, BorderLayout.CENTER);
+    inicio();
     this.setVisible(true);
 }
 
+	public void inicio() {
+	    panel_9.remove(panel_centro);
+
+	    panel_centro = new JPanel();
+	    panel_centro.setBackground(azul_hover);
+	    panel_9.add(panel_centro, BorderLayout.CENTER);
+
+	    descripcion_titulo.setText("       Bienvenido al sistema de control escolar");
+	    titulo_panel.setText("    Inicio");
+
+	    panel_9.revalidate();
+	    panel_9.repaint();
+	}
+
+	public void docentes() {
+	    panel_9.remove(panel_centro);
+
+	    panel_centro = new JPanel();
+	    panel_centro.setBackground(new Color(240, 240, 1));
+	    panel_9.add(panel_centro, BorderLayout.CENTER);
+
+	    descripcion_titulo.setText("       Gestion integral de docentes en el sistema");
+	    titulo_panel.setText("    Docentes");
+
+	    panel_9.revalidate();
+	    panel_9.repaint();
+	}
+
+	public void alumnos() {
+	    panel_9.remove(panel_centro);
+
+	    panel_centro = new JPanel();
+	    panel_centro.setBackground(new Color(200, 230, 255));
+	    panel_9.add(panel_centro, BorderLayout.CENTER);
+
+	    descripcion_titulo.setText("       Gestion integral de alumnos en el sistema");
+	    titulo_panel.setText("    Alumnos");
+
+	    panel_9.revalidate();
+	    panel_9.repaint();
+	}
+
+	public void grupos() {
+	    panel_9.remove(panel_centro);
+
+	    panel_centro = new JPanel();
+	    panel_centro.setBackground(new Color(200, 255, 200));
+	    panel_9.add(panel_centro, BorderLayout.CENTER);
+
+	    descripcion_titulo.setText("       Gestion integral de grupos en el sistema");
+	    titulo_panel.setText("    Grupos");
+
+	    panel_9.revalidate();
+	    panel_9.repaint();
+	}
+
+	public void asignaturas() {
+	    panel_9.remove(panel_centro);
+
+	    panel_centro = new JPanel();
+	    panel_centro.setBackground(new Color(255, 220, 180));
+	    panel_9.add(panel_centro, BorderLayout.CENTER);
+
+	    descripcion_titulo.setText("       Gestion integral de asignaturas en el sistema");
+	    titulo_panel.setText("    Asignaturas");
+
+	    panel_9.revalidate();
+	    panel_9.repaint();
+	}
+	
+	
+	
+	
+	
+	
 	private JButton crearBoton(String texto, MouseAdapter hover, ActionListener action) {
 	    JButton b = new JButton(texto);
 	    b.setIconTextGap(20);
@@ -279,6 +382,9 @@ public class AppView extends JFrame{
 	    return b;
 	}
 
+	public void mostrarUsuario(UserModel usuario) {
+		lblNewLabel_4.setText(usuario.getUsername());
+	}
 	private void seleccionar(JButton b) {
 	    if (botonActivo != null) {
 
@@ -318,10 +424,11 @@ public class AppView extends JFrame{
 	    b.setFont(new Font("Segoe UI", Font.BOLD, 24));
 	    b.setForeground(dorado);
 	    b.setBorderPainted(true);
+	    	
 	    
-	    inicio=false;
-	
-	    
+	}
+	public void setController(AppController controller) {
+	    this.controller = controller;
 	}
 	
 }

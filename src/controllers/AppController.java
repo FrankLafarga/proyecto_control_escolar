@@ -1,17 +1,16 @@
 package controllers;
 
-import views.AppView;
+
 
 public class AppController {
-	
-	AuthController auth=new AuthController();
 
-	private AppView app;
+    private AuthController auth;
 
-	public void cerrarSesion(AppView ventana) {
-		app=ventana;
-		auth.logout();
-		app.dispose();
-		auth.login();
-	}
+    public AppController(AuthController auth) {
+        this.auth = auth;
+    }
+
+    public void cerrarSesion() {
+        auth.logout();
+    }
 }

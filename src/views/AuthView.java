@@ -15,6 +15,8 @@ import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.Color;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -29,11 +31,10 @@ import javax.swing.border.LineBorder;
 import controllers.AuthController;
 
 import javax.swing.JButton;
-import models.AuthModel;
 
 public class AuthView extends JFrame {
 
-	
+	Color azul_hover = new Color(53,82,189);
 	Color azul_principal = new Color(14, 48, 170);
 	private JTextField textField;
 	private JPasswordField textField_3;
@@ -204,11 +205,12 @@ public class AuthView extends JFrame {
 		GridBagConstraints gbc_panel_9 = new GridBagConstraints();
 		gbc_panel_9.gridwidth = 7;
 		gbc_panel_9.insets = new Insets(0, 0, 5, 5);
-		gbc_panel_9.fill = GridBagConstraints.HORIZONTAL;
+		gbc_panel_9.fill = GridBagConstraints.BOTH;
 		gbc_panel_9.gridx = 4;
 		gbc_panel_9.gridy = 18;
 
 		JButton btnNewButton = new JButton("Iniciar sesión");
+		btnNewButton.setPreferredSize(new Dimension(95, 15));
 		btnNewButton.setBorder(new LineBorder(new Color(255, 255, 255), 1, true));
 		btnNewButton.setFocusable(false);
 		btnNewButton.setForeground(Color.WHITE);
@@ -230,9 +232,28 @@ public class AuthView extends JFrame {
 				textField.setBorder(new LineBorder(new Color(203, 213, 225), 2, true));
 				textField.setForeground(new Color(0, 0, 0));
 				textField_3.setForeground(new Color(0, 0, 0));
+				
 				this.dispose();
 		    }
 		});
+		
+		btnNewButton.addMouseListener(new MouseAdapter() {
+	        @Override
+	        public void mouseEntered(MouseEvent e) {	          
+	        	btnNewButton.setBorderPainted(true);
+	        	btnNewButton.setOpaque(true);
+	        	btnNewButton.setBackground(azul_hover);
+	            
+	        }
+
+	        @Override
+	        public void mouseExited(MouseEvent e) {
+	            	btnNewButton.setBorderPainted(false);
+	            	btnNewButton.setBackground(azul_principal);
+	            
+	        }
+	    });
+	    
 		derecho.add(btnNewButton, gbc_panel_9);
 		
 		this.setVisible(true);
