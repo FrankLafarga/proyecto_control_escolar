@@ -250,7 +250,7 @@ public class App {
     panel_15.add(lblNewLabel_4);
     
     JPanel panel_11 = new JPanel();
-    panel_11.setBackground(new Color(240, 240, 240));
+    panel_11.setBackground(new Color(0, 64, 0));
     panel_9.add(panel_11, BorderLayout.CENTER);
 }
 
