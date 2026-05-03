@@ -25,6 +25,7 @@ import java.awt.event.ActionListener;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import javax.swing.JTextField;
 
 
 public class App {
@@ -34,6 +35,7 @@ public class App {
 	Color dorado = new Color(208,135,0);
 	private JButton botonActivo;
 	private JFrame frame;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -252,6 +254,38 @@ public class App {
     JPanel panel_11 = new JPanel();
     panel_11.setBackground(new Color(0, 64, 0));
     panel_9.add(panel_11, BorderLayout.CENTER);
+    panel_11.setLayout(new BorderLayout(0, 0));
+    
+    JPanel panel_16 = new JPanel();
+    panel_16.setOpaque(false);
+    panel_16.setPreferredSize(new Dimension(10, 50));
+    panel_11.add(panel_16, BorderLayout.NORTH);
+    panel_16.setLayout(new BorderLayout(0, 0));
+    
+    JPanel panel_17 = new JPanel();
+    panel_17.setOpaque(false);
+    panel_16.add(panel_17, BorderLayout.CENTER);
+    panel_17.setLayout(new BorderLayout(0, 0));
+    
+    JButton btnNewButton_1 = new JButton("New button");
+    btnNewButton_1.setPreferredSize(new Dimension(200, 23));
+    panel_17.add(btnNewButton_1, BorderLayout.EAST);
+    
+    textField = new JTextField();
+    panel_17.add(textField, BorderLayout.CENTER);
+    textField.setColumns(10);
+    
+    JPanel panel_20 = new JPanel();
+    panel_20.setOpaque(false);
+    panel_17.add(panel_20, BorderLayout.SOUTH);
+    
+    JPanel panel_18 = new JPanel();
+    panel_18.setOpaque(false);
+    panel_16.add(panel_18, BorderLayout.EAST);
+    
+    JPanel panel_19 = new JPanel();
+    panel_19.setOpaque(false);
+    panel_16.add(panel_19, BorderLayout.WEST);
 }
 
 	private JButton crearBoton(String texto, MouseAdapter hover, ActionListener action) {

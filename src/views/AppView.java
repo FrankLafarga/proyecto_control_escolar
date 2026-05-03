@@ -13,12 +13,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
-import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -29,11 +24,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import constructor_ventanas.App;
+import controllers.AlumnosController;
 import controllers.AppController;
 import models.UserModel;
 
@@ -332,41 +329,69 @@ public class AppView extends JFrame{
 	    panel_centro.add(panel_norte, BorderLayout.NORTH);
 	
 	    JTextField txtBusqueda = new JTextField();
-	
-	    JButton btnAgregar = new JButton("Agregar alumno");
-	    btnAgregar.setIcon(new ImageIcon(AppView.class.getResource("/resources/agregar.png")));
+	    JPanel panel_16 = new JPanel();
+	    panel_16.setOpaque(false);
+	    panel_16.setPreferredSize(new Dimension(10, 50));
+	    panel_centro.add(panel_16, BorderLayout.NORTH);
+	    panel_16.setLayout(new BorderLayout(0, 0));
+	    
+	    JPanel panel_17 = new JPanel();
+	    panel_17.setOpaque(false);
+	    panel_16.add(panel_17, BorderLayout.CENTER);
+	    panel_17.setLayout(new BorderLayout(0, 0));
+	    
+	    JButton btnAgregar = new JButton("+ Agregar alumno");
 	    btnAgregar.setPreferredSize(new Dimension(250, 45));
 	    btnAgregar.setBorder(new LineBorder(new Color(255, 255, 255), 1, true));
 	    btnAgregar.setFocusable(false);
 	    btnAgregar.setForeground(Color.WHITE);
 	    btnAgregar.setFont(new Font("Segoe UI", Font.PLAIN, 24));
 	    btnAgregar.setBackground(new Color(14, 48, 170));
+	    btnAgregar.setPreferredSize(new Dimension(250, 23));
+	    panel_17.add(btnAgregar, BorderLayout.EAST);
+	    	    	    	    	    	    
+	    panel_17.add(txtBusqueda, BorderLayout.CENTER);
+	    txtBusqueda.setColumns(10);
+	    
+	    JPanel panel_18 = new JPanel();
+	    panel_18.setOpaque(false);
+	    panel_18.setPreferredSize(new Dimension(15, 0));
+	    panel_16.add(panel_18, BorderLayout.EAST);
+	    
+	    JPanel panel_19 = new JPanel();
+	    panel_19.setOpaque(false);
+	    panel_19.setPreferredSize(new Dimension(15, 0));
+	    panel_16.add(panel_19, BorderLayout.WEST);
 	
-	    GroupLayout gl = new GroupLayout(panel_norte);
-	    panel_norte.setLayout(gl);
-	
-	    gl.setHorizontalGroup(
-	        gl.createSequentialGroup()
-	            .addGap(23)
-	            .addComponent(txtBusqueda, 900, 900, Short.MAX_VALUE)
-	            .addGap(10)
-	            .addComponent(btnAgregar, 250, 300, 300)
-	            .addGap(23)
-	    );
-	
-	    gl.setVerticalGroup(
-	        gl.createSequentialGroup()
-	            .addContainerGap()
-	            .addGroup(gl.createParallelGroup(GroupLayout.Alignment.CENTER)
-	                .addComponent(txtBusqueda, 40, 50, 50)
-	                .addComponent(btnAgregar, 40, 50, 50))
-	            .addContainerGap()
-	    );
+	    JPanel panel_20 = new JPanel();
+	    panel_20.setOpaque(false);
+	    panel_17.add(panel_20, BorderLayout.SOUTH);
 	
 	    JPanel panel_tabla = new JPanel(new BorderLayout());
 	    panel_centro.add(panel_tabla, BorderLayout.CENTER);
 	
-	    DefaultTableModel modelo = new DefaultTableModel();
+	    JPanel panel_ESPACIADOR = new JPanel(new BorderLayout());
+	    panel_ESPACIADOR.setPreferredSize(new Dimension(15,0));
+	    panel_centro.add(panel_ESPACIADOR, BorderLayout.WEST);
+	    
+	    JPanel panel_ESPACIADOR2 = new JPanel(new BorderLayout());
+	    panel_ESPACIADOR2.setPreferredSize(new Dimension(15,0));
+	    panel_centro.add(panel_ESPACIADOR2, BorderLayout.EAST);
+	    
+	    JPanel panel_ESPACIADOR3 = new JPanel(new BorderLayout());
+	    panel_ESPACIADOR3.setPreferredSize(new Dimension(0,20));
+	    panel_centro.add(panel_ESPACIADOR3, BorderLayout.SOUTH);
+
+	    
+	    DefaultTableModel modelo = new DefaultTableModel() {
+	    	@Override
+	        public boolean isCellEditable(int row, int column) {
+	            return false; 
+	        }
+	    };
+	    
+	    
+	    
 	    modelo.addColumn("Matrícula");
 	    modelo.addColumn("Nombre Completo");
 	    modelo.addColumn("Grupo");
@@ -375,10 +400,13 @@ public class AppView extends JFrame{
 	    modelo.addColumn("Estatus");
 	    modelo.addColumn("Acciones");
 	
+	    AlumnosController controller = new AlumnosController();
+	    controller.cargarTabla(modelo);
+	    
 	    JTable tabla = new JTable(modelo);
-	
+	    configurarAutoResize(tabla, this);	  
+	    
 	    tabla.getColumn("Acciones").setCellRenderer(new PanelBotones());
-
 	    tabla.setRowHeight(30);
 	    tabla.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 	    tabla.setBackground(Color.WHITE);
@@ -427,49 +455,26 @@ public class AppView extends JFrame{
 	    tabla.setDefaultRenderer(Object.class, renderer);
 	
 	    JScrollPane scroll = new JScrollPane(tabla);
-	    panel_tabla.add(scroll, BorderLayout.CENTER);
+	    panel_tabla.add(scroll, BorderLayout.CENTER);	    	    
 	    
-	    try {
-	        Connection con = DriverManager.getConnection(
-	            "jdbc:mysql://localhost:3306/educadex",
-	            "root",
-	            "educadex2026"
-	        );
-	
-	        String sql = """
-	            SELECT 
-	                a.matricula,
-	                CONCAT(a.nombre, ' ', a.apellido_paterno, ' ', a.apellido_materno) AS nombre_completo,
-	                g.grupo AS grupo,
-	                a.semestre,
-	                a.promedio,
-	                a.estatus
-	            FROM alumnos a
-	            LEFT JOIN grupos g ON a.id_grupo = g.id_grupo
-	        """;
-	
-	        PreparedStatement ps = con.prepareStatement(sql);
-	        ResultSet rs = ps.executeQuery();
-	
-	        while (rs.next()) {
-	            modelo.addRow(new Object[]{
-	                rs.getInt("matricula"),
-	                rs.getString("nombre_completo"),
-	                rs.getString("grupo"),
-	                rs.getInt("semestre"),
-	                rs.getDouble("promedio"),
-	                rs.getString("estatus"),
-	                ""
-	            });
+	    SwingUtilities.invokeLater(() -> {
+	        int totalWidth = scroll.getViewport().getWidth();
+
+	        int[] proporciones = {
+	            12,   // Matrícula
+	            20,  // Nombre Completo
+	            12,   // Grupo
+	            12,  // Semestre
+	            12,  // Promedio
+	            12,  // Estatus
+	            20   // Acciones
+	        };
+
+	        for (int i = 0; i < tabla.getColumnModel().getColumnCount(); i++) {
+	            int ancho = (totalWidth * proporciones[i]) / 100;
+	            tabla.getColumnModel().getColumn(i).setPreferredWidth(ancho);
 	        }
-	
-	        rs.close();
-	        ps.close();
-	        con.close();
-	
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+	    });
 	    
 	    descripcion_titulo.setText("       Gestion integral de alumnos en el sistema");
 	    titulo_panel.setText("    Alumnos");
@@ -641,6 +646,21 @@ public class AppView extends JFrame{
 	        setBackground(Color.WHITE);
 	        return this;
 	    }
+	}
+	
+	private void configurarAutoResize(JTable tabla, JFrame frame) {
+	    frame.addComponentListener(new java.awt.event.ComponentAdapter() {
+	        @Override
+	        public void componentResized(java.awt.event.ComponentEvent e) {
+	            int ancho = frame.getWidth();
+
+	            if (ancho < 1919) {
+	                tabla.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+	            } else {
+	                tabla.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+	            }
+	        }
+	    });
 	}
 	
 }

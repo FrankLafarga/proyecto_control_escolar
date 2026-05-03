@@ -6,6 +6,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry excluding="diseno_login/VentanaLogin.java" kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/yahir/Downloads/mysql-connector-j-9.3.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/adrhy/Downloads/mysql-connector-j-9.3.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
