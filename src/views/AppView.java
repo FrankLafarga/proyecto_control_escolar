@@ -2,23 +2,36 @@ package views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
+import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import constructor_ventanas.App;
 import controllers.AppController;
@@ -261,7 +274,9 @@ public class AppView extends JFrame{
     
     JLabel lblNewLabel_5 = new JLabel("");
     lblNewLabel_5.setHorizontalAlignment(SwingConstants.CENTER);
-    lblNewLabel_5.setIcon(new ImageIcon(App.class.getResource("/resources/logo_virrete-32x32.png")));
+    ImageIcon iconoUser = new ImageIcon(AppView.class.getResource("/resources/user_online.png"));
+    Image imgUser = iconoUser.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+    lblNewLabel_5.setIcon(new ImageIcon(imgUser));
     panel_15.add(lblNewLabel_5);
     
     lblNewLabel_4 = new JLabel("nombre usuario");
@@ -307,14 +322,158 @@ public class AppView extends JFrame{
 
 	public void alumnos() {
 	    panel_9.remove(panel_centro);
-
+	
 	    panel_centro = new JPanel();
-	    panel_centro.setBackground(new Color(200, 230, 255));
+	    panel_centro.setLayout(new BorderLayout());
+	    panel_centro.setBackground(Color.WHITE);
 	    panel_9.add(panel_centro, BorderLayout.CENTER);
+	
+	    JPanel panel_norte = new JPanel();
+	    panel_centro.add(panel_norte, BorderLayout.NORTH);
+	
+	    JTextField txtBusqueda = new JTextField();
+	
+	    JButton btnAgregar = new JButton("Agregar alumno");
+	    btnAgregar.setIcon(new ImageIcon(AppView.class.getResource("/resources/agregar.png")));
+	    btnAgregar.setPreferredSize(new Dimension(250, 45));
+	    btnAgregar.setBorder(new LineBorder(new Color(255, 255, 255), 1, true));
+	    btnAgregar.setFocusable(false);
+	    btnAgregar.setForeground(Color.WHITE);
+	    btnAgregar.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+	    btnAgregar.setBackground(new Color(14, 48, 170));
+	
+	    GroupLayout gl = new GroupLayout(panel_norte);
+	    panel_norte.setLayout(gl);
+	
+	    gl.setHorizontalGroup(
+	        gl.createSequentialGroup()
+	            .addGap(23)
+	            .addComponent(txtBusqueda, 900, 900, Short.MAX_VALUE)
+	            .addGap(10)
+	            .addComponent(btnAgregar, 250, 300, 300)
+	            .addGap(23)
+	    );
+	
+	    gl.setVerticalGroup(
+	        gl.createSequentialGroup()
+	            .addContainerGap()
+	            .addGroup(gl.createParallelGroup(GroupLayout.Alignment.CENTER)
+	                .addComponent(txtBusqueda, 40, 50, 50)
+	                .addComponent(btnAgregar, 40, 50, 50))
+	            .addContainerGap()
+	    );
+	
+	    JPanel panel_tabla = new JPanel(new BorderLayout());
+	    panel_centro.add(panel_tabla, BorderLayout.CENTER);
+	
+	    DefaultTableModel modelo = new DefaultTableModel();
+	    modelo.addColumn("Matrícula");
+	    modelo.addColumn("Nombre Completo");
+	    modelo.addColumn("Grupo");
+	    modelo.addColumn("Semestre");
+	    modelo.addColumn("Promedio");
+	    modelo.addColumn("Estatus");
+	    modelo.addColumn("Acciones");
+	
+	    JTable tabla = new JTable(modelo);
+	
+	    tabla.getColumn("Acciones").setCellRenderer(new PanelBotones());
 
+	    tabla.setRowHeight(30);
+	    tabla.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+	    tabla.setBackground(Color.WHITE);
+	    tabla.setForeground(new Color(60, 60, 60));
+	    tabla.setGridColor(new Color(235, 235, 235));
+	
+	    tabla.getTableHeader().setBackground(Color.WHITE);
+	    tabla.getTableHeader().setForeground(new Color(14, 48, 170));
+	    tabla.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
+	    tabla.getTableHeader().setBorder(javax.swing.BorderFactory.createEmptyBorder());
+	    tabla.getTableHeader().setReorderingAllowed(false);
+	
+	    tabla.setShowVerticalLines(false);
+	    tabla.setShowHorizontalLines(true);
+
+	    javax.swing.table.DefaultTableCellRenderer centrado = new javax.swing.table.DefaultTableCellRenderer();
+	    centrado.setHorizontalAlignment(SwingConstants.CENTER);
+	
+	    for (int i = 0; i < tabla.getColumnCount(); i++) {
+	        if (!tabla.getColumnName(i).equals("Acciones")) {
+	            tabla.getColumnModel().getColumn(i).setCellRenderer(centrado);
+	        }
+	    }
+
+	    javax.swing.table.DefaultTableCellRenderer renderer = new javax.swing.table.DefaultTableCellRenderer() {
+	        @Override
+	        public Component getTableCellRendererComponent(
+	                JTable table, Object value, boolean isSelected,
+	                boolean hasFocus, int row, int column) {
+	
+	            Component c = super.getTableCellRendererComponent(
+	                    table, value, isSelected, hasFocus, row, column);
+	
+	            if (isSelected) {
+	                c.setBackground(new Color(53, 82, 189));
+	                c.setForeground(Color.WHITE);
+	            } else {
+	                c.setBackground(row % 2 == 0 ? Color.WHITE : new Color(245, 247, 250));
+	                c.setForeground(new Color(60, 60, 60));
+	            }
+	
+	            return c;
+	        }
+	    };
+	
+	    tabla.setDefaultRenderer(Object.class, renderer);
+	
+	    JScrollPane scroll = new JScrollPane(tabla);
+	    panel_tabla.add(scroll, BorderLayout.CENTER);
+	    
+	    try {
+	        Connection con = DriverManager.getConnection(
+	            "jdbc:mysql://localhost:3306/educadex",
+	            "root",
+	            "educadex2026"
+	        );
+	
+	        String sql = """
+	            SELECT 
+	                a.matricula,
+	                CONCAT(a.nombre, ' ', a.apellido_paterno, ' ', a.apellido_materno) AS nombre_completo,
+	                g.grupo AS grupo,
+	                a.semestre,
+	                a.promedio,
+	                a.estatus
+	            FROM alumnos a
+	            LEFT JOIN grupos g ON a.id_grupo = g.id_grupo
+	        """;
+	
+	        PreparedStatement ps = con.prepareStatement(sql);
+	        ResultSet rs = ps.executeQuery();
+	
+	        while (rs.next()) {
+	            modelo.addRow(new Object[]{
+	                rs.getInt("matricula"),
+	                rs.getString("nombre_completo"),
+	                rs.getString("grupo"),
+	                rs.getInt("semestre"),
+	                rs.getDouble("promedio"),
+	                rs.getString("estatus"),
+	                ""
+	            });
+	        }
+	
+	        rs.close();
+	        ps.close();
+	        con.close();
+	
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    
 	    descripcion_titulo.setText("       Gestion integral de alumnos en el sistema");
 	    titulo_panel.setText("    Alumnos");
-
+	
 	    panel_9.revalidate();
 	    panel_9.repaint();
 	}
@@ -429,6 +588,59 @@ public class AppView extends JFrame{
 	}
 	public void setController(AppController controller) {
 	    this.controller = controller;
+	}
+	
+	class PanelBotones extends JPanel implements TableCellRenderer {
+
+	    public PanelBotones() {
+	        setLayout(new FlowLayout(FlowLayout.CENTER, 2, 0));
+
+	        JButton btnVer = new JButton("");
+	        ImageIcon iconoVer = new ImageIcon(AppView.class.getResource("/resources/eye.png"));
+	        Image imgVer = iconoVer.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+	        btnVer.setIcon(new ImageIcon(imgVer));
+
+	        btnVer.setPreferredSize(new Dimension(25, 25));
+	        btnVer.setBorderPainted(false);
+	        btnVer.setContentAreaFilled(false);
+	        btnVer.setFocusPainted(false);
+	        btnVer.setOpaque(false);
+
+	        JButton btnEditar = new JButton("");
+	        ImageIcon iconoEditar = new ImageIcon(AppView.class.getResource("/resources/square-pen.png"));
+	        Image imgEditar = iconoEditar.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+	        btnEditar.setIcon(new ImageIcon(imgEditar));
+
+	        btnEditar.setPreferredSize(new Dimension(25, 25));
+	        btnEditar.setBorderPainted(false);
+	        btnEditar.setContentAreaFilled(false);
+	        btnEditar.setFocusPainted(false);
+	        btnEditar.setOpaque(false);
+
+	        JButton btnEliminar = new JButton("");
+	        ImageIcon iconoEliminar = new ImageIcon(AppView.class.getResource("/resources/trash.png"));
+	        Image imgEliminar = iconoEliminar.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+	        btnEliminar.setIcon(new ImageIcon(imgEliminar));
+
+	        btnEliminar.setPreferredSize(new Dimension(25, 25));
+	        btnEliminar.setBorderPainted(false);
+	        btnEliminar.setContentAreaFilled(false);
+	        btnEliminar.setFocusPainted(false);
+	        btnEliminar.setOpaque(false);
+
+	        add(btnVer);
+	        add(btnEditar);
+	        add(btnEliminar);
+	    }
+
+	    @Override
+	    public Component getTableCellRendererComponent(
+	            JTable table, Object value, boolean isSelected,
+	            boolean hasFocus, int row, int column) {
+
+	        setBackground(Color.WHITE);
+	        return this;
+	    }
 	}
 	
 }
