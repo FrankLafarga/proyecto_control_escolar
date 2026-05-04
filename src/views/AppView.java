@@ -26,12 +26,14 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import constructor_ventanas.App;
 import controllers.AlumnosController;
 import controllers.AppController;
+import controllers.DocentesController;
 import models.UserModel;
 
 public class AppView extends JFrame{
@@ -305,14 +307,184 @@ public class AppView extends JFrame{
 
 	public void docentes() {
 	    panel_9.remove(panel_centro);
-
+	
 	    panel_centro = new JPanel();
-	    panel_centro.setBackground(new Color(240, 240, 1));
+	    panel_centro.setLayout(new BorderLayout());
+	    panel_centro.setBackground(Color.WHITE);
 	    panel_9.add(panel_centro, BorderLayout.CENTER);
-
+	
+	    JPanel panel_norte = new JPanel();
+	    panel_centro.add(panel_norte, BorderLayout.NORTH);
+	
+	    JTextField txtBusqueda = new JTextField();
+	    JPanel panel_16 = new JPanel();
+	    panel_16.setOpaque(false);
+	    panel_16.setPreferredSize(new Dimension(10, 50));
+	    panel_centro.add(panel_16, BorderLayout.NORTH);
+	    panel_16.setLayout(new BorderLayout(0, 0));
+	    
+	    JPanel panel_17 = new JPanel();
+	    panel_17.setOpaque(false);
+	    panel_16.add(panel_17, BorderLayout.CENTER);
+	    panel_17.setLayout(new BorderLayout(0, 0));
+	    
+	    JButton btnAgregar = new JButton("+ Agregar docente");
+	    btnAgregar.setPreferredSize(new Dimension(250, 45));
+	    btnAgregar.setBorder(new LineBorder(new Color(255, 255, 255), 1, true));
+	    btnAgregar.setFocusable(false);
+	    btnAgregar.setForeground(Color.WHITE);
+	    btnAgregar.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+	    btnAgregar.setBackground(new Color(14, 48, 170));
+	    panel_17.add(btnAgregar, BorderLayout.EAST);
+	    
+	    panel_17.add(txtBusqueda, BorderLayout.CENTER);
+	    txtBusqueda.setColumns(10);
+	    
+	    JPanel panel_18 = new JPanel();
+	    panel_18.setOpaque(false);
+	    panel_18.setPreferredSize(new Dimension(15, 0));
+	    panel_16.add(panel_18, BorderLayout.EAST);
+	    
+	    JPanel panel_19 = new JPanel();
+	    panel_19.setOpaque(false);
+	    panel_19.setPreferredSize(new Dimension(15, 0));
+	    panel_16.add(panel_19, BorderLayout.WEST);
+	
+	    JPanel panel_20 = new JPanel();
+	    panel_20.setOpaque(false);
+	    panel_17.add(panel_20, BorderLayout.SOUTH);
+	
+	    JPanel panel_tabla = new JPanel(new BorderLayout());
+	    panel_centro.add(panel_tabla, BorderLayout.CENTER);
+	
+	    JPanel panel_ESPACIADOR = new JPanel(new BorderLayout());
+	    panel_ESPACIADOR.setPreferredSize(new Dimension(15,0));
+	    panel_centro.add(panel_ESPACIADOR, BorderLayout.WEST);
+	    
+	    JPanel panel_ESPACIADOR2 = new JPanel(new BorderLayout());
+	    panel_ESPACIADOR2.setPreferredSize(new Dimension(15,0));
+	    panel_centro.add(panel_ESPACIADOR2, BorderLayout.EAST);
+	    
+	    JPanel panel_ESPACIADOR3 = new JPanel(new BorderLayout());
+	    panel_ESPACIADOR3.setPreferredSize(new Dimension(0,20));
+	    panel_centro.add(panel_ESPACIADOR3, BorderLayout.SOUTH);
+	
+	    DefaultTableModel modelo = new DefaultTableModel() {
+	        @Override
+	        public boolean isCellEditable(int row, int column) {
+	            return false;
+	        }
+	    };
+	
+	    class PanelBotones extends JPanel implements TableCellRenderer {
+	
+	        public PanelBotones() {
+	            setLayout(new FlowLayout(FlowLayout.CENTER, 2, 0));
+	
+	            JButton btnVer = new JButton("");
+	            ImageIcon iconoVer = new ImageIcon(AppView.class.getResource("/resources/eye.png"));
+	            Image imgVer = iconoVer.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+	            btnVer.setIcon(new ImageIcon(imgVer));
+	            btnVer.setPreferredSize(new Dimension(25, 25));
+	            btnVer.setBorderPainted(false);
+	            btnVer.setContentAreaFilled(false);
+	            btnVer.setFocusPainted(false);
+	            btnVer.setOpaque(false);
+	
+	            JButton btnEditar = new JButton("");
+	            ImageIcon iconoEditar = new ImageIcon(AppView.class.getResource("/resources/square-pen.png"));
+	            Image imgEditar = iconoEditar.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+	            btnEditar.setIcon(new ImageIcon(imgEditar));
+	            btnEditar.setPreferredSize(new Dimension(25, 25));
+	            btnEditar.setBorderPainted(false);
+	            btnEditar.setContentAreaFilled(false);
+	            btnEditar.setFocusPainted(false);
+	            btnEditar.setOpaque(false);
+	
+	            JButton btnEliminar = new JButton("");
+	            ImageIcon iconoEliminar = new ImageIcon(AppView.class.getResource("/resources/trash.png"));
+	            Image imgEliminar = iconoEliminar.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+	            btnEliminar.setIcon(new ImageIcon(imgEliminar));
+	            btnEliminar.setPreferredSize(new Dimension(25, 25));
+	            btnEliminar.setBorderPainted(false);
+	            btnEliminar.setContentAreaFilled(false);
+	            btnEliminar.setFocusPainted(false);
+	            btnEliminar.setOpaque(false);
+	
+	            add(btnVer);
+	            add(btnEditar);
+	            add(btnEliminar);
+	        }
+	
+	        @Override
+	        public Component getTableCellRendererComponent(
+	                JTable table, Object value, boolean isSelected,
+	                boolean hasFocus, int row, int column) {
+	
+	            setBackground(Color.WHITE);
+	            return this;
+	        }
+	    }
+	
+	    modelo.addColumn("Clave");
+	    modelo.addColumn("Nombre Completo");
+	    modelo.addColumn("Especialidad");
+	    modelo.addColumn("Estatus");
+	    modelo.addColumn("Acciones");
+	
+	    DocentesController controller = new DocentesController();
+	    controller.cargarTabla(modelo);
+	
+	    JTable tabla = new JTable(modelo);
+	
+	    tabla.getColumn("Acciones").setCellRenderer(new PanelBotones());
+	    tabla.setRowHeight(30);
+	    tabla.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+	    tabla.setBackground(Color.WHITE);
+	    tabla.setForeground(new Color(60, 60, 60));
+	    tabla.setGridColor(new Color(235, 235, 235));
+	
+	    tabla.getTableHeader().setBackground(Color.WHITE);
+	    tabla.getTableHeader().setForeground(new Color(14, 48, 170));
+	    tabla.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
+	    tabla.getTableHeader().setBorder(javax.swing.BorderFactory.createEmptyBorder());
+	    tabla.getTableHeader().setReorderingAllowed(false);
+	
+	    tabla.setShowVerticalLines(false);
+	    tabla.setShowHorizontalLines(true);
+	
+	    DefaultTableCellRenderer centrado = new DefaultTableCellRenderer();
+	    centrado.setHorizontalAlignment(SwingConstants.CENTER);
+	
+	    for (int i = 0; i < tabla.getColumnCount(); i++) {
+	        if (!tabla.getColumnName(i).equals("Acciones")) {
+	            tabla.getColumnModel().getColumn(i).setCellRenderer(centrado);
+	        }
+	    }
+	
+	    JScrollPane scroll = new JScrollPane(tabla);
+	    panel_tabla.add(scroll, BorderLayout.CENTER);
+	
+	    SwingUtilities.invokeLater(() -> {
+	        int totalWidth = scroll.getViewport().getWidth();
+	
+	        int[] proporciones = {
+	            15,
+	            30,
+	            25,
+	            15,
+	            15
+	        };
+	
+	        for (int i = 0; i < tabla.getColumnModel().getColumnCount(); i++) {
+	            int ancho = (totalWidth * proporciones[i]) / 100;
+	            tabla.getColumnModel().getColumn(i).setPreferredWidth(ancho);
+	        }
+	    });
+	
 	    descripcion_titulo.setText("       Gestion integral de docentes en el sistema");
 	    titulo_panel.setText("    Docentes");
-
+	
 	    panel_9.revalidate();
 	    panel_9.repaint();
 	}
