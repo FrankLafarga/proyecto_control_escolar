@@ -216,6 +216,7 @@ public class AuthView extends JFrame {
 		btnNewButton.setForeground(Color.WHITE);
 		btnNewButton.setFont(new Font("Segoe UI", Font.PLAIN, 24));
 		btnNewButton.setBackground(new Color(14, 48, 170));
+		this.getRootPane().setDefaultButton(btnNewButton);
 		btnNewButton.addActionListener(e->{
 			String usuario = textField.getText();
 		    String password = new String(textField_3.getPassword());
