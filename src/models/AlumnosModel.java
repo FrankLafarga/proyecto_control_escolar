@@ -37,7 +37,7 @@ public class AlumnosModel {
 
             while (rs.next()) {
                 lista.add(new Object[]{
-                    rs.getInt("matricula"),
+                    rs.getString("matricula"),
                     rs.getString("nombre_completo"),
                     rs.getString("grupo"),
                     rs.getInt("semestre"),
