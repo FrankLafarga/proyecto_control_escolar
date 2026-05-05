@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -19,8 +20,10 @@ import javax.swing.table.DefaultTableModel;
 import controllers.DocentesController;
 
 public class DocentesView extends JPanel {
+	private AppView app;
 
-    public DocentesView() {
+    public DocentesView(AppView app) {
+    	this.app = app;
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
@@ -42,6 +45,9 @@ public class DocentesView extends JPanel {
         btnAgregar.setForeground(Color.WHITE);
         btnAgregar.setFont(new Font("Segoe UI", Font.PLAIN, 24));
         btnAgregar.setBackground(new Color(14, 48, 170));
+        btnAgregar.addActionListener(e ->{
+        	agregarDocente();
+        });
         panel_17.add(btnAgregar, BorderLayout.EAST);
 
         panel_17.add(txtBusqueda, BorderLayout.CENTER);
@@ -73,7 +79,10 @@ public class DocentesView extends JPanel {
         add(panel_tabla, BorderLayout.CENTER);
 
         DefaultTableModel modelo = new DefaultTableModel() {
-            public boolean isCellEditable(int r, int c) { return false; }
+            public boolean isCellEditable(int r, int c) { 
+            	return c == 4; 
+            
+            }
         };
 
         modelo.addColumn("Clave");
@@ -92,6 +101,24 @@ public class DocentesView extends JPanel {
         panel_tabla.add(scroll, BorderLayout.CENTER);
 
         SwingUtilities.invokeLater(() -> ajustarColumnas(tabla, scroll, new int[]{15,30,25,15,15}));
+        
+        tabla.getColumn("Acciones").setCellEditor(
+        	    new PanelBotonesEditor(tabla, new AccionesTabla() {
+
+        	        @Override
+        	        public void ver(int fila) {
+        	            verDocente(fila);
+        	        }
+        	        @Override
+        	        public void editar(int fila) {
+        	            editarDocente(fila);
+        	        }
+        	        @Override
+        	        public void eliminar(int fila) {
+        	        	eliminarDocente(fila);
+        	        }
+        	    })
+        	);
     }
 
     private void configurarTabla(JTable tabla){
@@ -123,5 +150,141 @@ public class DocentesView extends JPanel {
         for(int i=0;i<tabla.getColumnCount();i++){
             tabla.getColumnModel().getColumn(i).setPreferredWidth((w*p[i])/100);
         }
+    }
+    
+    public void verDocente(int fila) {
+
+        JPanel detalle = new JPanel(new BorderLayout());
+        detalle.setBackground(Color.WHITE);
+
+        JLabel titulo = new JLabel("DETALLE DEL DOCENTE");
+        titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JLabel info = new JLabel("Docente seleccionado en fila: " + fila);
+        info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        info.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JButton volver = new JButton("VOLVER");
+        volver.setPreferredSize(new Dimension(250, 45));
+        volver.setBorder(new LineBorder(Color.WHITE, 1, true));
+        volver.setFocusable(false);
+        volver.setForeground(Color.WHITE);
+        volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+        volver.setBackground(new Color(14, 48, 170));
+
+        volver.addActionListener(e -> app.cambiarVista(new DocentesView(app), "Docentes", "Gestion integral de docentes en el sistema"));
+
+        JPanel panelBtn = new JPanel();
+        panelBtn.setBackground(Color.WHITE);
+        panelBtn.add(volver);
+
+        detalle.add(titulo, BorderLayout.NORTH);
+        detalle.add(info, BorderLayout.CENTER);
+        detalle.add(panelBtn, BorderLayout.SOUTH);
+
+        app.cambiarVista(detalle, "Docente", "Detalle del docente seleccionado");
+    }
+
+    public void editarDocente(int fila) {
+
+        JPanel detalle = new JPanel(new BorderLayout());
+        detalle.setBackground(Color.WHITE);
+
+        JLabel titulo = new JLabel("EDITAR DOCENTE");
+        titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JLabel info = new JLabel("Editando docente en fila: " + fila);
+        info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        info.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JButton volver = new JButton("VOLVER");
+        volver.setPreferredSize(new Dimension(250, 45));
+        volver.setBorder(new LineBorder(Color.WHITE, 1, true));
+        volver.setFocusable(false);
+        volver.setForeground(Color.WHITE);
+        volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+        volver.setBackground(new Color(14, 48, 170));
+
+        volver.addActionListener(e -> app.cambiarVista(new DocentesView(app), "Docentes", "Gestion integral de docentes en el sistema"));
+
+        JPanel panelBtn = new JPanel();
+        panelBtn.setBackground(Color.WHITE);
+        panelBtn.add(volver);
+
+        detalle.add(titulo, BorderLayout.NORTH);
+        detalle.add(info, BorderLayout.CENTER);
+        detalle.add(panelBtn, BorderLayout.SOUTH);
+
+        app.cambiarVista(detalle, "Docente", "Editar docente seleccionado");
+    }
+
+    public void eliminarDocente(int fila) {
+
+        JPanel detalle = new JPanel(new BorderLayout());
+        detalle.setBackground(Color.WHITE);
+
+        JLabel titulo = new JLabel("ELIMINAR DOCENTE");
+        titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JLabel info = new JLabel("¿Seguro que quieres eliminar el docente en fila: " + fila + "?");
+        info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        info.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JButton volver = new JButton("VOLVER");
+        volver.setPreferredSize(new Dimension(250, 45));
+        volver.setBorder(new LineBorder(Color.WHITE, 1, true));
+        volver.setFocusable(false);
+        volver.setForeground(Color.WHITE);
+        volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+        volver.setBackground(new Color(14, 48, 170));
+
+        volver.addActionListener(e -> app.cambiarVista(new DocentesView(app), "Docentes", "Gestion integral de docentes en el sistema"));
+
+        JPanel panelBtn = new JPanel();
+        panelBtn.setBackground(Color.WHITE);
+        panelBtn.add(volver);
+
+        detalle.add(titulo, BorderLayout.NORTH);
+        detalle.add(info, BorderLayout.CENTER);
+        detalle.add(panelBtn, BorderLayout.SOUTH);
+
+        app.cambiarVista(detalle, "Docente", "Eliminar docente seleccionado");
+    }
+    
+    public void agregarDocente() {
+
+        JPanel detalle = new JPanel(new BorderLayout());
+        detalle.setBackground(Color.WHITE);
+
+        JLabel titulo = new JLabel("CREAR DOCENTE");
+        titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JLabel info = new JLabel("Formulario para crear un nuevo docente");
+        info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        info.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JButton volver = new JButton("VOLVER");
+        volver.setPreferredSize(new Dimension(250, 45));
+        volver.setBorder(new LineBorder(Color.WHITE, 1, true));
+        volver.setFocusable(false);
+        volver.setForeground(Color.WHITE);
+        volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+        volver.setBackground(new Color(14, 48, 170));
+
+        volver.addActionListener(e -> app.cambiarVista(new DocentesView(app), "Docentes", "Gestion integral de docentes en el sistema"));
+
+        JPanel panelBtn = new JPanel();
+        panelBtn.setBackground(Color.WHITE);
+        panelBtn.add(volver);
+
+        detalle.add(titulo, BorderLayout.NORTH);
+        detalle.add(info, BorderLayout.CENTER);
+        detalle.add(panelBtn, BorderLayout.SOUTH);
+
+        app.cambiarVista(detalle, "Docente", "Crear docente");
     }
 }

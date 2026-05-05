@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -19,8 +20,10 @@ import javax.swing.table.DefaultTableModel;
 import controllers.AsignaturasController;
 
 public class AsignaturasView extends JPanel {
+	private AppView app;
 
-    public AsignaturasView() {
+    public AsignaturasView(AppView app) {
+    	this.app = app;
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
@@ -42,6 +45,9 @@ public class AsignaturasView extends JPanel {
         btnAgregar.setForeground(Color.WHITE);
         btnAgregar.setFont(new Font("Segoe UI", Font.PLAIN, 24));
         btnAgregar.setBackground(new Color(14, 48, 170));
+        btnAgregar.addActionListener(e ->{
+        	agregarAsignatura();
+        });
         panel_17.add(btnAgregar, BorderLayout.EAST);
 
         panel_17.add(txtBusqueda, BorderLayout.CENTER);
@@ -72,8 +78,11 @@ public class AsignaturasView extends JPanel {
         panel_tabla.setBackground(Color.WHITE);
         add(panel_tabla, BorderLayout.CENTER);
 
-        DefaultTableModel modelo = new DefaultTableModel(){
-            public boolean isCellEditable(int r,int c){return false;}
+        DefaultTableModel modelo = new DefaultTableModel() {
+            public boolean isCellEditable(int r, int c) { 
+            	return c == 6; 
+            
+            }
         };
 
         modelo.addColumn("Clave");
@@ -100,6 +109,24 @@ public class AsignaturasView extends JPanel {
         scroll.getViewport().setBackground(Color.WHITE);
 
         SwingUtilities.invokeLater(() -> ajustarColumnas(tabla, scroll, new int[]{10,20,10,10,15,20,15}));
+        
+        tabla.getColumn("Acciones").setCellEditor(
+        	    new PanelBotonesEditor(tabla, new AccionesTabla() {
+
+        	        @Override
+        	        public void ver(int fila) {
+        	            verAsignatura(fila);
+        	        }
+        	        @Override
+        	        public void editar(int fila) {
+        	            editarAsignatura(fila);
+        	        }
+        	        @Override
+        	        public void eliminar(int fila) {
+        	        	eliminarAsignatura(fila);
+        	        }
+        	    })
+        	);
     }
 
     private void configurarTabla(JTable tabla){
@@ -133,5 +160,141 @@ public class AsignaturasView extends JPanel {
         for(int i=0;i<tabla.getColumnCount();i++){
             tabla.getColumnModel().getColumn(i).setPreferredWidth((w*p[i])/100);
         }
+    }
+    
+    public void verAsignatura(int fila) {
+
+        JPanel detalle = new JPanel(new BorderLayout());
+        detalle.setBackground(Color.WHITE);
+
+        JLabel titulo = new JLabel("DETALLE DE LA ASIGNATURA");
+        titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JLabel info = new JLabel("Asignatura seleccionada en fila: " + fila);
+        info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        info.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JButton volver = new JButton("VOLVER");
+        volver.setPreferredSize(new Dimension(250, 45));
+        volver.setBorder(new LineBorder(Color.WHITE, 1, true));
+        volver.setFocusable(false);
+        volver.setForeground(Color.WHITE);
+        volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+        volver.setBackground(new Color(14, 48, 170));
+
+        volver.addActionListener(e -> app.cambiarVista(new AsignaturasView(app), "Asignaturas", "Gestion integral de asignaturas en el sistema"));
+
+        JPanel panelBtn = new JPanel();
+        panelBtn.setBackground(Color.WHITE);
+        panelBtn.add(volver);
+
+        detalle.add(titulo, BorderLayout.NORTH);
+        detalle.add(info, BorderLayout.CENTER);
+        detalle.add(panelBtn, BorderLayout.SOUTH);
+
+        app.cambiarVista(detalle, "Asignatura", "Detalle de la asignatura seleccionada");
+    }
+
+    public void editarAsignatura(int fila) {
+
+        JPanel detalle = new JPanel(new BorderLayout());
+        detalle.setBackground(Color.WHITE);
+
+        JLabel titulo = new JLabel("EDITAR ASIGNATURA");
+        titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JLabel info = new JLabel("Editando asignatura en fila: " + fila);
+        info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        info.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JButton volver = new JButton("VOLVER");
+        volver.setPreferredSize(new Dimension(250, 45));
+        volver.setBorder(new LineBorder(Color.WHITE, 1, true));
+        volver.setFocusable(false);
+        volver.setForeground(Color.WHITE);
+        volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+        volver.setBackground(new Color(14, 48, 170));
+
+        volver.addActionListener(e -> app.cambiarVista(new AsignaturasView(app), "Asignaturas", "Gestion integral de asignaturas en el sistema"));
+
+        JPanel panelBtn = new JPanel();
+        panelBtn.setBackground(Color.WHITE);
+        panelBtn.add(volver);
+
+        detalle.add(titulo, BorderLayout.NORTH);
+        detalle.add(info, BorderLayout.CENTER);
+        detalle.add(panelBtn, BorderLayout.SOUTH);
+
+        app.cambiarVista(detalle, "Asignatura", "Editar asignatura seleccionada");
+    }
+
+    public void eliminarAsignatura(int fila) {
+
+        JPanel detalle = new JPanel(new BorderLayout());
+        detalle.setBackground(Color.WHITE);
+
+        JLabel titulo = new JLabel("ELIMINAR ASIGNATURA");
+        titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JLabel info = new JLabel("¿Seguro que quieres eliminar la asignatura en fila: " + fila + "?");
+        info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        info.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JButton volver = new JButton("VOLVER");
+        volver.setPreferredSize(new Dimension(250, 45));
+        volver.setBorder(new LineBorder(Color.WHITE, 1, true));
+        volver.setFocusable(false);
+        volver.setForeground(Color.WHITE);
+        volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+        volver.setBackground(new Color(14, 48, 170));
+
+        volver.addActionListener(e -> app.cambiarVista(new AsignaturasView(app), "Asignaturas", "Gestion integral de asignaturas en el sistema"));
+
+        JPanel panelBtn = new JPanel();
+        panelBtn.setBackground(Color.WHITE);
+        panelBtn.add(volver);
+
+        detalle.add(titulo, BorderLayout.NORTH);
+        detalle.add(info, BorderLayout.CENTER);
+        detalle.add(panelBtn, BorderLayout.SOUTH);
+
+        app.cambiarVista(detalle, "Asignatura", "Eliminar asignatura seleccionada");
+    }
+    
+    public void agregarAsignatura() {
+
+        JPanel detalle = new JPanel(new BorderLayout());
+        detalle.setBackground(Color.WHITE);
+
+        JLabel titulo = new JLabel("CREAR ASIGNATURA");
+        titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JLabel info = new JLabel("Formulario para crear una nueva asignatura");
+        info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        info.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JButton volver = new JButton("VOLVER");
+        volver.setPreferredSize(new Dimension(250, 45));
+        volver.setBorder(new LineBorder(Color.WHITE, 1, true));
+        volver.setFocusable(false);
+        volver.setForeground(Color.WHITE);
+        volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+        volver.setBackground(new Color(14, 48, 170));
+
+        volver.addActionListener(e -> app.cambiarVista(new AsignaturasView(app), "Asignaturas", "Gestion integral de asignaturas en el sistema"));
+
+        JPanel panelBtn = new JPanel();
+        panelBtn.setBackground(Color.WHITE);
+        panelBtn.add(volver);
+
+        detalle.add(titulo, BorderLayout.NORTH);
+        detalle.add(info, BorderLayout.CENTER);
+        detalle.add(panelBtn, BorderLayout.SOUTH);
+
+        app.cambiarVista(detalle, "Asignatura", "Crear asignatura");
     }
 }

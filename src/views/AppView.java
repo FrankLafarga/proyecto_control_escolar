@@ -160,10 +160,10 @@ public class AppView extends JFrame{
         JButton botonAsignaturas = crearBoton("Asignaturas", hoverListener, action);
 
         botonInicio.addActionListener(e -> cambiarVista(new JPanel(), "Inicio", "Bienvenido al sistema de control escolar"));
-        botonDocentes.addActionListener(e -> cambiarVista(new DocentesView(), "Docentes", "Gestion integral de docentes en el sistema"));
-        botonAlumnos.addActionListener(e -> cambiarVista(new AlumnosView(), "Alumnos", "Gestion integral de alumnos en el sistema"));
-        botonGrupos.addActionListener(e -> cambiarVista(new GruposView(), "Grupos", "Gestion integral de grupos en el sistema"));
-        botonAsignaturas.addActionListener(e -> cambiarVista(new AsignaturasView(), "Asignaturas", "Gestion integral de asignaturas en el sistema"));
+        botonDocentes.addActionListener(e -> cambiarVista(new DocentesView(this), "Docentes", "Gestion integral de docentes en el sistema"));
+        botonAlumnos.addActionListener(e -> cambiarVista(new AlumnosView(this), "Alumnos", "Gestion integral de alumnos en el sistema"));
+        botonGrupos.addActionListener(e -> cambiarVista(new GruposView(this), "Grupos", "Gestion integral de grupos en el sistema"));
+        botonAsignaturas.addActionListener(e -> cambiarVista(new AsignaturasView(this), "Asignaturas", "Gestion integral de asignaturas en el sistema"));
 
         botonInicio.setIcon(new ImageIcon(EducadexMain.class.getResource("/resources/icono_inicio_dorado.png")));
         botonInicio.setBackground(azul_hover);

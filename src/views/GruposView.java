@@ -6,6 +6,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -19,8 +22,11 @@ import javax.swing.table.DefaultTableModel;
 import controllers.GruposController;
 
 public class GruposView extends JPanel {
+	private AppView app;
+	
 
-    public GruposView() {
+    public GruposView(AppView app) {
+    	this.app = app;
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
@@ -42,6 +48,9 @@ public class GruposView extends JPanel {
         btnAgregar.setForeground(Color.WHITE);
         btnAgregar.setFont(new Font("Segoe UI", Font.PLAIN, 24));
         btnAgregar.setBackground(new Color(14, 48, 170));
+        btnAgregar.addActionListener(e ->{
+        	agregarGrupo();
+        });
         panel_17.add(btnAgregar, BorderLayout.EAST);
 
         panel_17.add(txtBusqueda, BorderLayout.CENTER);
@@ -76,7 +85,9 @@ public class GruposView extends JPanel {
         add(panel_tabla, BorderLayout.CENTER);
         
         DefaultTableModel modelo = new DefaultTableModel(){
-            public boolean isCellEditable(int r,int c){return false;}
+            public boolean isCellEditable(int r,int c){
+            	return c == 5; // cambiar en cada view a la coluiman view
+            }
         };
 
         modelo.addColumn("Nombre");
@@ -102,6 +113,25 @@ public class GruposView extends JPanel {
         scroll.getViewport().setBackground(Color.WHITE);
 
         SwingUtilities.invokeLater(() -> ajustarColumnas(tabla, scroll, new int[]{20,15,15,15,20,15}));
+        
+        tabla.getColumn("Acciones").setCellEditor(
+        	    new PanelBotonesEditor(tabla, new AccionesTabla() {
+
+        	        @Override
+        	        public void ver(int fila) {
+        	            verGrupo(fila);
+        	        }
+        	        @Override
+        	        public void editar(int fila) {
+        	            editarGrupo(fila);
+        	        }
+        	        @Override
+        	        public void eliminar(int fila) {
+        	        	eliminarGrupo(fila);
+        	        }
+        	    })
+        	);
+        
     }
 
     private void configurarTabla(JTable tabla){
@@ -133,5 +163,141 @@ public class GruposView extends JPanel {
         for(int i=0;i<tabla.getColumnCount();i++){
             tabla.getColumnModel().getColumn(i).setPreferredWidth((w*p[i])/100);
         }
+    }
+    
+    public void verGrupo(int fila) {
+
+        JPanel detalle = new JPanel(new BorderLayout());
+        detalle.setBackground(Color.WHITE);
+
+        JLabel titulo = new JLabel("DETALLE DEL GRUPO");
+        titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JLabel info = new JLabel("Grupo seleccionado en fila: " + fila);
+        info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        info.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JButton volver = new JButton("VOLVER");
+        volver.setPreferredSize(new Dimension(250, 45));
+        volver.setBorder(new LineBorder(Color.WHITE, 1, true));
+        volver.setFocusable(false);
+        volver.setForeground(Color.WHITE);
+        volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+        volver.setBackground(new Color(14, 48, 170));
+
+        volver.addActionListener(e -> app.cambiarVista(new GruposView(app), "Grupos", "Gestion integral de grupos en el sistema"));
+
+        JPanel panelBtn = new JPanel();
+        panelBtn.setBackground(Color.WHITE);
+        panelBtn.add(volver);
+
+        detalle.add(titulo, BorderLayout.NORTH);
+        detalle.add(info, BorderLayout.CENTER);
+        detalle.add(panelBtn, BorderLayout.SOUTH);
+
+        app.cambiarVista(detalle, "Grupo", "Detalle del grupo seleccionado");
+    }	
+    
+    public void editarGrupo(int fila) {
+
+        JPanel detalle = new JPanel(new BorderLayout());
+        detalle.setBackground(Color.WHITE);
+
+        JLabel titulo = new JLabel("EDITAR GRUPO");
+        titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JLabel info = new JLabel("Editando grupo en fila: " + fila);
+        info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        info.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JButton volver = new JButton("VOLVER");
+        volver.setPreferredSize(new Dimension(250, 45));
+        volver.setBorder(new LineBorder(Color.WHITE, 1, true));
+        volver.setFocusable(false);
+        volver.setForeground(Color.WHITE);
+        volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+        volver.setBackground(new Color(14, 48, 170));
+
+        volver.addActionListener(e -> app.cambiarVista(new GruposView(app), "Grupos", "Gestion integral de grupos en el sistema"));
+
+        JPanel panelBtn = new JPanel();
+        panelBtn.setBackground(Color.WHITE);
+        panelBtn.add(volver);
+
+        detalle.add(titulo, BorderLayout.NORTH);
+        detalle.add(info, BorderLayout.CENTER);
+        detalle.add(panelBtn, BorderLayout.SOUTH);
+
+        app.cambiarVista(detalle, "Grupo", "Editar grupo seleccionado");
+    }
+    
+    public void eliminarGrupo(int fila) {
+
+        JPanel detalle = new JPanel(new BorderLayout());
+        detalle.setBackground(Color.WHITE);
+
+        JLabel titulo = new JLabel("ELIMINAR GRUPO");
+        titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JLabel info = new JLabel("¿Seguro que quieres eliminar el grupo en fila: " + fila + "?");
+        info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        info.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JButton volver = new JButton("VOLVER");
+        volver.setPreferredSize(new Dimension(250, 45));
+        volver.setBorder(new LineBorder(Color.WHITE, 1, true));
+        volver.setFocusable(false);
+        volver.setForeground(Color.WHITE);
+        volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+        volver.setBackground(new Color(14, 48, 170));
+
+        volver.addActionListener(e -> app.cambiarVista(new GruposView(app), "Grupos", "Gestion integral de grupos en el sistema"));
+
+        JPanel panelBtn = new JPanel();
+        panelBtn.setBackground(Color.WHITE);
+        panelBtn.add(volver);
+
+        detalle.add(titulo, BorderLayout.NORTH);
+        detalle.add(info, BorderLayout.CENTER);
+        detalle.add(panelBtn, BorderLayout.SOUTH);
+
+        app.cambiarVista(detalle, "Grupo", "Eliminar grupo seleccionado");
+    }
+    
+    public void agregarGrupo() {
+
+        JPanel detalle = new JPanel(new BorderLayout());
+        detalle.setBackground(Color.WHITE);
+
+        JLabel titulo = new JLabel("CREAR GRUPO");
+        titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JLabel info = new JLabel("Formulario para crear un nuevo grupo");
+        info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        info.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JButton volver = new JButton("VOLVER");
+        volver.setPreferredSize(new Dimension(250, 45));
+        volver.setBorder(new LineBorder(Color.WHITE, 1, true));
+        volver.setFocusable(false);
+        volver.setForeground(Color.WHITE);
+        volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+        volver.setBackground(new Color(14, 48, 170));
+
+        volver.addActionListener(e -> app.cambiarVista(new GruposView(app), "Grupos", "Gestion integral de grupos en el sistema"));
+
+        JPanel panelBtn = new JPanel();
+        panelBtn.setBackground(Color.WHITE);
+        panelBtn.add(volver);
+
+        detalle.add(titulo, BorderLayout.NORTH);
+        detalle.add(info, BorderLayout.CENTER);
+        detalle.add(panelBtn, BorderLayout.SOUTH);
+
+        app.cambiarVista(detalle, "Grupo", "Crear grupo");
     }
 }

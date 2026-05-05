@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -18,8 +19,10 @@ import javax.swing.table.DefaultTableModel;
 import controllers.AlumnosController;
 
 public class AlumnosView extends JPanel {
+	private AppView app;
 
-    public AlumnosView() {
+    public AlumnosView(AppView app) {
+    	this.app = app;
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
@@ -41,6 +44,9 @@ public class AlumnosView extends JPanel {
         btnAgregar.setForeground(Color.WHITE);
         btnAgregar.setFont(new Font("Segoe UI", Font.PLAIN, 24));
         btnAgregar.setBackground(new Color(14, 48, 170));
+        btnAgregar.addActionListener(e ->{
+        	agregarAlumno();
+        });
         panel_17.add(btnAgregar, BorderLayout.EAST);
 
         panel_17.add(txtBusqueda, BorderLayout.CENTER);
@@ -71,8 +77,11 @@ public class AlumnosView extends JPanel {
         panel_tabla.setBackground(Color.WHITE);
         add(panel_tabla, BorderLayout.CENTER);
 
-        DefaultTableModel modelo = new DefaultTableModel(){
-            public boolean isCellEditable(int r,int c){return false;}
+        DefaultTableModel modelo = new DefaultTableModel() {
+            public boolean isCellEditable(int r, int c) { 
+            	return c == 6; 
+            
+            }
         };
 
         modelo.addColumn("Matrícula");
@@ -93,6 +102,24 @@ public class AlumnosView extends JPanel {
         panel_tabla.add(scroll, BorderLayout.CENTER);
 
         SwingUtilities.invokeLater(() -> ajustarColumnas(tabla, scroll, new int[]{12,20,12,12,12,12,20}));
+        
+        tabla.getColumn("Acciones").setCellEditor(
+        	    new PanelBotonesEditor(tabla, new AccionesTabla() {
+
+        	        @Override
+        	        public void ver(int fila) {
+        	            verAlumno(fila);
+        	        }
+        	        @Override
+        	        public void editar(int fila) {
+        	            editarAlumno(fila);
+        	        }
+        	        @Override
+        	        public void eliminar(int fila) {
+        	        	eliminarAlumno(fila);
+        	        }
+        	    })
+        	);
     }
 
     private void configurarTabla(JTable tabla){
@@ -124,5 +151,141 @@ public class AlumnosView extends JPanel {
         for(int i=0;i<tabla.getColumnCount();i++){
             tabla.getColumnModel().getColumn(i).setPreferredWidth((w*p[i])/100);
         }
+    }
+    
+    public void verAlumno(int fila) {
+
+        JPanel detalle = new JPanel(new BorderLayout());
+        detalle.setBackground(Color.WHITE);
+
+        JLabel titulo = new JLabel("DETALLE DEL ALUMNO");
+        titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JLabel info = new JLabel("Alumno seleccionado en fila: " + fila);
+        info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        info.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JButton volver = new JButton("VOLVER");
+        volver.setPreferredSize(new Dimension(250, 45));
+        volver.setBorder(new LineBorder(Color.WHITE, 1, true));
+        volver.setFocusable(false);
+        volver.setForeground(Color.WHITE);
+        volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+        volver.setBackground(new Color(14, 48, 170));
+
+        volver.addActionListener(e -> app.cambiarVista(new AlumnosView(app), "Alumnos", "Gestion integral de alumnos en el sistema"));
+
+        JPanel panelBtn = new JPanel();
+        panelBtn.setBackground(Color.WHITE);
+        panelBtn.add(volver);
+
+        detalle.add(titulo, BorderLayout.NORTH);
+        detalle.add(info, BorderLayout.CENTER);
+        detalle.add(panelBtn, BorderLayout.SOUTH);
+
+        app.cambiarVista(detalle, "Alumno", "Detalle del alumno seleccionado");
+    }
+
+    public void editarAlumno(int fila) {
+
+        JPanel detalle = new JPanel(new BorderLayout());
+        detalle.setBackground(Color.WHITE);
+
+        JLabel titulo = new JLabel("EDITAR ALUMNO");
+        titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JLabel info = new JLabel("Editando alumno en fila: " + fila);
+        info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        info.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JButton volver = new JButton("VOLVER");
+        volver.setPreferredSize(new Dimension(250, 45));
+        volver.setBorder(new LineBorder(Color.WHITE, 1, true));
+        volver.setFocusable(false);
+        volver.setForeground(Color.WHITE);
+        volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+        volver.setBackground(new Color(14, 48, 170));
+
+        volver.addActionListener(e -> app.cambiarVista(new AlumnosView(app), "Alumnos", "Gestion integral de alumnos en el sistema"));
+
+        JPanel panelBtn = new JPanel();
+        panelBtn.setBackground(Color.WHITE);
+        panelBtn.add(volver);
+
+        detalle.add(titulo, BorderLayout.NORTH);
+        detalle.add(info, BorderLayout.CENTER);
+        detalle.add(panelBtn, BorderLayout.SOUTH);
+
+        app.cambiarVista(detalle, "Alumno", "Editar alumno seleccionado");
+    }
+
+    public void eliminarAlumno(int fila) {
+
+        JPanel detalle = new JPanel(new BorderLayout());
+        detalle.setBackground(Color.WHITE);
+
+        JLabel titulo = new JLabel("ELIMINAR ALUMNO");
+        titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JLabel info = new JLabel("¿Seguro que quieres eliminar el alumno en fila: " + fila + "?");
+        info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        info.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JButton volver = new JButton("VOLVER");
+        volver.setPreferredSize(new Dimension(250, 45));
+        volver.setBorder(new LineBorder(Color.WHITE, 1, true));
+        volver.setFocusable(false);
+        volver.setForeground(Color.WHITE);
+        volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+        volver.setBackground(new Color(14, 48, 170));
+
+        volver.addActionListener(e -> app.cambiarVista(new AlumnosView(app), "Alumnos", "Gestion integral de alumnos en el sistema"));
+
+        JPanel panelBtn = new JPanel();
+        panelBtn.setBackground(Color.WHITE);
+        panelBtn.add(volver);
+
+        detalle.add(titulo, BorderLayout.NORTH);
+        detalle.add(info, BorderLayout.CENTER);
+        detalle.add(panelBtn, BorderLayout.SOUTH);
+
+        app.cambiarVista(detalle, "Alumno", "Eliminar alumno seleccionado");
+    }
+    
+    public void agregarAlumno() {
+
+        JPanel detalle = new JPanel(new BorderLayout());
+        detalle.setBackground(Color.WHITE);
+
+        JLabel titulo = new JLabel("CREAR ALUMNO");
+        titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JLabel info = new JLabel("Formulario para crear un nuevo alumno");
+        info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        info.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JButton volver = new JButton("VOLVER");
+        volver.setPreferredSize(new Dimension(250, 45));
+        volver.setBorder(new LineBorder(Color.WHITE, 1, true));
+        volver.setFocusable(false);
+        volver.setForeground(Color.WHITE);
+        volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+        volver.setBackground(new Color(14, 48, 170));
+
+        volver.addActionListener(e -> app.cambiarVista(new AlumnosView(app), "Alumnos", "Gestion integral de alumnos en el sistema"));
+
+        JPanel panelBtn = new JPanel();
+        panelBtn.setBackground(Color.WHITE);
+        panelBtn.add(volver);
+
+        detalle.add(titulo, BorderLayout.NORTH);
+        detalle.add(info, BorderLayout.CENTER);
+        detalle.add(panelBtn, BorderLayout.SOUTH);
+
+        app.cambiarVista(detalle, "Alumno", "Crear alumno");
     }
 }
