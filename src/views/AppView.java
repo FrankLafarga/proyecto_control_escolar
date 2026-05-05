@@ -159,7 +159,7 @@ public class AppView extends JFrame{
         JButton botonGrupos = crearBoton("Grupos", hoverListener, action);
         JButton botonAsignaturas = crearBoton("Asignaturas", hoverListener, action);
 
-        botonInicio.addActionListener(e -> cambiarVista(new JPanel(), "Inicio", "Bienvenido al sistema de control escolar"));
+        botonInicio.addActionListener(e -> cambiarVista(new InicioView(this), "Inicio", "Bienvenido al sistema de control escolar"));
         botonDocentes.addActionListener(e -> cambiarVista(new DocentesView(this), "Docentes", "Gestion integral de docentes en el sistema"));
         botonAlumnos.addActionListener(e -> cambiarVista(new AlumnosView(this), "Alumnos", "Gestion integral de alumnos en el sistema"));
         botonGrupos.addActionListener(e -> cambiarVista(new GruposView(this), "Grupos", "Gestion integral de grupos en el sistema"));
@@ -171,7 +171,9 @@ public class AppView extends JFrame{
         botonInicio.setForeground(dorado);
         botonInicio.setBorderPainted(true);
         botonActivo = botonInicio;
+        
 
+        
         panel_8.add(botonInicio);
         panel_8.add(botonDocentes);
         panel_8.add(botonAlumnos);
@@ -238,8 +240,7 @@ public class AppView extends JFrame{
         panel_centro = new JPanel();
         panel_9.add(panel_centro, BorderLayout.CENTER);
 
-        cambiarVista(new JPanel(), "Inicio", "Bienvenido al sistema de control escolar");
-
+        cambiarVista(new InicioView(this), "Inicio", "Bienvenido al sistema de control escolar");
         this.setVisible(true);
     }
 
