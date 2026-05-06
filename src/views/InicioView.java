@@ -2,17 +2,26 @@ package views;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+
+import controllers.InicioController;
+
 import java.awt.*;
 
 public class InicioView extends JPanel {
     
+	private InicioController controller;
     private AppView app;
+    private int lblDocentes;
+    private int lblAlumnos;
+    private int lblGrupos;
+    private int lblAsignaturas;
 
     public InicioView(AppView app) {
         this.app = app;
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
+        controller=new InicioController(this);
         Color dorado = new Color(208, 135, 0);
         Color verde_lima = new Color(3, 233, 38);
         Color rojo_claro = new Color(255, 77, 77);
@@ -92,7 +101,7 @@ public class InicioView extends JPanel {
         JPanel panel_25 = new JPanel();
         panel_centro_docentes.add(panel_25);
 
-        JLabel lblNewLabel_11 = new JLabel("  11");
+        JLabel lblNewLabel_11 = new JLabel("  "+lblDocentes);
         lblNewLabel_11.setForeground(azul_principal);
         lblNewLabel_11.setFont(new Font("Times New Roman", Font.BOLD, 40));
         lblNewLabel_11.setFocusable(false);
@@ -143,7 +152,7 @@ public class InicioView extends JPanel {
         JPanel panel_25_1 = new JPanel();
         panel_centro_alumnos.add(panel_25_1);
 
-        JLabel lblNewLabel_11_1 = new JLabel("  200");
+        JLabel lblNewLabel_11_1 = new JLabel("  "+lblAlumnos);
         lblNewLabel_11_1.setForeground(azul_principal);
         lblNewLabel_11_1.setFont(new Font("Times New Roman", Font.BOLD, 40));
         lblNewLabel_11_1.setFocusable(false);
@@ -193,7 +202,7 @@ public class InicioView extends JPanel {
         JPanel panel_25_3 = new JPanel();
         panel_centro_grupos.add(panel_25_3);
 
-        JLabel lblNewLabel_11_3 = new JLabel("  10");
+        JLabel lblNewLabel_11_3 = new JLabel("  "+lblGrupos);
         lblNewLabel_11_3.setForeground(azul_principal);
         lblNewLabel_11_3.setFont(new Font("Times New Roman", Font.BOLD, 40));
         lblNewLabel_11_3.setFocusable(false);
@@ -243,7 +252,7 @@ public class InicioView extends JPanel {
         JPanel panel_25_2 = new JPanel();
         panel_centro_asignaturas.add(panel_25_2);
 
-        JLabel lblNewLabel_11_2 = new JLabel("  15");
+        JLabel lblNewLabel_11_2 = new JLabel("  "+lblAsignaturas);
         lblNewLabel_11_2.setForeground(azul_principal);
         lblNewLabel_11_2.setFont(new Font("Times New Roman", Font.BOLD, 40));
         lblNewLabel_11_2.setFocusable(false);
@@ -304,4 +313,25 @@ public class InicioView extends JPanel {
         lblNewLabel_9.setBackground(new Color(240, 240, 240));
         panel_24.add(lblNewLabel_9);
     }
+    
+    public int getLblDocentes() { return lblDocentes; }
+    public int getLblAlumnos() { return lblAlumnos; }
+    public int getLblGrupos() { return lblGrupos; }
+    public int getLblAsignaturas() { return lblAsignaturas; }
+
+	public void setLblDocentes(int lblDocentes) {
+		this.lblDocentes = lblDocentes;
+	}
+
+	public void setLblAlumnos(int lblAlumnos) {
+		this.lblAlumnos = lblAlumnos;
+	}
+
+	public void setLblGrupos(int lblGrupos) {
+		this.lblGrupos = lblGrupos;
+	}
+
+	public void setLblAsignaturas(int lblAsignaturas) {
+		this.lblAsignaturas = lblAsignaturas;
+	}
 }
