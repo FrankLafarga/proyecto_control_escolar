@@ -2,9 +2,15 @@ package views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagLayout;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -80,7 +86,7 @@ public class AsignaturasView extends JPanel {
 
         DefaultTableModel modelo = new DefaultTableModel() {
             public boolean isCellEditable(int r, int c) { 
-            	return c == 6; 
+            	return c == 6;
             
             }
         };
@@ -164,37 +170,96 @@ public class AsignaturasView extends JPanel {
     
     public void verAsignatura(int fila) {
 
-        JPanel detalle = new JPanel(new BorderLayout());
-        detalle.setBackground(Color.WHITE);
+    JPanel contenedor = new JPanel(new BorderLayout());
+    contenedor.setBackground(Color.WHITE);
 
-        JLabel titulo = new JLabel("DETALLE DE LA ASIGNATURA");
-        titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
-        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+    JPanel panelSuperior = new JPanel(new BorderLayout());
+    panelSuperior.setBackground(Color.WHITE);
+    panelSuperior.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
 
-        JLabel info = new JLabel("Asignatura seleccionada en fila: " + fila);
-        info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-        info.setHorizontalAlignment(SwingConstants.CENTER);
+    JLabel titulo = new JLabel("Detalle de la asignatura");
+    titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
 
-        JButton volver = new JButton("VOLVER");
-        volver.setPreferredSize(new Dimension(250, 45));
-        volver.setBorder(new LineBorder(Color.WHITE, 1, true));
-        volver.setFocusable(false);
-        volver.setForeground(Color.WHITE);
-        volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-        volver.setBackground(new Color(14, 48, 170));
+    JButton volver = new JButton("<-- VOLVER");
+    volver.setPreferredSize(new Dimension(200, 40));
+    volver.setFocusable(false);
+    volver.setForeground(Color.WHITE);
+    volver.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+    volver.setBackground(new Color(14, 48, 170));
 
-        volver.addActionListener(e -> app.cambiarVista(new AsignaturasView(app), "Asignaturas", "Gestion integral de asignaturas en el sistema"));
+    volver.addActionListener(e ->
+        app.cambiarVista(new AsignaturasView(app),
+        "Asignaturas",
+        "Gestion integral de asignaturas en el sistema")
+    );
 
-        JPanel panelBtn = new JPanel();
-        panelBtn.setBackground(Color.WHITE);
-        panelBtn.add(volver);
+    panelSuperior.add(titulo, BorderLayout.WEST);
+    panelSuperior.add(volver, BorderLayout.EAST);
 
-        detalle.add(titulo, BorderLayout.NORTH);
-        detalle.add(info, BorderLayout.CENTER);
-        detalle.add(panelBtn, BorderLayout.SOUTH);
+    JPanel centroWrapper = new JPanel(new BorderLayout());
+    centroWrapper.setBackground(Color.WHITE);
+    centroWrapper.setBorder(BorderFactory.createEmptyBorder(0, 40, 0, 40));
 
-        app.cambiarVista(detalle, "Asignatura", "Detalle de la asignatura seleccionada");
+    JPanel tarjeta = new JPanel();
+    tarjeta.setLayout(new BoxLayout(tarjeta, BoxLayout.Y_AXIS));
+    tarjeta.setBackground(Color.WHITE);
+    tarjeta.setBorder(BorderFactory.createCompoundBorder(
+        new LineBorder(new Color(200,200,200), 2, true),
+        BorderFactory.createEmptyBorder(20, 30, 20, 30)
+    ));
+
+    JLabel nombre = new JLabel("Matemáticas I");
+    nombre.setFont(new Font("Segoe UI", Font.BOLD, 26));
+    nombre.setAlignmentX(Component.LEFT_ALIGNMENT);
+    nombre.setHorizontalAlignment(SwingConstants.LEFT);
+
+    JLabel semestre = new JLabel("Semestre: 3");
+    JLabel clave = new JLabel("Clave: MAT-301");
+    JLabel creditos = new JLabel("Créditos: 8");
+    JLabel grupo = new JLabel("Grupo: A");
+
+    JLabel[] datos = {semestre, clave, creditos, grupo};
+
+    for(JLabel l : datos){
+        l.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        l.setAlignmentX(Component.LEFT_ALIGNMENT);
+        l.setHorizontalAlignment(SwingConstants.LEFT);
+        l.setMaximumSize(new Dimension(Integer.MAX_VALUE, l.getPreferredSize().height));
     }
+
+    nombre.setMaximumSize(new Dimension(Integer.MAX_VALUE, nombre.getPreferredSize().height));
+
+    tarjeta.add(nombre);
+    tarjeta.add(Box.createVerticalStrut(10));
+
+    for(JLabel l : datos){
+        tarjeta.add(l);
+    }
+
+    JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+    panelBoton.setBackground(Color.WHITE);
+
+    JButton pdf = new JButton("Imprimir PDF");
+    pdf.setPreferredSize(new Dimension(180, 40));
+    pdf.setFocusable(false);
+    pdf.setForeground(Color.WHITE);
+    pdf.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+    pdf.setBackground(new Color(14, 48, 170));
+
+    panelBoton.add(pdf);
+
+    tarjeta.add(Box.createVerticalStrut(20));
+    tarjeta.add(panelBoton);
+
+    centroWrapper.add(tarjeta, BorderLayout.NORTH);
+
+    contenedor.add(panelSuperior, BorderLayout.NORTH);
+    contenedor.add(centroWrapper, BorderLayout.CENTER);
+
+    app.cambiarVista(contenedor,
+        "Asignatura",
+        "Detalle de la asignatura seleccionada");
+}
 
     public void editarAsignatura(int fila) {
 
