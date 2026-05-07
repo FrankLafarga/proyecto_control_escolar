@@ -212,7 +212,7 @@ public class AsignaturasView extends JPanel {
     nombre.setFont(new Font("Segoe UI", Font.BOLD, 26));
     nombre.setAlignmentX(Component.LEFT_ALIGNMENT);
     nombre.setHorizontalAlignment(SwingConstants.LEFT);
-
+    
     JLabel semestre = new JLabel("Semestre: 3");
     JLabel clave = new JLabel("Clave: MAT-301");
     JLabel creditos = new JLabel("Créditos: 8");
@@ -223,17 +223,27 @@ public class AsignaturasView extends JPanel {
     for(JLabel l : datos){
         l.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         l.setAlignmentX(Component.LEFT_ALIGNMENT);
-        l.setHorizontalAlignment(SwingConstants.LEFT);
-        l.setMaximumSize(new Dimension(Integer.MAX_VALUE, l.getPreferredSize().height));
     }
+    
+    JPanel filaNombre = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    filaNombre.setBackground(Color.WHITE);
 
-    nombre.setMaximumSize(new Dimension(Integer.MAX_VALUE, nombre.getPreferredSize().height));
+    filaNombre.add(nombre);
 
-    tarjeta.add(nombre);
+    tarjeta.add(filaNombre);
+
     tarjeta.add(Box.createVerticalStrut(10));
 
     for(JLabel l : datos){
-        tarjeta.add(l);
+
+        JPanel filaDato = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        filaDato.setBackground(Color.WHITE);
+
+        l.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+
+        filaDato.add(l);
+
+        tarjeta.add(filaDato);
     }
 
     JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -259,7 +269,7 @@ public class AsignaturasView extends JPanel {
     app.cambiarVista(contenedor,
         "Asignatura",
         "Detalle de la asignatura seleccionada");
-}
+    }
 
     public void editarAsignatura(int fila) {
 
