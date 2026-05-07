@@ -76,6 +76,7 @@ public class DocentesView extends JPanel {
 
         JPanel panel_tabla = new JPanel(new BorderLayout());
         panel_tabla.setBackground(Color.WHITE);
+        panel_tabla.setOpaque(false);
         add(panel_tabla, BorderLayout.CENTER);
 
         DefaultTableModel modelo = new DefaultTableModel() {
@@ -94,6 +95,7 @@ public class DocentesView extends JPanel {
         new DocentesController().cargarTabla(modelo);
 
         JTable tabla = new JTable(modelo);
+        tabla.setFillsViewportHeight(true);
         tabla.getColumn("Acciones").setCellRenderer(new PanelBotones());
         configurarTabla(tabla);
 
