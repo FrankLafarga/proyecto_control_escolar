@@ -1,3 +1,7 @@
+Base de datos:
+
+la base de datos la creamos a  partir del codigo sql en el archivo anexado al repositorio "crear_db_educadex.sql" ejecutandola en heidysql importante considerar la contraseña del localhost root es: educadex2026
+
 Usuario y contraseña para ingresar al sistema:
 
 admin       
