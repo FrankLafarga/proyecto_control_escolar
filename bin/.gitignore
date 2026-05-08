@@ -1,1 +1,4 @@
-/views/
+*.class
+bin/
+out/
+target/

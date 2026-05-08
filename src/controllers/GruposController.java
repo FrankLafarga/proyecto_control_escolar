@@ -23,4 +23,47 @@ public class GruposController {
         }
     }
 
+    public void cargarGrupo(String nom) {
+        model.obtenerGrupo(nom);
+    }
+
+    public int getIdGrupo() {
+        return model.getIdGrupo();
+    }
+
+    public String getNombre() {
+        return model.getNombre();
+    }
+
+    public String getTurno() {
+        return model.getTurno();
+    }
+
+    public int getCapacidad() {
+        return model.getCapacidad();
+    }
+
+    public int getDocentes() {
+        return model.getDocentes();
+    }
+
+    public void setIdGrupo(int idGrupo) {
+        model.setIdGrupo(idGrupo);
+    }
+
+    public void setNombre(String nombre) {
+        model.setNombre(nombre);
+    }
+
+    public void setTurno(String turno) {
+        model.setTurno(turno);
+    }
+
+    public void setCapacidad(int capacidad) {
+        model.setCapacidad(capacidad);
+    }
+
+    public void setDocentes(int docentes) {
+        model.setDocentes(docentes);
+    }
 }

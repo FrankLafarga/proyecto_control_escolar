@@ -2,9 +2,16 @@ package views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,7 +28,7 @@ import controllers.GruposController;
 
 public class GruposView extends JPanel {
 	private AppView app;
-	
+	private JTable tabla;
 
     public GruposView(AppView app) {
     	this.app = app;
@@ -101,7 +108,7 @@ public class GruposView extends JPanel {
             modelo.setValueAt("", i, 5);
         }
 
-        JTable tabla = new JTable(modelo);
+        tabla = new JTable(modelo);
         tabla.getColumn("Acciones").setCellRenderer(new PanelBotones());
         configurarTabla(tabla);
 
@@ -117,7 +124,7 @@ public class GruposView extends JPanel {
 
         	        @Override
         	        public void ver(int fila) {
-        	            verGrupo(fila);
+        	            verGrupos(fila);
         	        }
         	        @Override
         	        public void editar(int fila) {
@@ -163,39 +170,142 @@ public class GruposView extends JPanel {
         }
     }
     
-    public void verGrupo(int fila) {
+     public void verGrupos(int fila) {
+    	 
+    	 Color azul_principal = new Color(14, 48, 170);
 
-        JPanel detalle = new JPanel(new BorderLayout());
-        detalle.setBackground(Color.WHITE);
+	    JPanel contenedor = new JPanel(new BorderLayout());
+	    contenedor.setBackground(Color.WHITE);
+	
+	    JPanel panelSuperior = new JPanel(new BorderLayout());
+	    panelSuperior.setBackground(new Color(240,240,240));
+	    panelSuperior.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+	
+	    JButton volver = new JButton("<-  VOLVER");
+	    volver.setBorder(null);
+	    volver.setFocusable(false);
+	    volver.setBorderPainted(false);
+	    volver.setContentAreaFilled(false);
+	    volver.addActionListener(e->{
+	    	app.cambiarVista(new GruposView(app), "Grupos", "Gestion integral de grupos en el sistema");
+	    });
 
-        JLabel titulo = new JLabel("DETALLE DEL GRUPO");
-        titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
-        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+	    volver.addMouseListener(new MouseAdapter() {
+	    	@Override
+	    	public void mouseEntered(MouseEvent e) {
+	    		volver.setForeground(azul_principal);
+	    	}
 
-        JLabel info = new JLabel("Grupo seleccionado en fila: " + fila);
-        info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-        info.setHorizontalAlignment(SwingConstants.CENTER);
+	    	@Override
+	    	public void mouseExited(MouseEvent e) {
+	    		volver.setForeground(new Color(64, 64, 64));
+	    	}
+	    });
 
-        JButton volver = new JButton("VOLVER");
-        volver.setPreferredSize(new Dimension(250, 45));
-        volver.setBorder(new LineBorder(Color.WHITE, 1, true));
-        volver.setFocusable(false);
-        volver.setForeground(Color.WHITE);
-        volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-        volver.setBackground(new Color(14, 48, 170));
+	    volver.setPreferredSize(new Dimension(200, 40));
+	    volver.setForeground(new Color(64, 64, 64));
+	    volver.setFont(new Font("Segoe UI", Font.PLAIN, 28));
+	    volver.setBackground(new Color(14, 48, 170));
+	
+	    volver.addActionListener(e ->
+	        app.cambiarVista(new AsignaturasView(app),
+	        "Grupos",
+	        "Gestion integral del grupo en el sistema")
+	    );
+	
+	    panelSuperior.add(volver, BorderLayout.EAST);
+	
+	    JPanel centroWrapper = new JPanel(new BorderLayout());
+	    centroWrapper.setBackground(new Color(240,240,240));
+	    centroWrapper.setBorder(BorderFactory.createEmptyBorder(0, 40, 0, 40));
+	
+	    JPanel tarjeta = new JPanel();
+	    tarjeta.setLayout(new BoxLayout(tarjeta, BoxLayout.Y_AXIS));
+	    tarjeta.setBackground(Color.WHITE);
+	    tarjeta.setBorder(BorderFactory.createCompoundBorder(
+	        new LineBorder(new Color(200,200,200), 2, true),
+	        BorderFactory.createEmptyBorder(20, 30, 20, 30)
+	    ));
+	    
+	    GruposController controller = new GruposController();
+	    
+	    String nom = tabla.getValueAt(fila, 0).toString();
 
-        volver.addActionListener(e -> app.cambiarVista(new GruposView(app), "Grupos", "Gestion integral de grupos en el sistema"));
+	    controller.cargarGrupo(nom);
 
-        JPanel panelBtn = new JPanel();
-        panelBtn.setBackground(Color.WHITE);
-        panelBtn.add(volver);
+	    JLabel nombre = new JLabel("Grupo: " + controller.getNombre());
+	    nombre.setFont(new Font("Segoe UI", Font.BOLD, 26));
+	    nombre.setAlignmentX(Component.LEFT_ALIGNMENT);
+	    nombre.setHorizontalAlignment(SwingConstants.LEFT);
 
-        detalle.add(titulo, BorderLayout.NORTH);
-        detalle.add(info, BorderLayout.CENTER);
-        detalle.add(panelBtn, BorderLayout.SOUTH);
+	    JLabel turno = new JLabel(
+	        "Turno: " + controller.getTurno()
+	    );
 
-        app.cambiarVista(detalle, "Grupo", "Detalle del grupo seleccionado");
-    }	
+	    JLabel capacidad = new JLabel(
+	        "Capacidad: " + controller.getCapacidad()
+	    );
+
+	    JLabel docentes = new JLabel(
+	        "Docentes: " + controller.getDocentes()
+	    );
+	    
+	    JLabel idGrupo = new JLabel(
+	    	    "ID Grupo: " + controller.getIdGrupo()
+	    	);
+	
+	    JLabel[] datos = {idGrupo, turno, capacidad, docentes};
+	
+	    for(JLabel l : datos){
+	        l.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	        l.setAlignmentX(Component.LEFT_ALIGNMENT);
+	    }
+	    
+	    JPanel filaNombre = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	    filaNombre.setBackground(Color.WHITE);
+	    filaNombre.add(nombre);
+	
+	    tarjeta.add(filaNombre);
+	    tarjeta.add(Box.createVerticalStrut(10));
+	
+	    for(JLabel l : datos){
+	
+	        JPanel filaDato = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	        filaDato.setBackground(Color.WHITE);
+	
+	        l.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	
+	        filaDato.add(l);
+	
+	        tarjeta.add(filaDato);
+	    }
+	
+	    JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+	    panelBoton.setBackground(Color.WHITE);
+	
+	    JButton pdf = new JButton(
+	    		"<html>" +
+	    	    "<span style='color:black; font-family:Segoe UI; font-size:16px;'>Imprimir </span>" +
+	    	    "<span style='color:red; font-family:Segoe UI; font-size:16px;'><b>PDF</b></span>" +
+	    	    "</html>");
+	    pdf.setPreferredSize(new Dimension(180, 40));
+	    pdf.setFocusable(false);
+	    pdf.setContentAreaFilled(false);
+	
+	    panelBoton.add(pdf);
+	
+	    tarjeta.add(Box.createVerticalStrut(20));
+	    tarjeta.add(panelBoton);
+	
+	    centroWrapper.add(tarjeta, BorderLayout.NORTH);
+	
+	    contenedor.add(panelSuperior, BorderLayout.NORTH);
+	    contenedor.add(centroWrapper, BorderLayout.CENTER);
+	
+	    app.cambiarVista(contenedor,
+	        "Grupos",
+	        "Detalle de los grupos seleccionada");
+     }
     
     public void editarGrupo(int fila) {
 

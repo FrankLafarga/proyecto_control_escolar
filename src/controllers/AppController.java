@@ -1,7 +1,5 @@
 package controllers;
 
-
-
 public class AppController {
 
     private AuthController auth;
