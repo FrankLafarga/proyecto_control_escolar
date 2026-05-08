@@ -7,10 +7,13 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -24,11 +27,13 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import constructor_ventanas.App;
 import controllers.AsignaturasController;
 
 public class AsignaturasView extends JPanel {
 	private AppView app;
 	private JTable tabla;
+	 Color azul_principal = new Color(14, 48, 170);
 
     public AsignaturasView(AppView app) {
     	this.app = app;
@@ -137,38 +142,7 @@ public class AsignaturasView extends JPanel {
         	);
     }
 
-    private void configurarTabla(JTable tabla){
-        tabla.setRowHeight(30);
-        tabla.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        tabla.setBackground(Color.WHITE);
-        tabla.setForeground(new Color(60,60,60));
-        tabla.setGridColor(new Color(235,235,235));
-
-        tabla.getTableHeader().setBackground(Color.WHITE);
-        tabla.getTableHeader().setForeground(new Color(14,48,170));
-        tabla.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
-        tabla.getTableHeader().setBorder(javax.swing.BorderFactory.createEmptyBorder());
-        tabla.getTableHeader().setReorderingAllowed(false);
-
-        tabla.setShowVerticalLines(false);
-        tabla.setShowHorizontalLines(true);
-
-        DefaultTableCellRenderer c = new DefaultTableCellRenderer();
-        c.setHorizontalAlignment(SwingConstants.CENTER);
-
-        for(int i=0;i<tabla.getColumnCount();i++){
-            if(!tabla.getColumnName(i).equals("Acciones")){
-                tabla.getColumnModel().getColumn(i).setCellRenderer(c);
-            }
-        }
-    }
-
-    private void ajustarColumnas(JTable tabla, JScrollPane scroll, int[] p){
-        int w = scroll.getViewport().getWidth();
-        for(int i=0;i<tabla.getColumnCount();i++){
-            tabla.getColumnModel().getColumn(i).setPreferredWidth((w*p[i])/100);
-        }
-    }
+   
     
     public void verAsignatura(int fila) {
 
@@ -179,13 +153,28 @@ public class AsignaturasView extends JPanel {
     panelSuperior.setBackground(Color.WHITE);
     panelSuperior.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
 
-    JButton volver = new JButton("<-- VOLVER");
-    volver.setPreferredSize(new Dimension(200, 40));
+    JButton volver = new JButton("Volver");
+    volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
+    volver.setBorder(null);
     volver.setFocusable(false);
-    volver.setForeground(Color.WHITE);
-    volver.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-    volver.setBackground(new Color(14, 48, 170));
+    volver.setBorderPainted(false);
+    volver.setContentAreaFilled(false);	    
+    volver.setPreferredSize(new Dimension(200, 40));
+    volver.setForeground(new Color(0,0,0));
+    volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+    volver.addMouseListener(new MouseAdapter() {
+    	@Override
+    	public void mouseEntered(MouseEvent e) {
+    		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16Azul.png")));
+    		volver.setForeground(azul_principal);
+    	}
 
+    	@Override
+    	public void mouseExited(MouseEvent e) {
+    		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
+    		volver.setForeground(new Color(0, 0, 0));
+    	}
+    });	    	
     volver.addActionListener(e ->
         app.cambiarVista(new AsignaturasView(app),
         "Asignaturas",
@@ -284,16 +273,33 @@ public class AsignaturasView extends JPanel {
         info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         info.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JButton volver = new JButton("VOLVER");
-        volver.setPreferredSize(new Dimension(250, 45));
-        volver.setBorder(new LineBorder(Color.WHITE, 1, true));
+        JButton volver = new JButton("Volver");
+        volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
+        volver.setBorder(null);
         volver.setFocusable(false);
-        volver.setForeground(Color.WHITE);
+        volver.setBorderPainted(false);
+        volver.setContentAreaFilled(false);	    
+        volver.setPreferredSize(new Dimension(200, 40));
+        volver.setForeground(new Color(0,0,0));
         volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-        volver.setBackground(new Color(14, 48, 170));
+        volver.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseEntered(MouseEvent e) {
+        		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16Azul.png")));
+        		volver.setForeground(azul_principal);
+        	}
 
-        volver.addActionListener(e -> app.cambiarVista(new AsignaturasView(app), "Asignaturas", "Gestion integral de asignaturas en el sistema"));
-
+        	@Override
+        	public void mouseExited(MouseEvent e) {
+        		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
+        		volver.setForeground(new Color(0, 0, 0));
+        	}
+        });	    	
+        volver.addActionListener(e ->
+            app.cambiarVista(new AsignaturasView(app),
+            "Asignaturas",
+            "Gestion integral de asignaturas en el sistema")
+        );
         JPanel panelBtn = new JPanel();
         panelBtn.setBackground(Color.WHITE);
         panelBtn.add(volver);
@@ -344,16 +350,34 @@ public class AsignaturasView extends JPanel {
         info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         info.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JButton volver = new JButton("VOLVER");
-        volver.setPreferredSize(new Dimension(250, 45));
-        volver.setBorder(new LineBorder(Color.WHITE, 1, true));
+        JButton volver = new JButton("Volver");
+        volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
+        volver.setBorder(null);
         volver.setFocusable(false);
-        volver.setForeground(Color.WHITE);
+        volver.setBorderPainted(false);
+        volver.setContentAreaFilled(false);	    
+        volver.setPreferredSize(new Dimension(200, 40));
+        volver.setForeground(new Color(0,0,0));
         volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-        volver.setBackground(new Color(14, 48, 170));
+        volver.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseEntered(MouseEvent e) {
+        		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16Azul.png")));
+        		volver.setForeground(azul_principal);
+        	}
 
-        volver.addActionListener(e -> app.cambiarVista(new AsignaturasView(app), "Asignaturas", "Gestion integral de asignaturas en el sistema"));
-
+        	@Override
+        	public void mouseExited(MouseEvent e) {
+        		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
+        		volver.setForeground(new Color(0, 0, 0));
+        	}
+        });	    	
+        volver.addActionListener(e ->
+            app.cambiarVista(new AsignaturasView(app),
+            "Asignaturas",
+            "Gestion integral de asignaturas en el sistema")
+        );
+        
         JPanel panelBtn = new JPanel();
         panelBtn.setBackground(Color.WHITE);
         panelBtn.add(volver);
@@ -363,5 +387,37 @@ public class AsignaturasView extends JPanel {
         detalle.add(panelBtn, BorderLayout.SOUTH);
 
         app.cambiarVista(detalle, "Asignatura", "Crear asignatura");
+    }
+    private void configurarTabla(JTable tabla){
+        tabla.setRowHeight(30);
+        tabla.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        tabla.setBackground(Color.WHITE);
+        tabla.setForeground(new Color(60,60,60));
+        tabla.setGridColor(new Color(235,235,235));
+
+        tabla.getTableHeader().setBackground(Color.WHITE);
+        tabla.getTableHeader().setForeground(new Color(14,48,170));
+        tabla.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
+        tabla.getTableHeader().setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        tabla.getTableHeader().setReorderingAllowed(false);
+
+        tabla.setShowVerticalLines(false);
+        tabla.setShowHorizontalLines(true);
+
+        DefaultTableCellRenderer c = new DefaultTableCellRenderer();
+        c.setHorizontalAlignment(SwingConstants.CENTER);
+
+        for(int i=0;i<tabla.getColumnCount();i++){
+            if(!tabla.getColumnName(i).equals("Acciones")){
+                tabla.getColumnModel().getColumn(i).setCellRenderer(c);
+            }
+        }
+    }
+
+    private void ajustarColumnas(JTable tabla, JScrollPane scroll, int[] p){
+        int w = scroll.getViewport().getWidth();
+        for(int i=0;i<tabla.getColumnCount();i++){
+            tabla.getColumnModel().getColumn(i).setPreferredWidth((w*p[i])/100);
+        }
     }
 }

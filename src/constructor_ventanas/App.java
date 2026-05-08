@@ -23,28 +23,24 @@ import java.awt.event.MouseEvent;
 
 
 import javax.swing.border.LineBorder;
+
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTextField;
 import java.awt.FlowLayout;
-import javax.swing.border.TitledBorder;
-
-import controllers.InicioController;
-
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.BevelBorder;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import java.awt.event.ActionEvent;
 
 
 public class App {
 
+    Color verde_lima = new Color(3, 233, 38);
+    Color rojo_claro = new Color(255, 77, 77);
+    Color azul_celeste = new Color(61, 161, 255);
 	Color azul_principal = new Color(14, 48, 170);
 	Color azul_hover = new Color(53,82,189);
 	Color dorado = new Color(208,135,0);
@@ -78,12 +74,6 @@ public class App {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-        Color dorado = new Color(208, 135, 0);
-        Color verde_lima = new Color(3, 233, 38);
-        Color rojo_claro = new Color(255, 77, 77);
-        Color azul_celeste = new Color(61, 161, 255);
-        Color azul_principal = new Color(14, 48, 170);
-		
     frame = new JFrame();
     frame.setMinimumSize(new Dimension(1200, 800));
     frame.setMaximumSize(new Dimension(1920, 1080));
@@ -251,142 +241,241 @@ public class App {
     panel_10.add(panel_12);
     panel_12.setLayout(new GridLayout(0, 2, 0, 0));
     
+    JPanel panel_14 = new JPanel();
+    panel_14.setOpaque(false);
+    panel_12.add(panel_14);
+    
+    JPanel panel_15 = new JPanel();
+    panel_15.setOpaque(false);
+    panel_15.setBackground(new Color(255, 255, 255));
+    panel_12.add(panel_15);
+    panel_15.setLayout(new GridLayout(2, 1, 0, 0));
+    
+    JLabel lblNewLabel_5 = new JLabel("");
+    lblNewLabel_5.setHorizontalAlignment(SwingConstants.CENTER);
+    lblNewLabel_5.setIcon(new ImageIcon(App.class.getResource("/resources/logo_virrete-32x32.png")));
+    panel_15.add(lblNewLabel_5);
+    
+    JLabel lblNewLabel_4 = new JLabel("nombre usuario");
+    lblNewLabel_4.setHorizontalAlignment(SwingConstants.CENTER);
+    lblNewLabel_4.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 20));
+    panel_15.add(lblNewLabel_4);
+    
+    JPanel panel_centro = new JPanel();
+    panel_9.add(panel_centro, BorderLayout.CENTER);
+    panel_centro.setLayout(new BorderLayout(0, 0));
+    
+    JPanel panel_11 = new JPanel();
+    panel_11.setBackground(new Color(28,57,152));
+    panel_centro.add(panel_11, BorderLayout.NORTH);
+    
+    JLabel lblNewLabel_6 = new JLabel("María  Ines Gonzalez Sanchez");
+    lblNewLabel_6.setForeground(new Color(255, 255, 255));
+    lblNewLabel_6.setFont(new Font("Times New Roman", Font.PLAIN, 40));
+    
+    JLabel lblNewLabel_7 = new JLabel("Matrícula: A2024001");
+    lblNewLabel_7.setForeground(new Color(255, 255, 255));
+    lblNewLabel_7.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+    
+    JLabel lblNewLabel_7_1 = new JLabel("3°Semestre");
+    lblNewLabel_7_1.setForeground(Color.WHITE);
+    lblNewLabel_7_1.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+    
+    JLabel lblNewLabel_7_1_1 = new JLabel("Grupo 3°A");
+    lblNewLabel_7_1_1.setForeground(Color.WHITE);
+    lblNewLabel_7_1_1.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+    GroupLayout gl_panel_11 = new GroupLayout(panel_11);
+    gl_panel_11.setHorizontalGroup(
+    	gl_panel_11.createParallelGroup(Alignment.LEADING)
+    		.addGroup(gl_panel_11.createSequentialGroup()
+    			.addGap(25)
+    			.addGroup(gl_panel_11.createParallelGroup(Alignment.LEADING)
+    				.addComponent(lblNewLabel_6, GroupLayout.PREFERRED_SIZE, 649, GroupLayout.PREFERRED_SIZE)
+    				.addGroup(gl_panel_11.createSequentialGroup()
+    					.addComponent(lblNewLabel_7, GroupLayout.PREFERRED_SIZE, 196, GroupLayout.PREFERRED_SIZE)
+    					.addPreferredGap(ComponentPlacement.UNRELATED)
+    					.addComponent(lblNewLabel_7_1, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)
+    					.addPreferredGap(ComponentPlacement.RELATED)
+    					.addComponent(lblNewLabel_7_1_1, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)))
+    			.addContainerGap(225, Short.MAX_VALUE))
+    );
+    gl_panel_11.setVerticalGroup(
+    	gl_panel_11.createParallelGroup(Alignment.LEADING)
+    		.addGroup(gl_panel_11.createSequentialGroup()
+    			.addGap(20)
+    			.addComponent(lblNewLabel_6, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+    			.addGap(18)
+    			.addGroup(gl_panel_11.createParallelGroup(Alignment.BASELINE)
+    				.addComponent(lblNewLabel_7)
+    				.addComponent(lblNewLabel_7_1, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
+    				.addComponent(lblNewLabel_7_1_1, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE))
+    			.addContainerGap(29, Short.MAX_VALUE))
+    );
+    panel_11.setLayout(gl_panel_11);
+    
     JPanel panel_16 = new JPanel();
-    panel_9.add(panel_16, BorderLayout.CENTER);
-    panel_16.setLayout(new BorderLayout(0, 0));
+    panel_centro.add(panel_16, BorderLayout.CENTER);
+    panel_16.setLayout(new GridLayout(2, 0, 0, 0));
     
-    JPanel panel_18 = new JPanel();
-    panel_16.add(panel_18, BorderLayout.NORTH);
+    JPanel panel_17 = new JPanel();
+    panel_16.add(panel_17);
+    panel_17.setLayout(new BorderLayout(0, 0));
     
-    JLabel lblNewLabel_4 = new JLabel("Detalles del grupo");
-    lblNewLabel_4.setHorizontalAlignment(SwingConstants.RIGHT);
-    lblNewLabel_4.setForeground(azul_principal);
-    lblNewLabel_4.setFont(new Font("Times New Roman", Font.BOLD, 40));
+    JPanel panel_19 = new JPanel();
+    panel_19.setPreferredSize(new Dimension(10, 50));
+    panel_19.setOpaque(false);
+    panel_17.add(panel_19, BorderLayout.NORTH);
     
-    JButton btnNewButton_1 = new JButton("<-  Volver");
+    JButton btnNewButton_1 = new JButton("Volver    ");
+    btnNewButton_1.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
     btnNewButton_1.setFocusable(false);
     btnNewButton_1.setBorder(null);
     btnNewButton_1.setBorderPainted(false);
     btnNewButton_1.addMouseListener(new MouseAdapter() {
-    	@Override
-    	public void mouseEntered(MouseEvent e) {
-    		btnNewButton_1.setForeground(azul_principal);
-    	}
-    	@Override
-    	public void mouseExited(MouseEvent e) {
-    		btnNewButton_1.setForeground(new Color(64, 64, 64));
-    	}
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            btnNewButton_1.setForeground(azul_principal);
+        }
+        @Override
+        public void mouseExited(MouseEvent e) {
+            btnNewButton_1.setForeground(new Color(64, 64, 64));
+        }
     });
     btnNewButton_1.setForeground(new Color(64, 64, 64));
     btnNewButton_1.setContentAreaFilled(false);
-    btnNewButton_1.setFont(new Font("Segoe UI", Font.PLAIN, 28));
+    btnNewButton_1.setFont(new Font("Segoe UI", Font.PLAIN, 26));
     btnNewButton_1.addActionListener(new ActionListener() {
-    	public void actionPerformed(ActionEvent e) {
-    	}
+        public void actionPerformed(ActionEvent e) {
+        }
     });
-    GroupLayout gl_panel_18 = new GroupLayout(panel_18);
-    gl_panel_18.setHorizontalGroup(
-    	gl_panel_18.createParallelGroup(Alignment.LEADING)
-    		.addGroup(gl_panel_18.createSequentialGroup()
-    			.addGap(57)
-    			.addComponent(lblNewLabel_4)
-    			.addPreferredGap(ComponentPlacement.RELATED, 351, Short.MAX_VALUE)
-    			.addComponent(btnNewButton_1, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)
-    			.addGap(52))
-    );
-    gl_panel_18.setVerticalGroup(
-    	gl_panel_18.createParallelGroup(Alignment.TRAILING)
-    		.addGroup(gl_panel_18.createSequentialGroup()
-    			.addContainerGap(54, Short.MAX_VALUE)
-    			.addGroup(gl_panel_18.createParallelGroup(Alignment.BASELINE)
-    				.addComponent(lblNewLabel_4)
-    				.addComponent(btnNewButton_1, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
-    			.addGap(26))
-    );
-    panel_18.setLayout(gl_panel_18);
+    panel_19.setLayout(new BorderLayout(0, 0));
     
-    JPanel panel_19 = new JPanel();
-    FlowLayout flowLayout_2 = (FlowLayout) panel_19.getLayout();
-    flowLayout_2.setVgap(140);
-    panel_16.add(panel_19, BorderLayout.SOUTH);
+    panel_19.add(btnNewButton_1, BorderLayout.EAST);
     
     JPanel panel_20 = new JPanel();
-    FlowLayout flowLayout = (FlowLayout) panel_20.getLayout();
-    flowLayout.setHgap(30);
-    panel_16.add(panel_20, BorderLayout.WEST);
+    panel_20.setPreferredSize(new Dimension(50, 10));
+    panel_20.setOpaque(false);
+    panel_17.add(panel_20, BorderLayout.WEST);
     
-    JPanel panel_11 = new JPanel();
-    FlowLayout flowLayout_3 = (FlowLayout) panel_11.getLayout();
-    flowLayout_3.setHgap(30);
-    panel_16.add(panel_11, BorderLayout.EAST);
+    JPanel panel_21 = new JPanel();
+    panel_21.setOpaque(false);
+    panel_17.add(panel_21, BorderLayout.SOUTH);
+    panel_21.setLayout(new BorderLayout(0, 0));   
     
-    JPanel panel_14 = new JPanel();
-    panel_14.setBackground(new Color(255, 255, 255));
-    panel_14.setBorder(new LineBorder(new Color(192, 192, 192), 4, true));
-    panel_16.add(panel_14, BorderLayout.CENTER);
-    
-    JLabel lblNewLabel_5 = new JLabel("Grupo 1A");
-    lblNewLabel_5.setFont(new Font("Segoe UI", Font.BOLD, 30));
-    
-    JLabel lblNewLabel_6 = new JLabel("Semestre: ");
-    lblNewLabel_6.setFont(new Font("Segoe UI", Font.BOLD, 20));
-    
-    JLabel lblNewLabel_6_1 = new JLabel("Turno:");
-    lblNewLabel_6_1.setFont(new Font("Segoe UI", Font.BOLD, 20));
-    
-    JLabel lblNewLabel_6_2 = new JLabel("Capacidad:");
-    lblNewLabel_6_2.setFont(new Font("Segoe UI", Font.BOLD, 20));
-    
-    JLabel lblNewLabel_6_3 = new JLabel("Docente:");
-    lblNewLabel_6_3.setFont(new Font("Segoe UI", Font.BOLD, 20));
-    
+    JPanel panel_27 = new JPanel();
+    panel_21.add(panel_27, BorderLayout.CENTER);
+    panel_27.setLayout(new BorderLayout(0, 0));
     JButton btnPDF = new JButton(
-    	    "<html>" +
-    	    "<span style='color:black; font-family:Segoe UI; font-size:16px;'>Imprimir </span>" +
-    	    "<span style='color:red; font-family:Segoe UI; font-size:16px;'><b>PDF</b></span>" +
-    	    "</html>"
-    	);
+    		"<html>" +
+    				"<span style='color:black; font-family:Segoe UI; font-size:16px;'> Generar Credencial </span>" +
+    				"</html>"
+    		);
+    btnPDF.addMouseListener(new MouseAdapter() {
+    	@Override
+    	public void mouseEntered(MouseEvent e) {
+    		btnPDF.setText("<html>" +
+    				"<span style='color:blue; font-family:Segoe UI; font-size:16px;'> Generar Credencial </span>" +
+    				"</html>");
+    	    btnPDF.setBorder(new LineBorder(azul_principal, 2));
+
+    	}
+    	@Override
+    	public void mouseExited(MouseEvent e) {
+    		btnPDF.setText("<html>" +
+    				"<span style='color:black; font-family:Segoe UI; font-size:16px;'>Generar Credencial</span>" +
+    				"</html>");
+    	    btnPDF.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+
+    	}
+    });
+    btnPDF.setFont(new Font("Tahoma", Font.PLAIN, 11));
+    btnPDF.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
     btnPDF.setFocusable(false);
     btnPDF.setContentAreaFilled(false);
-    GroupLayout gl_panel_14 = new GroupLayout(panel_14);
-    gl_panel_14.setHorizontalGroup(
-    	gl_panel_14.createParallelGroup(Alignment.LEADING)
-    		.addGroup(gl_panel_14.createSequentialGroup()
-    			.addGap(34)
-    			.addGroup(gl_panel_14.createParallelGroup(Alignment.LEADING)
-    				.addGroup(gl_panel_14.createSequentialGroup()
-    					.addComponent(lblNewLabel_6_3)
-    					.addPreferredGap(ComponentPlacement.RELATED, 384, Short.MAX_VALUE)
-    					.addComponent(btnPDF)
-    					.addGap(125))
-    				.addGroup(gl_panel_14.createSequentialGroup()
-    					.addGroup(gl_panel_14.createParallelGroup(Alignment.LEADING)
-    						.addComponent(lblNewLabel_6_1, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
-    						.addComponent(lblNewLabel_6)
-    						.addComponent(lblNewLabel_6_2, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)
-    						.addComponent(lblNewLabel_5, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE))
-    					.addContainerGap(589, Short.MAX_VALUE))))
-    );
-    gl_panel_14.setVerticalGroup(
-    	gl_panel_14.createParallelGroup(Alignment.LEADING)
-    		.addGroup(gl_panel_14.createSequentialGroup()
-    			.addGap(33)
-    			.addComponent(lblNewLabel_5)
+    panel_27.add(btnPDF, BorderLayout.EAST);
+    
+    JPanel panel_28 = new JPanel();
+    panel_21.add(panel_28, BorderLayout.EAST);
+    
+    JPanel panel_29 = new JPanel();
+    panel_21.add(panel_29, BorderLayout.NORTH);
+    
+    JPanel panel_22 = new JPanel();
+    panel_22.setPreferredSize(new Dimension(50, 10));
+    panel_22.setOpaque(false);
+    panel_17.add(panel_22, BorderLayout.EAST);
+    
+    JPanel panel_23 = new JPanel();
+    panel_17.add(panel_23, BorderLayout.CENTER);
+    panel_23.setLayout(new GridLayout(0, 3, 50, 20));
+    
+    JPanel panel_24 = new JPanel();
+    panel_24.setBorder(new LineBorder(new Color(240, 240, 240), 2, true));
+    panel_24.setBackground(new Color(192, 192, 192));
+    panel_23.add(panel_24);
+    
+    JLabel lblNewLabel_8 = new JLabel("Promedio general");
+    lblNewLabel_8.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+    
+    JLabel lblNewLabel_9 = new JLabel("");
+    lblNewLabel_9.setIcon(new ImageIcon(App.class.getResource("/resources/medalla.png")));
+    
+    JLabel lblNewLabel_10 = new JLabel("9.82");
+    lblNewLabel_10.setForeground(new Color(0, 255, 64));
+    lblNewLabel_10.setFont(new Font("Times New Roman", Font.BOLD, 40));
+    GroupLayout gl_panel_24 = new GroupLayout(panel_24);
+    gl_panel_24.setHorizontalGroup(
+    	gl_panel_24.createParallelGroup(Alignment.TRAILING)
+    		.addGroup(Alignment.LEADING, gl_panel_24.createSequentialGroup()
+    			.addContainerGap()
+    			.addComponent(lblNewLabel_9)
+    			.addPreferredGap(ComponentPlacement.UNRELATED)
+    			.addComponent(lblNewLabel_8, GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+    			.addGap(25))
+    		.addGroup(Alignment.LEADING, gl_panel_24.createSequentialGroup()
     			.addGap(26)
-    			.addComponent(lblNewLabel_6)
-    			.addPreferredGap(ComponentPlacement.RELATED)
-    			.addComponent(lblNewLabel_6_1, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
-    			.addPreferredGap(ComponentPlacement.RELATED)
-    			.addComponent(lblNewLabel_6_2, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
-    			.addPreferredGap(ComponentPlacement.RELATED)
-    			.addGroup(gl_panel_14.createParallelGroup(Alignment.BASELINE)
-    				.addComponent(lblNewLabel_6_3, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
-    				.addComponent(btnPDF, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE))
-    			.addContainerGap(11, Short.MAX_VALUE))
+    			.addComponent(lblNewLabel_10, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
+    			.addContainerGap(140, Short.MAX_VALUE))
     );
-    panel_14.setLayout(gl_panel_14);
+    gl_panel_24.setVerticalGroup(
+    	gl_panel_24.createParallelGroup(Alignment.LEADING)
+    		.addGroup(gl_panel_24.createSequentialGroup()
+    			.addGroup(gl_panel_24.createParallelGroup(Alignment.LEADING)
+    				.addGroup(gl_panel_24.createSequentialGroup()
+    					.addContainerGap()
+    					.addComponent(lblNewLabel_9))
+    				.addGroup(gl_panel_24.createSequentialGroup()
+    					.addGap(24)
+    					.addComponent(lblNewLabel_8)))
+    			.addPreferredGap(ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+    			.addComponent(lblNewLabel_10, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
+    			.addGap(34))
+    );
+    panel_24.setLayout(gl_panel_24);
+    
+    JPanel panel_25 = new JPanel();
+    panel_25.setBorder(new LineBorder(new Color(240, 240, 240), 2, true));
+    panel_25.setBackground(Color.LIGHT_GRAY);
+    panel_23.add(panel_25);
+    
+    JPanel panel_26 = new JPanel();
+    panel_26.setBorder(new LineBorder(new Color(240, 240, 240), 2, true));
+    panel_26.setBackground(Color.LIGHT_GRAY);
+    panel_23.add(panel_26);
+    
+    JPanel panel_18 = new JPanel();
+    panel_16.add(panel_18);
     
     
+    ImageIcon iconoOriginalDocentes = new ImageIcon(App.class.getResource("/resources/Logo Docentes.png"));
+    Image imagenEscaladaDocentes = iconoOriginalDocentes.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+    ImageIcon iconoOriginalAlumnos = new ImageIcon(App.class.getResource("/resources/Logo Verde.png"));
+    Image imagenEscaladaAlumnos = iconoOriginalAlumnos.getImage().getScaledInstance(60,55, Image.SCALE_SMOOTH);
+    ImageIcon iconoOriginal = new ImageIcon(App.class.getResource("/resources/Logo Rojo.png"));
+    Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+    ImageIcon iconoOriginalAsignaturas = new ImageIcon(App.class.getResource("/resources/Logo Azul.png"));
+    Image imagenEscaladaAsignaturas = iconoOriginalAsignaturas.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+    Color azul_principal = new Color(14, 48, 170);
 }
 
 	private JButton crearBoton(String texto, MouseAdapter hover, ActionListener action) {

@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -25,11 +26,13 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import constructor_ventanas.App;
 import controllers.GruposController;
 
 public class GruposView extends JPanel {
 	private AppView app;
 	private JTable tabla;
+	 Color azul_principal = new Color(14, 48, 170);
 
     public GruposView(AppView app) {
     	this.app = app;
@@ -173,7 +176,6 @@ public class GruposView extends JPanel {
     
      public void verGrupos(int fila) {
     	 
-    	 Color azul_principal = new Color(14, 48, 170);
 
 	    JPanel contenedor = new JPanel(new BorderLayout());
 	    contenedor.setBackground(Color.WHITE);
@@ -182,36 +184,32 @@ public class GruposView extends JPanel {
 	    panelSuperior.setBackground(new Color(240,240,240));
 	    panelSuperior.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
 	
-	    JButton volver = new JButton("<-  VOLVER");
+	    JButton volver = new JButton("Volver");
+	    volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
 	    volver.setBorder(null);
 	    volver.setFocusable(false);
 	    volver.setBorderPainted(false);
-	    volver.setContentAreaFilled(false);
-	    volver.addActionListener(e->{
-	    	app.cambiarVista(new GruposView(app), "Grupos", "Gestion integral de grupos en el sistema");
-	    });
-
+	    volver.setContentAreaFilled(false);	    
+	    volver.setPreferredSize(new Dimension(200, 40));
+	    volver.setForeground(new Color(0,0,0));
+	    volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
 	    volver.addMouseListener(new MouseAdapter() {
 	    	@Override
 	    	public void mouseEntered(MouseEvent e) {
+	    		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16Azul.png")));
 	    		volver.setForeground(azul_principal);
 	    	}
 
 	    	@Override
 	    	public void mouseExited(MouseEvent e) {
-	    		volver.setForeground(new Color(64, 64, 64));
+	    		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
+	    		volver.setForeground(new Color(0, 0, 0));
 	    	}
-	    });
-
-	    volver.setPreferredSize(new Dimension(200, 40));
-	    volver.setForeground(new Color(64, 64, 64));
-	    volver.setFont(new Font("Segoe UI", Font.PLAIN, 28));
-	    volver.setBackground(new Color(14, 48, 170));
-	
+	    });	    	
 	    volver.addActionListener(e ->
-	        app.cambiarVista(new AsignaturasView(app),
+	        app.cambiarVista(new GruposView(app),
 	        "Grupos",
-	        "Gestion integral del grupo en el sistema")
+	        "Gestion integral de grupos en el sistema")
 	    );
 	
 	    panelSuperior.add(volver, BorderLayout.EAST);

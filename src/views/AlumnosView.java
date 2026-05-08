@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -17,6 +18,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
+import constructor_ventanas.App;
 import controllers.AlumnosController;
 
 public class AlumnosView extends JPanel {
@@ -164,7 +167,8 @@ public class AlumnosView extends JPanel {
         info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         info.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JButton volver = new JButton("VOLVER");
+        JButton volver = new JButton("Volver");
+        volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
         volver.setPreferredSize(new Dimension(250, 45));
         volver.setBorder(new LineBorder(Color.WHITE, 1, true));
         volver.setFocusable(false);
@@ -197,7 +201,8 @@ public class AlumnosView extends JPanel {
         info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         info.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JButton volver = new JButton("VOLVER");
+        JButton volver = new JButton("Volver");
+        volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
         volver.setPreferredSize(new Dimension(250, 45));
         volver.setBorder(new LineBorder(Color.WHITE, 1, true));
         volver.setFocusable(false);
@@ -257,7 +262,8 @@ public class AlumnosView extends JPanel {
         info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         info.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JButton volver = new JButton("VOLVER");
+        JButton volver = new JButton("Volver");
+        volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
         volver.setPreferredSize(new Dimension(250, 45));
         volver.setBorder(new LineBorder(Color.WHITE, 1, true));
         volver.setFocusable(false);
