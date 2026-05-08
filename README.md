@@ -1,3 +1,9 @@
+Usuario y contraseña para ingresar al sistema:
+
+admin       
+1234
+
+
 EDUCADEX - Sistema de Control Escolar
 
 Educadex funciona como un programa administrador de elementos educativos como los alumnos, maestros, grupos y materias.
