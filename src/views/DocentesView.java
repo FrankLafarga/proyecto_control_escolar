@@ -2,9 +2,18 @@ package views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,6 +26,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import constructor_ventanas.App;
 import controllers.DocentesController;
 
 public class DocentesView extends JPanel {
@@ -154,73 +164,400 @@ public class DocentesView extends JPanel {
         }
     }
     
-    public void verDocente(int fila) {
+	public void verDocente(int fila) {
+	
+	    JPanel contenedor = new JPanel(new BorderLayout());
+	    contenedor.setBackground(Color.WHITE);
+	
+	    JPanel panelSuperior = new JPanel(new BorderLayout());
+	    panelSuperior.setBackground(Color.WHITE);
+	    panelSuperior.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+	
+	    JLabel titulo = new JLabel("Detalle del docente");
+	    titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
+	
+	    JButton volver = new JButton("<-- VOLVER");
+	    volver.setPreferredSize(new Dimension(200, 40));
+	    volver.setFocusable(false);
+	    volver.setForeground(Color.WHITE);
+	    volver.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    volver.setBackground(new Color(14, 48, 170));
+	
+	    volver.addActionListener(e ->
+	        app.cambiarVista(
+	            new DocentesView(app),
+	            "Docentes",
+	            "Gestion integral de docentes en el sistema"
+	        )
+	    );
+	
+	    panelSuperior.add(titulo, BorderLayout.WEST);
+	    panelSuperior.add(volver, BorderLayout.EAST);
+	
+	    JPanel panelCentro = new JPanel(new BorderLayout());
+	    panelCentro.setBackground(Color.WHITE);
+	    panelCentro.setBorder(BorderFactory.createEmptyBorder(0, 40, 20, 40));
+	
+	    JPanel centroWrapper = new JPanel(new BorderLayout());
+	    centroWrapper.setBackground(Color.WHITE);
+	    centroWrapper.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
+	
+	    JPanel tarjeta = new JPanel(new BorderLayout());
+	    tarjeta.setBackground(Color.WHITE);
+	
+	    tarjeta.setBorder(BorderFactory.createCompoundBorder(
+	        new LineBorder(new Color(200, 200, 200), 2, true),
+	        BorderFactory.createEmptyBorder(20, 30, 20, 30)
+	    ));
+	
+	    JPanel contenido = new JPanel();
+	    contenido.setLayout(new BoxLayout(contenido, BoxLayout.Y_AXIS));
+	    contenido.setOpaque(false);
+	
+	    JLabel nombre = new JLabel("Juan Daniel Perez");
+	    nombre.setFont(new Font("Segoe UI", Font.BOLD, 26));
+	    nombre.setAlignmentX(Component.LEFT_ALIGNMENT);
+	
+	    JLabel clave = new JLabel("Clave: D003");
+	    JLabel especialidad = new JLabel("Especialidad: Matematicas");
+	    JLabel estatus = new JLabel("Estatus: Activo");
+	    JLabel grupo = new JLabel("Grupo(s): Ing. Civil 2-A y Matematicas 1-C");
+	
+	    JLabel[] datos = {clave, especialidad, estatus, grupo};
+	
+	    for (JLabel l : datos) {
+	        l.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	        l.setAlignmentX(Component.LEFT_ALIGNMENT);
+	    }
+	
+	    JPanel filaNombre = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	    filaNombre.setBackground(Color.WHITE);
+	
+	    filaNombre.add(nombre);
+	
+	    contenido.add(filaNombre);
+	
+	    contenido.add(Box.createVerticalStrut(10));
+	
+	    for (JLabel l : datos) {
+	
+	        JPanel filaDato = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	        filaDato.setBackground(Color.WHITE);
+	
+	        filaDato.add(l);
+	
+	        contenido.add(filaDato);
+	    }
+	
+	    tarjeta.add(contenido, BorderLayout.CENTER);
+	
+	    JButton botonPDF = new JButton("Imprimir PDF");
+	    botonPDF.setFocusable(false);
+	    botonPDF.setForeground(Color.WHITE);
+	    botonPDF.setBackground(new Color(14, 48, 170));
+	    botonPDF.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	    botonPDF.setPreferredSize(new Dimension(180, 40));
+	
+	    JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+	    panelBoton.setBackground(Color.WHITE);
+	
+	    panelBoton.add(botonPDF);
+	
+	    tarjeta.add(panelBoton, BorderLayout.SOUTH);
+	
+	    centroWrapper.add(tarjeta, BorderLayout.NORTH);
+	
+	    panelCentro.add(centroWrapper, BorderLayout.CENTER);
+	
+	    contenedor.add(panelSuperior, BorderLayout.NORTH);
+	    contenedor.add(panelCentro, BorderLayout.CENTER);
+	
+	    app.cambiarVista(
+	        contenedor,
+	        "Docente",
+	        "Detalle del docente seleccionado"
+	    );
+	}
 
-        JPanel detalle = new JPanel(new BorderLayout());
-        detalle.setBackground(Color.WHITE);
-
-        JLabel titulo = new JLabel("DETALLE DEL DOCENTE");
-        titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
-        titulo.setHorizontalAlignment(SwingConstants.CENTER);
-
-        JLabel info = new JLabel("Docente seleccionado en fila: " + fila);
-        info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-        info.setHorizontalAlignment(SwingConstants.CENTER);
-
-        JButton volver = new JButton("VOLVER");
-        volver.setPreferredSize(new Dimension(250, 45));
-        volver.setBorder(new LineBorder(Color.WHITE, 1, true));
-        volver.setFocusable(false);
-        volver.setForeground(Color.WHITE);
-        volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-        volver.setBackground(new Color(14, 48, 170));
-
-        volver.addActionListener(e -> app.cambiarVista(new DocentesView(app), "Docentes", "Gestion integral de docentes en el sistema"));
-
-        JPanel panelBtn = new JPanel();
-        panelBtn.setBackground(Color.WHITE);
-        panelBtn.add(volver);
-
-        detalle.add(titulo, BorderLayout.NORTH);
-        detalle.add(info, BorderLayout.CENTER);
-        detalle.add(panelBtn, BorderLayout.SOUTH);
-
-        app.cambiarVista(detalle, "Docente", "Detalle del docente seleccionado");
-    }
-
-    public void editarDocente(int fila) {
-
-        JPanel detalle = new JPanel(new BorderLayout());
-        detalle.setBackground(Color.WHITE);
-
-        JLabel titulo = new JLabel("EDITAR DOCENTE");
-        titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
-        titulo.setHorizontalAlignment(SwingConstants.CENTER);
-
-        JLabel info = new JLabel("Editando docente en fila: " + fila);
-        info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-        info.setHorizontalAlignment(SwingConstants.CENTER);
-
-        JButton volver = new JButton("VOLVER");
-        volver.setPreferredSize(new Dimension(250, 45));
-        volver.setBorder(new LineBorder(Color.WHITE, 1, true));
-        volver.setFocusable(false);
-        volver.setForeground(Color.WHITE);
-        volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-        volver.setBackground(new Color(14, 48, 170));
-
-        volver.addActionListener(e -> app.cambiarVista(new DocentesView(app), "Docentes", "Gestion integral de docentes en el sistema"));
-
-        JPanel panelBtn = new JPanel();
-        panelBtn.setBackground(Color.WHITE);
-        panelBtn.add(volver);
-
-        detalle.add(titulo, BorderLayout.NORTH);
-        detalle.add(info, BorderLayout.CENTER);
-        detalle.add(panelBtn, BorderLayout.SOUTH);
-
-        app.cambiarVista(detalle, "Docente", "Editar docente seleccionado");
-    }
+	public void editarDocente(int fila) {
+	
+	    JPanel contenedor = new JPanel(new BorderLayout());
+	    contenedor.setBackground(Color.WHITE);
+	
+	    JPanel panelSuperior = new JPanel(new BorderLayout());
+	    panelSuperior.setBackground(Color.WHITE);
+	    panelSuperior.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+	
+	    JLabel titulo = new JLabel("Editar docente");
+	    titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
+	
+	    JButton volver = new JButton("<-- VOLVER");
+	    volver.setPreferredSize(new Dimension(200, 40));
+	    volver.setFocusable(false);
+	    volver.setForeground(Color.WHITE);
+	    volver.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    volver.setBackground(new Color(14, 48, 170));
+	
+	    volver.addActionListener(e ->
+	        app.cambiarVista(
+	            new DocentesView(app),
+	            "Docentes",
+	            "Gestion integral de docentes en el sistema"
+	        )
+	    );
+	
+	    panelSuperior.add(titulo, BorderLayout.WEST);
+	    panelSuperior.add(volver, BorderLayout.EAST);
+	
+	    JPanel panelCentro = new JPanel();
+	    panelCentro.setBackground(Color.WHITE);
+	    panelCentro.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+	    panelCentro.setLayout(new GridLayout(10, 3, 20, 15));
+	
+	    JLabel subtitulo1 = new JLabel("Información académica");
+	    subtitulo1.setFont(new Font("Segoe UI", Font.BOLD, 20));
+	
+	    panelCentro.add(subtitulo1);
+	    panelCentro.add(new JLabel(""));
+	    panelCentro.add(new JLabel(""));
+	
+	    JLabel lblClave = new JLabel("Clave de identificación");
+	    lblClave.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JLabel lblGrado = new JLabel("Grado de estudios");
+	    lblGrado.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JLabel lblAvatar = new JLabel("Avatar");
+	    lblAvatar.setHorizontalAlignment(SwingConstants.CENTER);
+	    lblAvatar.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    panelCentro.add(lblClave);
+	    panelCentro.add(lblGrado);
+	    panelCentro.add(lblAvatar);
+	
+	    JTextField txtClave = new JTextField();
+	    txtClave.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    txtClave.setText("D11");
+	
+	    JTextField txtGrado = new JTextField();
+	    txtGrado.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    txtGrado.setText("Licenciatura");
+	
+	    JLabel imagen = new JLabel("");
+	    imagen.setHorizontalAlignment(SwingConstants.CENTER);
+	    imagen.setIcon(new ImageIcon(App.class.getResource("/resources/logo_virrete-32x32.png")));
+	
+	    panelCentro.add(txtClave);
+	    panelCentro.add(txtGrado);
+	    panelCentro.add(imagen);
+	
+	    JLabel lblEstatus = new JLabel("Estatus");
+	    lblEstatus.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JLabel lblArea = new JLabel("Área de estudios");
+	    lblArea.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    panelCentro.add(lblEstatus);
+	    panelCentro.add(lblArea);
+	    panelCentro.add(new JLabel(""));
+	
+	    JTextField txtEstatus = new JTextField();
+	    txtEstatus.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    txtEstatus.setText("Activo");
+	
+	    JTextField txtArea = new JTextField();
+	    txtArea.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    txtArea.setText("Matematicas");
+	
+	    panelCentro.add(txtEstatus);
+	    panelCentro.add(txtArea);
+	    panelCentro.add(new JLabel(""));
+	
+	    JLabel subtitulo2 = new JLabel("Información personal");
+	    subtitulo2.setFont(new Font("Segoe UI", Font.BOLD, 20));
+	
+	    panelCentro.add(subtitulo2);
+	    panelCentro.add(new JLabel(""));
+	    panelCentro.add(new JLabel(""));
+	
+	    JLabel lblNombre = new JLabel("Nombre(s)");
+	    lblNombre.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JLabel lblPaterno = new JLabel("Apellido paterno");
+	    lblPaterno.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JLabel lblMaterno = new JLabel("Apellido materno");
+	    lblMaterno.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    panelCentro.add(lblNombre);
+	    panelCentro.add(lblPaterno);
+	    panelCentro.add(lblMaterno);
+	
+	    JTextField txtNombre = new JTextField();
+	    txtNombre.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    txtNombre.setText("Juan");
+	
+	    JTextField txtPaterno = new JTextField();
+	    txtPaterno.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    txtPaterno.setText("Perez");
+	
+	    JTextField txtMaterno = new JTextField();
+	    txtMaterno.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    txtMaterno.setText("Silva");
+	
+	    panelCentro.add(txtNombre);
+	    panelCentro.add(txtPaterno);
+	    panelCentro.add(txtMaterno);
+	
+	    JLabel lblEmail = new JLabel("Email");
+	    lblEmail.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JLabel lblTelefono = new JLabel("Teléfono");
+	    lblTelefono.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JLabel lblFecha = new JLabel("Fecha de nacimiento");
+	    lblFecha.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    panelCentro.add(lblEmail);
+	    panelCentro.add(lblTelefono);
+	    panelCentro.add(lblFecha);
+	
+	    JTextField txtEmail = new JTextField();
+	    txtEmail.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    txtEmail.setText("juanp_24@educadex.com");
+	
+	    JTextField txtTelefono = new JTextField();
+	    txtTelefono.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    txtTelefono.setText("6124568412");
+	
+	    JTextField txtFecha = new JTextField();
+	    txtFecha.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    txtFecha.setText("10/02/1998");
+	
+	    panelCentro.add(txtEmail);
+	    panelCentro.add(txtTelefono);
+	    panelCentro.add(txtFecha);
+	
+	    JPanel panelSur = new JPanel(new FlowLayout(FlowLayout.CENTER));
+	    panelSur.setBackground(Color.WHITE);
+	
+	    JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 15));
+	    panelBotones.setBackground(Color.WHITE);
+	
+	    JButton btnCancelar = new JButton("Cancelar");
+	    btnCancelar.setFocusable(false);
+	    btnCancelar.setForeground(new Color(180, 0, 0));
+	    btnCancelar.setBackground(Color.WHITE);
+	    btnCancelar.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    btnCancelar.setBorder(new LineBorder(new Color(180, 0, 0), 2, true));
+	    btnCancelar.setPreferredSize(new Dimension(180, 45));
+	
+	    btnCancelar.addActionListener(e ->
+	        app.cambiarVista(
+	            new DocentesView(app),
+	            "Docentes",
+	            "Gestion integral de docentes en el sistema"
+	        )
+	    );
+	
+	    JButton btnGuardar = new JButton("Guardar");
+	    btnGuardar.setFocusable(false);
+	    btnGuardar.setForeground(Color.WHITE);
+	    btnGuardar.setBackground(new Color(14, 48, 170));
+	    btnGuardar.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    btnGuardar.setPreferredSize(new Dimension(180, 45));
+	
+	    btnGuardar.addActionListener(new ActionListener() {
+	
+	        public void actionPerformed(ActionEvent e) {
+	
+	            LineBorder bordeRojo = new LineBorder(Color.RED, 2, true);
+	            LineBorder bordeNormal = new LineBorder(new Color(180,180,180), 1, true);
+	
+	            txtClave.setBorder(bordeNormal);
+	            txtGrado.setBorder(bordeNormal);
+	            txtEstatus.setBorder(bordeNormal);
+	            txtArea.setBorder(bordeNormal);
+	            txtNombre.setBorder(bordeNormal);
+	            txtPaterno.setBorder(bordeNormal);
+	            txtMaterno.setBorder(bordeNormal);
+	            txtEmail.setBorder(bordeNormal);
+	            txtTelefono.setBorder(bordeNormal);
+	            txtFecha.setBorder(bordeNormal);
+	
+	            boolean valido = true;
+	
+	            if(txtClave.getText().trim().isEmpty()) {
+	                txtClave.setBorder(bordeRojo);
+	                valido = false;
+	            }
+	
+	            if(txtGrado.getText().trim().isEmpty() || txtGrado.getText().matches(".*\\d.*")) {
+	                txtGrado.setBorder(bordeRojo);
+	                valido = false;
+	            }
+	
+	            if(txtEstatus.getText().trim().isEmpty() || txtEstatus.getText().matches(".*\\d.*")) {
+	                txtEstatus.setBorder(bordeRojo);
+	                valido = false;
+	            }
+	
+	            if(txtArea.getText().trim().isEmpty() || txtArea.getText().matches(".*\\d.*")) {
+	                txtArea.setBorder(bordeRojo);
+	                valido = false;
+	            }
+	
+	            if(txtNombre.getText().trim().isEmpty() || txtNombre.getText().matches(".*\\d.*")) {
+	                txtNombre.setBorder(bordeRojo);
+	                valido = false;
+	            }
+	
+	            if(txtPaterno.getText().trim().isEmpty() || txtPaterno.getText().matches(".*\\d.*")) {
+	                txtPaterno.setBorder(bordeRojo);
+	                valido = false;
+	            }
+	
+	            if(txtMaterno.getText().trim().isEmpty() || txtMaterno.getText().matches(".*\\d.*")) {
+	                txtMaterno.setBorder(bordeRojo);
+	                valido = false;
+	            }
+	
+	            if(txtEmail.getText().trim().isEmpty() || !txtEmail.getText().contains("@")) {
+	                txtEmail.setBorder(bordeRojo);
+	                valido = false;
+	            }
+	
+	            if(txtTelefono.getText().trim().isEmpty() || !txtTelefono.getText().matches("\\d+")) {
+	                txtTelefono.setBorder(bordeRojo);
+	                valido = false;
+	            }
+	
+	            if(txtFecha.getText().trim().isEmpty()) {
+	                txtFecha.setBorder(bordeRojo);
+	                valido = false;
+	            }
+	
+	            if(valido) {
+	                System.out.println("Formulario válido");
+	            }
+	        }
+	    });
+	
+	    panelBotones.add(btnCancelar);
+	    panelBotones.add(btnGuardar);
+	
+	    panelSur.add(panelBotones);
+	
+	    contenedor.add(panelSuperior, BorderLayout.NORTH);
+	    contenedor.add(panelCentro, BorderLayout.CENTER);
+	    contenedor.add(panelSur, BorderLayout.SOUTH);
+	
+	    app.cambiarVista(
+	        contenedor,
+	        "Docente",
+	        "Editar docente seleccionado"
+	    );
+	}
 
     public void eliminarDocente(int fila) {
 
@@ -256,37 +593,273 @@ public class DocentesView extends JPanel {
         app.cambiarVista(detalle, "Docente", "Eliminar docente seleccionado");
     }
     
-    public void agregarDocente() {
-
-        JPanel detalle = new JPanel(new BorderLayout());
-        detalle.setBackground(Color.WHITE);
-
-        JLabel titulo = new JLabel("CREAR DOCENTE");
-        titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
-        titulo.setHorizontalAlignment(SwingConstants.CENTER);
-
-        JLabel info = new JLabel("Formulario para crear un nuevo docente");
-        info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-        info.setHorizontalAlignment(SwingConstants.CENTER);
-
-        JButton volver = new JButton("VOLVER");
-        volver.setPreferredSize(new Dimension(250, 45));
-        volver.setBorder(new LineBorder(Color.WHITE, 1, true));
-        volver.setFocusable(false);
-        volver.setForeground(Color.WHITE);
-        volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-        volver.setBackground(new Color(14, 48, 170));
-
-        volver.addActionListener(e -> app.cambiarVista(new DocentesView(app), "Docentes", "Gestion integral de docentes en el sistema"));
-
-        JPanel panelBtn = new JPanel();
-        panelBtn.setBackground(Color.WHITE);
-        panelBtn.add(volver);
-
-        detalle.add(titulo, BorderLayout.NORTH);
-        detalle.add(info, BorderLayout.CENTER);
-        detalle.add(panelBtn, BorderLayout.SOUTH);
-
-        app.cambiarVista(detalle, "Docente", "Crear docente");
-    }
+	public void agregarDocente() {
+	
+	    JPanel contenedor = new JPanel(new BorderLayout());
+	    contenedor.setBackground(Color.WHITE);
+	
+	    JPanel panelSuperior = new JPanel(new BorderLayout());
+	    panelSuperior.setBackground(Color.WHITE);
+	    panelSuperior.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+	
+	    JLabel titulo = new JLabel("Crear docente");
+	    titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
+	
+	    JButton volver = new JButton("<-- VOLVER");
+	    volver.setPreferredSize(new Dimension(200, 40));
+	    volver.setFocusable(false);
+	    volver.setForeground(Color.WHITE);
+	    volver.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    volver.setBackground(new Color(14, 48, 170));
+	
+	    volver.addActionListener(e ->
+	        app.cambiarVista(
+	            new DocentesView(app),
+	            "Docentes",
+	            "Gestion integral de docentes en el sistema"
+	        )
+	    );
+	
+	    panelSuperior.add(titulo, BorderLayout.WEST);
+	    panelSuperior.add(volver, BorderLayout.EAST);
+	
+	    JPanel panelCentro = new JPanel();
+	    panelCentro.setBackground(Color.WHITE);
+	    panelCentro.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+	    panelCentro.setLayout(new GridLayout(10, 3, 20, 15));
+	
+	    JLabel subtitulo1 = new JLabel("Información académica");
+	    subtitulo1.setFont(new Font("Segoe UI", Font.BOLD, 20));
+	
+	    panelCentro.add(subtitulo1);
+	    panelCentro.add(new JLabel(""));
+	    panelCentro.add(new JLabel(""));
+	
+	    JLabel lblClave = new JLabel("Clave de identificación");
+	    lblClave.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JLabel lblGrado = new JLabel("Grado de estudios");
+	    lblGrado.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JLabel lblAvatar = new JLabel("Avatar");
+	    lblAvatar.setHorizontalAlignment(SwingConstants.CENTER);
+	    lblAvatar.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    panelCentro.add(lblClave);
+	    panelCentro.add(lblGrado);
+	    panelCentro.add(lblAvatar);
+	
+	    JTextField txtClave = new JTextField();
+	    txtClave.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JTextField txtGrado = new JTextField();
+	    txtGrado.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JLabel imagen = new JLabel("");
+	    imagen.setHorizontalAlignment(SwingConstants.CENTER);
+	    imagen.setIcon(new ImageIcon(App.class.getResource("/resources/logo_virrete-32x32.png")));
+	
+	    panelCentro.add(txtClave);
+	    panelCentro.add(txtGrado);
+	    panelCentro.add(imagen);
+	
+	    JLabel lblEstatus = new JLabel("Estatus");
+	    lblEstatus.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JLabel lblArea = new JLabel("Área de estudios");
+	    lblArea.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    panelCentro.add(lblEstatus);
+	    panelCentro.add(lblArea);
+	    panelCentro.add(new JLabel(""));
+	
+	    JTextField txtEstatus = new JTextField();
+	    txtEstatus.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JTextField txtArea = new JTextField();
+	    txtArea.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    panelCentro.add(txtEstatus);
+	    panelCentro.add(txtArea);
+	    panelCentro.add(new JLabel(""));
+	
+	    JLabel subtitulo2 = new JLabel("Información personal");
+	    subtitulo2.setFont(new Font("Segoe UI", Font.BOLD, 20));
+	
+	    panelCentro.add(subtitulo2);
+	    panelCentro.add(new JLabel(""));
+	    panelCentro.add(new JLabel(""));
+	
+	    JLabel lblNombre = new JLabel("Nombre(s)");
+	    lblNombre.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JLabel lblPaterno = new JLabel("Apellido paterno");
+	    lblPaterno.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JLabel lblMaterno = new JLabel("Apellido materno");
+	    lblMaterno.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    panelCentro.add(lblNombre);
+	    panelCentro.add(lblPaterno);
+	    panelCentro.add(lblMaterno);
+	
+	    JTextField txtNombre = new JTextField();
+	    txtNombre.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JTextField txtPaterno = new JTextField();
+	    txtPaterno.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JTextField txtMaterno = new JTextField();
+	    txtMaterno.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    panelCentro.add(txtNombre);
+	    panelCentro.add(txtPaterno);
+	    panelCentro.add(txtMaterno);
+	
+	    JLabel lblEmail = new JLabel("Email");
+	    lblEmail.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JLabel lblTelefono = new JLabel("Teléfono");
+	    lblTelefono.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JLabel lblFecha = new JLabel("Fecha de nacimiento");
+	    lblFecha.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    panelCentro.add(lblEmail);
+	    panelCentro.add(lblTelefono);
+	    panelCentro.add(lblFecha);
+	
+	    JTextField txtEmail = new JTextField();
+	    txtEmail.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JTextField txtTelefono = new JTextField();
+	    txtTelefono.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JTextField txtFecha = new JTextField();
+	    txtFecha.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    panelCentro.add(txtEmail);
+	    panelCentro.add(txtTelefono);
+	    panelCentro.add(txtFecha);
+	
+	    JPanel panelSur = new JPanel(new FlowLayout(FlowLayout.CENTER));
+	    panelSur.setBackground(Color.WHITE);
+	
+	    JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 15));
+	    panelBotones.setBackground(Color.WHITE);
+	
+	    JButton btnCancelar = new JButton("Cancelar");
+	    btnCancelar.setFocusable(false);
+	    btnCancelar.setForeground(new Color(180, 0, 0));
+	    btnCancelar.setBackground(Color.WHITE);
+	    btnCancelar.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    btnCancelar.setBorder(new LineBorder(new Color(180, 0, 0), 2, true));
+	    btnCancelar.setPreferredSize(new Dimension(180, 45));
+	
+	    btnCancelar.addActionListener(e ->
+	        app.cambiarVista(
+	            new DocentesView(app),
+	            "Docentes",
+	            "Gestion integral de docentes en el sistema"
+	        )
+	    );
+	
+	    JButton btnGuardar = new JButton("Guardar");
+	    btnGuardar.setFocusable(false);
+	    btnGuardar.setForeground(Color.WHITE);
+	    btnGuardar.setBackground(new Color(14, 48, 170));
+	    btnGuardar.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    btnGuardar.setPreferredSize(new Dimension(180, 45));
+	
+	    btnGuardar.addActionListener(new ActionListener() {
+	
+	        public void actionPerformed(ActionEvent e) {
+	
+	            LineBorder bordeRojo = new LineBorder(Color.RED, 2, true);
+	            LineBorder bordeNormal = new LineBorder(new Color(180,180,180), 1, true);
+	
+	            txtClave.setBorder(bordeNormal);
+	            txtGrado.setBorder(bordeNormal);
+	            txtEstatus.setBorder(bordeNormal);
+	            txtArea.setBorder(bordeNormal);
+	            txtNombre.setBorder(bordeNormal);
+	            txtPaterno.setBorder(bordeNormal);
+	            txtMaterno.setBorder(bordeNormal);
+	            txtEmail.setBorder(bordeNormal);
+	            txtTelefono.setBorder(bordeNormal);
+	            txtFecha.setBorder(bordeNormal);
+	
+	            boolean valido = true;
+	
+	            if(txtClave.getText().trim().isEmpty()) {
+	                txtClave.setBorder(bordeRojo);
+	                valido = false;
+	            }
+	
+	            if(txtGrado.getText().trim().isEmpty() || txtGrado.getText().matches(".*\\d.*")) {
+	                txtGrado.setBorder(bordeRojo);
+	                valido = false;
+	            }
+	
+	            if(txtEstatus.getText().trim().isEmpty() || txtEstatus.getText().matches(".*\\d.*")) {
+	                txtEstatus.setBorder(bordeRojo);
+	                valido = false;
+	            }
+	
+	            if(txtArea.getText().trim().isEmpty() || txtArea.getText().matches(".*\\d.*")) {
+	                txtArea.setBorder(bordeRojo);
+	                valido = false;
+	            }
+	
+	            if(txtNombre.getText().trim().isEmpty() || txtNombre.getText().matches(".*\\d.*")) {
+	                txtNombre.setBorder(bordeRojo);
+	                valido = false;
+	            }
+	
+	            if(txtPaterno.getText().trim().isEmpty() || txtPaterno.getText().matches(".*\\d.*")) {
+	                txtPaterno.setBorder(bordeRojo);
+	                valido = false;
+	            }
+	
+	            if(txtMaterno.getText().trim().isEmpty() || txtMaterno.getText().matches(".*\\d.*")) {
+	                txtMaterno.setBorder(bordeRojo);
+	                valido = false;
+	            }
+	
+	            if(txtEmail.getText().trim().isEmpty() || !txtEmail.getText().contains("@")) {
+	                txtEmail.setBorder(bordeRojo);
+	                valido = false;
+	            }
+	
+	            if(txtTelefono.getText().trim().isEmpty() || !txtTelefono.getText().matches("\\d+")) {
+	                txtTelefono.setBorder(bordeRojo);
+	                valido = false;
+	            }
+	
+	            if(txtFecha.getText().trim().isEmpty()) {
+	                txtFecha.setBorder(bordeRojo);
+	                valido = false;
+	            }
+	
+	            if(valido) {
+	                System.out.println("Formulario válido");
+	            }
+	        }
+	    });
+	
+	    panelBotones.add(btnCancelar);
+	    panelBotones.add(btnGuardar);
+	
+	    panelSur.add(panelBotones);
+	
+	    contenedor.add(panelSuperior, BorderLayout.NORTH);
+	    contenedor.add(panelCentro, BorderLayout.CENTER);
+	    contenedor.add(panelSur, BorderLayout.SOUTH);
+	
+	    app.cambiarVista(
+	        contenedor,
+	        "Docente",
+	        "Crear docente"
+	    );
+	}
 }
