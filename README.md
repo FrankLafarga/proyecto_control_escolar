@@ -42,18 +42,22 @@ Incluimos logos para facilitar la comprensión de las acciones a realizar dentro
 2.Nuestro sistema
 
 Inicio de sesión y registro para usuarios
+
 Sección para administrar alumnos (agregar, ver, editar, borrar)
+
 Sección para administrar maestros (agregar, ver, editar, borrar)
+
 Sección para administrar materias (agregar, ver, editar, borrar)
+
 Sección para administrar grupos (agregar, ver, editar, borrar)
+
 Generación de reportes en PDF
 
 
 
 3.Instrucciones
 
-Inicia sesión utilizando nombre de usuario y contraseña previamente registrados, de no ser el caso puedes crear una cuenta nueva aceptando nuestros términos y condiciones,
-al entrar te recibe una pantalla de inicio y puedes dirigirte a cualquiera de los 4 apartados principales, alumnos, grupos, docentes y asignaturas, en cualquier momento puedes cerrar sesión.
+Inicia sesión utilizando nombre de usuario y contraseña previamente registrados, al entrar te recibe una pantalla de inicio y puedes dirigirte a cualquiera de los 4 apartados principales, alumnos, grupos, docentes y asignaturas, en cualquier momento puedes cerrar sesión.
 Los 4 apartados son muy similares ya que cuentan con las acciones de agregar, ver, editar, borrar con las que puedes manejar y realizar distintas tareas en el sistema.
 
 <img width="960" height="1080" alt="logo_educadex" src="https://github.com/user-attachments/assets/e86a55a0-d8b4-4e6c-99f6-c0b2bb979826" />
