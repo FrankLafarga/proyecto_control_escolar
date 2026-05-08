@@ -179,9 +179,6 @@ public class AsignaturasView extends JPanel {
     panelSuperior.setBackground(Color.WHITE);
     panelSuperior.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
 
-    JLabel titulo = new JLabel("Detalle de la asignatura");
-    titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
-
     JButton volver = new JButton("<-- VOLVER");
     volver.setPreferredSize(new Dimension(200, 40));
     volver.setFocusable(false);
@@ -195,7 +192,6 @@ public class AsignaturasView extends JPanel {
         "Gestion integral de asignaturas en el sistema")
     );
 
-    panelSuperior.add(titulo, BorderLayout.WEST);
     panelSuperior.add(volver, BorderLayout.EAST);
 
     JPanel centroWrapper = new JPanel(new BorderLayout());
@@ -251,12 +247,14 @@ public class AsignaturasView extends JPanel {
     JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
     panelBoton.setBackground(Color.WHITE);
 
-    JButton pdf = new JButton("Imprimir PDF");
+    JButton pdf = new JButton(
+    		"<html>" +
+    	    "<span style='color:black; font-family:Segoe UI; font-size:16px;'>Imprimir </span>" +
+    	    "<span style='color:red; font-family:Segoe UI; font-size:16px;'><b>PDF</b></span>" +
+    	    "</html>");
     pdf.setPreferredSize(new Dimension(180, 40));
     pdf.setFocusable(false);
-    pdf.setForeground(Color.WHITE);
-    pdf.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-    pdf.setBackground(new Color(14, 48, 170));
+    pdf.setContentAreaFilled(false);
 
     panelBoton.add(pdf);
 

@@ -160,10 +160,6 @@ public class AlumnosView extends JPanel {
         JPanel detalle = new JPanel(new BorderLayout());
         detalle.setBackground(Color.WHITE);
 
-        JLabel titulo = new JLabel("DETALLE DEL ALUMNO");
-        titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
-        titulo.setHorizontalAlignment(SwingConstants.CENTER);
-
         JLabel info = new JLabel("Alumno seleccionado en fila: " + fila);
         info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         info.setHorizontalAlignment(SwingConstants.CENTER);
@@ -182,7 +178,6 @@ public class AlumnosView extends JPanel {
         panelBtn.setBackground(Color.WHITE);
         panelBtn.add(volver);
 
-        detalle.add(titulo, BorderLayout.NORTH);
         detalle.add(info, BorderLayout.CENTER);
         detalle.add(panelBtn, BorderLayout.SOUTH);
 

@@ -9,6 +9,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -253,17 +255,20 @@ public class DocentesView extends JPanel {
 	
 	    tarjeta.add(contenido, BorderLayout.CENTER);
 	
-	    JButton botonPDF = new JButton("Imprimir PDF");
-	    botonPDF.setFocusable(false);
-	    botonPDF.setForeground(Color.WHITE);
-	    botonPDF.setBackground(new Color(14, 48, 170));
-	    botonPDF.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-	    botonPDF.setPreferredSize(new Dimension(180, 40));
+	    JButton pdf = new JButton(
+	    		"<html>" +
+	    	    "<span style='color:black; font-family:Segoe UI; font-size:16px;'>Imprimir </span>" +
+	    	    "<span style='color:red; font-family:Segoe UI; font-size:16px;'><b>PDF</b></span>" +
+	    	    "</html>");
+	    pdf.setPreferredSize(new Dimension(180, 40));
+	    pdf.setFocusable(false);
+	    pdf.setContentAreaFilled(false);
+	
 	
 	    JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 	    panelBoton.setBackground(Color.WHITE);
 	
-	    panelBoton.add(botonPDF);
+	    panelBoton.add(pdf);
 	
 	    tarjeta.add(panelBoton, BorderLayout.SOUTH);
 	
@@ -282,6 +287,7 @@ public class DocentesView extends JPanel {
 	}
 
 	public void editarDocente(int fila) {
+		Color azul_principal = new Color(14, 48, 170);
 	
 	    JPanel contenedor = new JPanel(new BorderLayout());
 	    contenedor.setBackground(Color.WHITE);
@@ -290,25 +296,39 @@ public class DocentesView extends JPanel {
 	    panelSuperior.setBackground(Color.WHITE);
 	    panelSuperior.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
 	
-	    JLabel titulo = new JLabel("Editar docente");
-	    titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
 	
-	    JButton volver = new JButton("<-- VOLVER");
-	    volver.setPreferredSize(new Dimension(200, 40));
+	    JButton volver = new JButton("<-  VOLVER");
+	    volver.setBorder(null);
 	    volver.setFocusable(false);
-	    volver.setForeground(Color.WHITE);
-	    volver.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    volver.setBorderPainted(false);
+	    volver.setContentAreaFilled(false);
+	    volver.addActionListener(e->{
+	    	app.cambiarVista(new GruposView(app), "Grupos", "Gestion integral de grupos en el sistema");
+	    });
+
+	    volver.addMouseListener(new MouseAdapter() {
+	    	@Override
+	    	public void mouseEntered(MouseEvent e) {
+	    		volver.setForeground(azul_principal);
+	    	}
+
+	    	@Override
+	    	public void mouseExited(MouseEvent e) {
+	    		volver.setForeground(new Color(64, 64, 64));
+	    	}
+	    });
+
+	    volver.setPreferredSize(new Dimension(200, 40));
+	    volver.setForeground(new Color(64, 64, 64));
+	    volver.setFont(new Font("Segoe UI", Font.PLAIN, 28));
 	    volver.setBackground(new Color(14, 48, 170));
 	
 	    volver.addActionListener(e ->
-	        app.cambiarVista(
-	            new DocentesView(app),
-	            "Docentes",
-	            "Gestion integral de docentes en el sistema"
-	        )
+	        app.cambiarVista(new AsignaturasView(app),
+	        "Grupos",
+	        "Gestion integral del grupo en el sistema")
 	    );
 	
-	    panelSuperior.add(titulo, BorderLayout.WEST);
 	    panelSuperior.add(volver, BorderLayout.EAST);
 	
 	    JPanel panelCentro = new JPanel();
