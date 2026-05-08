@@ -7,12 +7,13 @@ public class EducadexMain {
 
 	public static void main(String[] args) {
         //AuthView view = new AuthView();
-        /*AuthController controller = new AuthController();
-        controller.login();*/
-		AppView app = new AppView();
+        AuthController controller = new AuthController();
+        controller.login();
+		/*AppView app = new AppView();
 		app.ventana();
         
-        //view.login(); 
+        view.login(); 
+	*/
 	}
 
 }

@@ -29,7 +29,6 @@ public class InicioView extends JPanel {
         Color azul_principal = new Color(14, 48, 170);
 
         JPanel panel_centro = new JPanel();
-        panel_centro.setBackground(new Color(255, 255, 255));
         panel_centro.setOpaque(false);
         add(panel_centro, BorderLayout.CENTER);
         panel_centro.setLayout(new BorderLayout(0, 0));
@@ -85,6 +84,7 @@ public class InicioView extends JPanel {
         recuadro_docentes.add(espaciador_sur_docentes, BorderLayout.SOUTH);
 
         JPanel panel_centro_docentes = new JPanel();
+        panel_centro_docentes.setOpaque(false);
         panel_centro_docentes.setBorder(new LineBorder(dorado, 3, true));
         recuadro_docentes.add(panel_centro_docentes, BorderLayout.CENTER);
         panel_centro_docentes.setLayout(new GridLayout(4, 0, 0, 0));
@@ -99,6 +99,7 @@ public class InicioView extends JPanel {
         panel_centro_docentes.add(lblNewLabel_10);
 
         JPanel panel_25 = new JPanel();
+        panel_25.setOpaque(false);
         panel_centro_docentes.add(panel_25);
 
         JLabel lblNewLabel_11 = new JLabel("  "+lblDocentes);
@@ -135,6 +136,7 @@ public class InicioView extends JPanel {
         recuadro_alumnos.add(espaciador_sur_alumnos, BorderLayout.SOUTH);
 
         JPanel panel_centro_alumnos = new JPanel();
+        panel_centro_alumnos.setOpaque(false);
         panel_centro_alumnos.setBorder(new LineBorder(verde_lima, 3, true));
         recuadro_alumnos.add(panel_centro_alumnos, BorderLayout.CENTER);
         panel_centro_alumnos.setLayout(new GridLayout(4, 0, 0, 0));
@@ -150,6 +152,7 @@ public class InicioView extends JPanel {
         panel_centro_alumnos.add(lblNewLabel_10_1);
 
         JPanel panel_25_1 = new JPanel();
+        panel_25_1.setOpaque(false);
         panel_centro_alumnos.add(panel_25_1);
 
         JLabel lblNewLabel_11_1 = new JLabel("  "+lblAlumnos);
@@ -186,6 +189,7 @@ public class InicioView extends JPanel {
         recuadro_grupos.add(espaciador_sur_grupos, BorderLayout.SOUTH);
 
         JPanel panel_centro_grupos = new JPanel();
+        panel_centro_grupos.setOpaque(false);
         panel_centro_grupos.setBorder(new LineBorder(rojo_claro, 3, true));
         recuadro_grupos.add(panel_centro_grupos, BorderLayout.CENTER);
         panel_centro_grupos.setLayout(new GridLayout(4, 0, 0, 0));
@@ -200,6 +204,7 @@ public class InicioView extends JPanel {
         panel_centro_grupos.add(lblNewLabel_10_3);
 
         JPanel panel_25_3 = new JPanel();
+        panel_25_3.setOpaque(false);
         panel_centro_grupos.add(panel_25_3);
 
         JLabel lblNewLabel_11_3 = new JLabel("  "+lblGrupos);
@@ -236,6 +241,7 @@ public class InicioView extends JPanel {
         recuadro_asignaturas.add(espaciador_sur_asignaturas, BorderLayout.SOUTH);
 
         JPanel panel_centro_asignaturas = new JPanel();
+        panel_centro_asignaturas.setOpaque(false);
         panel_centro_asignaturas.setBorder(new LineBorder(azul_celeste, 3, true));
         recuadro_asignaturas.add(panel_centro_asignaturas, BorderLayout.CENTER);
         panel_centro_asignaturas.setLayout(new GridLayout(4, 0, 0, 0));
@@ -250,6 +256,7 @@ public class InicioView extends JPanel {
         panel_centro_asignaturas.add(lblNewLabel_10_2);
 
         JPanel panel_25_2 = new JPanel();
+        panel_25_2.setOpaque(false);
         panel_centro_asignaturas.add(panel_25_2);
 
         JLabel lblNewLabel_11_2 = new JLabel("  "+lblAsignaturas);
