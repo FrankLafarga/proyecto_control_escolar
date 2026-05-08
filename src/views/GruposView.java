@@ -14,6 +14,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -343,36 +344,31 @@ public class GruposView extends JPanel {
     
     public void eliminarGrupo(int fila) {
 
-        JPanel detalle = new JPanel(new BorderLayout());
-        detalle.setBackground(Color.WHITE);
+        String nombreGrupo = tabla.getValueAt(fila, 0).toString();
+        
+        int confirm = JOptionPane.showConfirmDialog(
+                null,
+                "¿Estás seguro de eliminar el grupo " + nombreGrupo + "?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION
+        );
+        
+        if (confirm == JOptionPane.YES_OPTION) {
+        	JOptionPane.showMessageDialog(
+        			null,
+        			"Se eliminó el grupo: " + nombreGrupo,
+        			"Grupo eliminado",
+        			JOptionPane.INFORMATION_MESSAGE
+        			
+        			);
+        	
+        } else if (confirm == JOptionPane.NO_OPTION) {
+        	System.out.println("Accion cancelada");
+        	
+     }
+        	
 
-        JLabel titulo = new JLabel("ELIMINAR GRUPO");
-        titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
-        titulo.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JLabel info = new JLabel("¿Seguro que quieres eliminar el grupo en fila: " + fila + "?");
-        info.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-        info.setHorizontalAlignment(SwingConstants.CENTER);
-
-        JButton volver = new JButton("VOLVER");
-        volver.setPreferredSize(new Dimension(250, 45));
-        volver.setBorder(new LineBorder(Color.WHITE, 1, true));
-        volver.setFocusable(false);
-        volver.setForeground(Color.WHITE);
-        volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-        volver.setBackground(new Color(14, 48, 170));
-
-        volver.addActionListener(e -> app.cambiarVista(new GruposView(app), "Grupos", "Gestion integral de grupos en el sistema"));
-
-        JPanel panelBtn = new JPanel();
-        panelBtn.setBackground(Color.WHITE);
-        panelBtn.add(volver);
-
-        detalle.add(titulo, BorderLayout.NORTH);
-        detalle.add(info, BorderLayout.CENTER);
-        detalle.add(panelBtn, BorderLayout.SOUTH);
-
-        app.cambiarVista(detalle, "Grupo", "Eliminar grupo seleccionado");
     }
     
     public void agregarGrupo() {
