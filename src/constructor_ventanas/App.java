@@ -24,6 +24,8 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.border.LineBorder;
 
+import views.AsignaturasView;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.GridBagLayout;
@@ -34,6 +36,9 @@ import java.awt.FlowLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.Cursor;
+import java.awt.ComponentOrientation;
+import javax.swing.JTextArea;
 
 
 public class App {
@@ -326,34 +331,35 @@ public class App {
     panel_19.setOpaque(false);
     panel_17.add(panel_19, BorderLayout.NORTH);
     
-    JButton btnNewButton_1 = new JButton("Volver    ");
-    btnNewButton_1.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
-    btnNewButton_1.setFocusable(false);
-    btnNewButton_1.setBorder(null);
-    btnNewButton_1.setBorderPainted(false);
-    btnNewButton_1.addMouseListener(new MouseAdapter() {
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            btnNewButton_1.setForeground(azul_principal);
-        }
-        @Override
-        public void mouseExited(MouseEvent e) {
-            btnNewButton_1.setForeground(new Color(64, 64, 64));
-        }
-    });
-    btnNewButton_1.setForeground(new Color(64, 64, 64));
-    btnNewButton_1.setContentAreaFilled(false);
-    btnNewButton_1.setFont(new Font("Segoe UI", Font.PLAIN, 26));
-    btnNewButton_1.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-        }
-    });
+    JButton volver = new JButton("Volver");
+    volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
+    volver.setBorder(null);
+    volver.setFocusable(false);
+    volver.setBorderPainted(false);
+    volver.setContentAreaFilled(false);	    
+    volver.setPreferredSize(new Dimension(200, 40));
+    volver.setForeground(new Color(0,0,0));
+    volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+    volver.addMouseListener(new MouseAdapter() {
+    	@Override
+    	public void mouseEntered(MouseEvent e) {
+    		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16Azul.png")));
+    		volver.setForeground(azul_principal);
+    	}
+
+    	@Override
+    	public void mouseExited(MouseEvent e) {
+    		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
+    		volver.setForeground(new Color(0, 0, 0));
+    	}
+    });	    	
+    
     panel_19.setLayout(new BorderLayout(0, 0));
     
-    panel_19.add(btnNewButton_1, BorderLayout.EAST);
+    panel_19.add(volver, BorderLayout.EAST);
     
     JPanel panel_20 = new JPanel();
-    panel_20.setPreferredSize(new Dimension(50, 10));
+    panel_20.setPreferredSize(new Dimension(70, 10));
     panel_20.setOpaque(false);
     panel_17.add(panel_20, BorderLayout.WEST);
     
@@ -401,7 +407,7 @@ public class App {
     panel_21.add(panel_29, BorderLayout.NORTH);
     
     JPanel panel_22 = new JPanel();
-    panel_22.setPreferredSize(new Dimension(50, 10));
+    panel_22.setPreferredSize(new Dimension(70, 10));
     panel_22.setOpaque(false);
     panel_17.add(panel_22, BorderLayout.EAST);
     
@@ -415,57 +421,205 @@ public class App {
     panel_23.add(panel_24);
     
     JLabel lblNewLabel_8 = new JLabel("Promedio general");
-    lblNewLabel_8.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+    lblNewLabel_8.setPreferredSize(new Dimension(83, 30));
+    lblNewLabel_8.setVerticalTextPosition(SwingConstants.BOTTOM);
+    lblNewLabel_8.setVerticalAlignment(SwingConstants.BOTTOM);
+    lblNewLabel_8.setForeground(new Color(0, 0, 160));
+    lblNewLabel_8.setHorizontalAlignment(SwingConstants.CENTER);
+    lblNewLabel_8.setFont(new Font("Segoe UI", Font.BOLD, 20));
     
     JLabel lblNewLabel_9 = new JLabel("");
+    lblNewLabel_9.setHorizontalAlignment(SwingConstants.CENTER);
     lblNewLabel_9.setIcon(new ImageIcon(App.class.getResource("/resources/medalla.png")));
     
     JLabel lblNewLabel_10 = new JLabel("9.82");
+    lblNewLabel_10.setHorizontalAlignment(SwingConstants.CENTER);
     lblNewLabel_10.setForeground(new Color(0, 255, 64));
     lblNewLabel_10.setFont(new Font("Times New Roman", Font.BOLD, 40));
-    GroupLayout gl_panel_24 = new GroupLayout(panel_24);
-    gl_panel_24.setHorizontalGroup(
-    	gl_panel_24.createParallelGroup(Alignment.TRAILING)
-    		.addGroup(Alignment.LEADING, gl_panel_24.createSequentialGroup()
-    			.addContainerGap()
-    			.addComponent(lblNewLabel_9)
-    			.addPreferredGap(ComponentPlacement.UNRELATED)
-    			.addComponent(lblNewLabel_8, GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
-    			.addGap(25))
-    		.addGroup(Alignment.LEADING, gl_panel_24.createSequentialGroup()
-    			.addGap(26)
-    			.addComponent(lblNewLabel_10, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
-    			.addContainerGap(140, Short.MAX_VALUE))
-    );
-    gl_panel_24.setVerticalGroup(
-    	gl_panel_24.createParallelGroup(Alignment.LEADING)
-    		.addGroup(gl_panel_24.createSequentialGroup()
-    			.addGroup(gl_panel_24.createParallelGroup(Alignment.LEADING)
-    				.addGroup(gl_panel_24.createSequentialGroup()
-    					.addContainerGap()
-    					.addComponent(lblNewLabel_9))
-    				.addGroup(gl_panel_24.createSequentialGroup()
-    					.addGap(24)
-    					.addComponent(lblNewLabel_8)))
-    			.addPreferredGap(ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
-    			.addComponent(lblNewLabel_10, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
-    			.addGap(34))
-    );
-    panel_24.setLayout(gl_panel_24);
+    panel_24.setLayout(new BorderLayout(0, 0));
+    panel_24.add(lblNewLabel_9, BorderLayout.CENTER);
+    panel_24.add(lblNewLabel_8, BorderLayout.NORTH);
+    panel_24.add(lblNewLabel_10, BorderLayout.SOUTH);
     
     JPanel panel_25 = new JPanel();
     panel_25.setBorder(new LineBorder(new Color(240, 240, 240), 2, true));
     panel_25.setBackground(Color.LIGHT_GRAY);
     panel_23.add(panel_25);
+    panel_25.setLayout(new BorderLayout(0, 0));
+    
+    JLabel lblNewLabel_8_1 = new JLabel("Carrera actual");
+    lblNewLabel_8_1.setPreferredSize(new Dimension(69, 30));
+    lblNewLabel_8_1.setVerticalTextPosition(SwingConstants.BOTTOM);
+    lblNewLabel_8_1.setVerticalAlignment(SwingConstants.BOTTOM);
+    lblNewLabel_8_1.setHorizontalAlignment(SwingConstants.CENTER);
+    lblNewLabel_8_1.setForeground(new Color(0, 0, 160));
+    lblNewLabel_8_1.setFont(new Font("Segoe UI", Font.BOLD, 20));
+    panel_25.add(lblNewLabel_8_1, BorderLayout.NORTH);
+    
+    JLabel lblNewLabel_9_1 = new JLabel("");
+    lblNewLabel_9_1.setIcon(new ImageIcon(App.class.getResource("/resources/mochila.png")));
+    lblNewLabel_9_1.setHorizontalAlignment(SwingConstants.CENTER);
+    panel_25.add(lblNewLabel_9_1, BorderLayout.CENTER);
+    
+    JTextArea txtrIngenieriaEnDesarrollo = new JTextArea();
+    txtrIngenieriaEnDesarrollo.setMargin(new Insets(4, 10, 4, 10));
+    txtrIngenieriaEnDesarrollo.setForeground(new Color(0, 0, 160));
+    txtrIngenieriaEnDesarrollo.setText("ingenieria en desarrollo de software");
+    txtrIngenieriaEnDesarrollo.setFont(new Font("Segoe UI", Font.BOLD, 18));
+    txtrIngenieriaEnDesarrollo.setLineWrap(true);
+    txtrIngenieriaEnDesarrollo.setWrapStyleWord(true);
+    txtrIngenieriaEnDesarrollo.setEditable(false);
+    txtrIngenieriaEnDesarrollo.setOpaque(false);
+    panel_25.add(txtrIngenieriaEnDesarrollo, BorderLayout.SOUTH);
     
     JPanel panel_26 = new JPanel();
     panel_26.setBorder(new LineBorder(new Color(240, 240, 240), 2, true));
     panel_26.setBackground(Color.LIGHT_GRAY);
     panel_23.add(panel_26);
+    panel_26.setLayout(new BorderLayout(0, 0));
+    
+    JLabel lblNewLabel_11 = new JLabel("");
+    lblNewLabel_11.setHorizontalAlignment(SwingConstants.CENTER);
+    lblNewLabel_11.setIcon(new ImageIcon(App.class.getResource("/resources/usuario_logo.png")));
+    panel_26.add(lblNewLabel_11);
+    
+    JPanel panel_sur = new JPanel();
+    panel_16.add(panel_sur);
+    panel_sur.setLayout(new BorderLayout(0, 0));
     
     JPanel panel_18 = new JPanel();
-    panel_16.add(panel_18);
+    panel_sur.add(panel_18, BorderLayout.NORTH);
+    panel_18.setLayout(new BorderLayout(0, 0));
     
+    JLabel lblNewLabel_12 = new JLabel("    Información personal");
+    lblNewLabel_12.setForeground(azul_principal);
+    lblNewLabel_12.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+    panel_18.add(lblNewLabel_12, BorderLayout.WEST);
+    
+    JPanel panel_30 = new JPanel();
+    panel_30.setBackground(new Color(192, 192, 192));
+    panel_30.setPreferredSize(new Dimension(10, 1));
+    panel_18.add(panel_30, BorderLayout.SOUTH);
+    
+    JPanel panel_31 = new JPanel();
+    panel_sur.add(panel_31, BorderLayout.CENTER);
+    panel_31.setLayout(new BorderLayout(0, 0));
+    
+    JPanel panel_32 = new JPanel();
+    panel_32.setOpaque(false);
+    panel_31.add(panel_32, BorderLayout.WEST);
+    
+    JPanel panel_33 = new JPanel();
+    panel_33.setOpaque(false);
+    panel_31.add(panel_33, BorderLayout.EAST);
+    
+    JPanel panel_34 = new JPanel();
+    panel_34.setOpaque(false);
+    panel_31.add(panel_34, BorderLayout.SOUTH);
+    
+    JPanel panel_35 = new JPanel();
+    panel_35.setOpaque(false);
+    panel_31.add(panel_35, BorderLayout.CENTER);
+    panel_35.setLayout(new GridLayout(1, 3, 0, 0));
+    
+    JPanel panel_36 = new JPanel();
+    panel_36.setOpaque(false);
+    panel_35.add(panel_36);
+    panel_36.setLayout(new GridLayout(0, 1, 0, 0));
+    
+    JPanel panel_39 = new JPanel();
+    panel_39.setOpaque(false);
+    panel_36.add(panel_39);
+    
+    JLabel lblNewLabel_13 = new JLabel("Fecha de nacimiento:");
+    lblNewLabel_13.setHorizontalTextPosition(SwingConstants.RIGHT);
+    lblNewLabel_13.setHorizontalAlignment(SwingConstants.LEFT);
+    lblNewLabel_13.setIconTextGap(10);
+    lblNewLabel_13.setIcon(new ImageIcon(App.class.getResource("/resources/calendario.png")));
+    lblNewLabel_13.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+    lblNewLabel_13.setForeground(new Color(128, 128, 128));
+    panel_36.add(lblNewLabel_13);
+    
+    JLabel lblNewLabel_14 = new JLabel("    02 de Febrero de 2006");
+    lblNewLabel_14.setVerticalAlignment(SwingConstants.TOP);
+    lblNewLabel_14.setVerticalTextPosition(SwingConstants.TOP);
+    lblNewLabel_14.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+    panel_36.add(lblNewLabel_14);
+    
+    JLabel lblNewLabel_16 = new JLabel("Correo electrónico");
+    lblNewLabel_16.setForeground(new Color(128, 128, 128));
+    lblNewLabel_16.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+    lblNewLabel_16.setIcon(new ImageIcon(App.class.getResource("/resources/correo.png")));
+    panel_36.add(lblNewLabel_16);
+    
+    JLabel lblNewLabel_15 = new JLabel("    mariag_24@alu.educadex.mx");
+    lblNewLabel_15.setVerticalAlignment(SwingConstants.TOP);
+    lblNewLabel_15.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+    lblNewLabel_15.setForeground(new Color(0, 0, 160));
+    panel_36.add(lblNewLabel_15);
+    
+    JPanel panel_37 = new JPanel();
+    panel_37.setOpaque(false);
+    panel_35.add(panel_37);
+    panel_37.setLayout(new GridLayout(0, 1, 0, 0));
+    
+    JPanel panel_39_1 = new JPanel();
+    panel_39_1.setOpaque(false);
+    panel_37.add(panel_39_1);
+    
+    JLabel lblNewLabel_13_1 = new JLabel("Género:");
+    lblNewLabel_13_1.setIconTextGap(10);
+    lblNewLabel_13_1.setIcon(new ImageIcon(App.class.getResource("/resources/usuario16.png")));
+    lblNewLabel_13_1.setHorizontalTextPosition(SwingConstants.RIGHT);
+    lblNewLabel_13_1.setHorizontalAlignment(SwingConstants.LEFT);
+    lblNewLabel_13_1.setForeground(Color.GRAY);
+    lblNewLabel_13_1.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+    panel_37.add(lblNewLabel_13_1);
+    
+    JLabel lblNewLabel_14_1 = new JLabel("    Femenino");
+    lblNewLabel_14_1.setVerticalTextPosition(SwingConstants.TOP);
+    lblNewLabel_14_1.setVerticalAlignment(SwingConstants.TOP);
+    lblNewLabel_14_1.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+    panel_37.add(lblNewLabel_14_1);
+    
+    JLabel lblNewLabel_16_1 = new JLabel("Teléfono");
+    lblNewLabel_16_1.setIcon(new ImageIcon(App.class.getResource("/resources/telefono.png")));
+    lblNewLabel_16_1.setForeground(Color.GRAY);
+    lblNewLabel_16_1.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+    panel_37.add(lblNewLabel_16_1);
+    
+    JLabel lblNewLabel_15_1 = new JLabel("    6122182756");
+    lblNewLabel_15_1.setVerticalAlignment(SwingConstants.TOP);
+    lblNewLabel_15_1.setVerticalTextPosition(SwingConstants.TOP);
+    lblNewLabel_15_1.setForeground(new Color(0, 0, 0));
+    lblNewLabel_15_1.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+    panel_37.add(lblNewLabel_15_1);
+    
+    JPanel panel_38 = new JPanel();
+    panel_35.add(panel_38);
+    JButton pdf = new JButton(
+    		"<html>" +
+    	    "<span style='color:black; font-family:Segoe UI; font-size:16px;'>Imprimir </span>" +
+    	    "<span style='color:red; font-family:Segoe UI; font-size:16px;'><b>PDF</b></span>" +
+    	    "</html>");
+    pdf.setPreferredSize(new Dimension(180, 40));
+    pdf.setFocusable(false);
+    pdf.setContentAreaFilled(false);
+    GroupLayout gl_panel_38 = new GroupLayout(panel_38);
+    gl_panel_38.setHorizontalGroup(
+    	gl_panel_38.createParallelGroup(Alignment.LEADING)
+    		.addGroup(Alignment.TRAILING, gl_panel_38.createSequentialGroup()
+    			.addContainerGap(58, Short.MAX_VALUE)
+    			.addComponent(pdf, GroupLayout.PREFERRED_SIZE, 235, GroupLayout.PREFERRED_SIZE))
+    );
+    gl_panel_38.setVerticalGroup(
+    	gl_panel_38.createParallelGroup(Alignment.LEADING)
+    		.addGroup(gl_panel_38.createSequentialGroup()
+    			.addGap(80)
+    			.addComponent(pdf, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE)
+    			.addContainerGap(70, Short.MAX_VALUE))
+    );
+    panel_38.setLayout(gl_panel_38);
     
     ImageIcon iconoOriginalDocentes = new ImageIcon(App.class.getResource("/resources/Logo Docentes.png"));
     Image imagenEscaladaDocentes = iconoOriginalDocentes.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);

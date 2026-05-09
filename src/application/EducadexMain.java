@@ -10,8 +10,7 @@ public class EducadexMain {
         /*AuthController controller = new AuthController();
         controller.login();*/
         
-		AppView app = new AppView();
-		
+		AppView app = new AppView();		
 		app.ventana();
         
 	
