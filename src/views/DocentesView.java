@@ -35,7 +35,8 @@ import controllers.DocentesController;
 public class DocentesView extends JPanel {
 	private AppView app;
 	private JTable tabla;
-	Color azul_principal = new Color(14, 48, 170);
+	private Color azul_principal = new Color(14, 48, 170);
+
 
     public DocentesView(AppView app) {
     	this.app = app;
@@ -182,32 +183,32 @@ public class DocentesView extends JPanel {
 	    titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
 	
 	    JButton volver = new JButton("Volver");
-	    volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
-	    volver.setBorder(null);
-	    volver.setFocusable(false);
-	    volver.setBorderPainted(false);
-	    volver.setContentAreaFilled(false);	    
-	    volver.setPreferredSize(new Dimension(200, 40));
-	    volver.setForeground(new Color(0,0,0));
-	    volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-	    volver.addMouseListener(new MouseAdapter() {
-	    	@Override
-	    	public void mouseEntered(MouseEvent e) {
-	    		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16Azul.png")));
-	    		volver.setForeground(azul_principal);
-	    	}
+        volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
+        volver.setBorder(null);
+        volver.setFocusable(false);
+        volver.setBorderPainted(false);
+        volver.setContentAreaFilled(false);	    
+        volver.setPreferredSize(new Dimension(200, 40));
+        volver.setForeground(new Color(0,0,0));
+        volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+        volver.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseEntered(MouseEvent e) {
+        		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16Azul.png")));
+        		volver.setForeground(azul_principal);
+        	}
 
-	    	@Override
-	    	public void mouseExited(MouseEvent e) {
-	    		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
-	    		volver.setForeground(new Color(0, 0, 0));
-	    	}
-	    });	    	
-	    volver.addActionListener(e ->
-	        app.cambiarVista(new DocentesView(app),
-	        "Docentes",
-	        "Gestion integral de docentes en el sistema")
-	    );
+        	@Override
+        	public void mouseExited(MouseEvent e) {
+        		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
+        		volver.setForeground(new Color(0, 0, 0));
+        	}
+        });	    	
+        volver.addActionListener(e ->
+            app.cambiarVista(new DocentesView(app),
+            "Docentes",
+            "Gestion integral de docentes en el sistema")
+        );
 	
 	    panelSuperior.add(titulo, BorderLayout.WEST);
 	    panelSuperior.add(volver, BorderLayout.EAST);
@@ -301,6 +302,7 @@ public class DocentesView extends JPanel {
 	}
 
 	public void editarDocente(int fila) {
+		Color azul_principal = new Color(14, 48, 170);
 	
 	    JPanel contenedor = new JPanel(new BorderLayout());
 	    contenedor.setBackground(Color.WHITE);
@@ -311,32 +313,32 @@ public class DocentesView extends JPanel {
 	
 	
 	    JButton volver = new JButton("Volver");
-	    volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
-	    volver.setBorder(null);
-	    volver.setFocusable(false);
-	    volver.setBorderPainted(false);
-	    volver.setContentAreaFilled(false);	    
-	    volver.setPreferredSize(new Dimension(200, 40));
-	    volver.setForeground(new Color(0,0,0));
-	    volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-	    volver.addMouseListener(new MouseAdapter() {
-	    	@Override
-	    	public void mouseEntered(MouseEvent e) {
-	    		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16Azul.png")));
-	    		volver.setForeground(azul_principal);
-	    	}
+        volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
+        volver.setBorder(null);
+        volver.setFocusable(false);
+        volver.setBorderPainted(false);
+        volver.setContentAreaFilled(false);	    
+        volver.setPreferredSize(new Dimension(200, 40));
+        volver.setForeground(new Color(0,0,0));
+        volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+        volver.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseEntered(MouseEvent e) {
+        		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16Azul.png")));
+        		volver.setForeground(azul_principal);
+        	}
 
-	    	@Override
-	    	public void mouseExited(MouseEvent e) {
-	    		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
-	    		volver.setForeground(new Color(0, 0, 0));
-	    	}
-	    });	    	
-	    volver.addActionListener(e ->
-	        app.cambiarVista(new DocentesView(app),
-	        "Docentes",
-	        "Gestion integral de docentes en el sistema")
-	    );
+        	@Override
+        	public void mouseExited(MouseEvent e) {
+        		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
+        		volver.setForeground(new Color(0, 0, 0));
+        	}
+        });	    	
+        volver.addActionListener(e ->
+            app.cambiarVista(new DocentesView(app),
+            "Docentes",
+            "Gestion integral de docentes en el sistema")
+        );
 	
 	    panelSuperior.add(volver, BorderLayout.EAST);
 	
@@ -624,35 +626,39 @@ public class DocentesView extends JPanel {
 	    JPanel panelSuperior = new JPanel(new BorderLayout());
 	    panelSuperior.setBackground(Color.WHITE);
 	    panelSuperior.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
-		  	
-	    JButton volver = new JButton("Volver");
-	    volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
-	    volver.setBorder(null);
-	    volver.setFocusable(false);
-	    volver.setBorderPainted(false);
-	    volver.setContentAreaFilled(false);	    
-	    volver.setPreferredSize(new Dimension(200, 40));
-	    volver.setForeground(new Color(0,0,0));
-	    volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-	    volver.addMouseListener(new MouseAdapter() {
-	    	@Override
-	    	public void mouseEntered(MouseEvent e) {
-	    		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16Azul.png")));
-	    		volver.setForeground(azul_principal);
-	    	}
-
-	    	@Override
-	    	public void mouseExited(MouseEvent e) {
-	    		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
-	    		volver.setForeground(new Color(0, 0, 0));
-	    	}
-	    });	    	
-	    volver.addActionListener(e ->
-	        app.cambiarVista(new DocentesView(app),
-	        "Docentes",
-	        "Gestion integral de docentes en el sistema")
-	    );
 	
+	    JLabel titulo = new JLabel("Crear docente");
+	    titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
+	
+	    JButton volver = new JButton("Volver");
+        volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
+        volver.setBorder(null);
+        volver.setFocusable(false);
+        volver.setBorderPainted(false);
+        volver.setContentAreaFilled(false);	    
+        volver.setPreferredSize(new Dimension(200, 40));
+        volver.setForeground(new Color(0,0,0));
+        volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+        volver.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseEntered(MouseEvent e) {
+        		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16Azul.png")));
+        		volver.setForeground(azul_principal);
+        	}
+
+        	@Override
+        	public void mouseExited(MouseEvent e) {
+        		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
+        		volver.setForeground(new Color(0, 0, 0));
+        	}
+        });	    	
+        volver.addActionListener(e ->
+            app.cambiarVista(new DocentesView(app),
+            "Docentes",
+            "Gestion integral de docentes en el sistema")
+        );
+	
+	    panelSuperior.add(titulo, BorderLayout.WEST);
 	    panelSuperior.add(volver, BorderLayout.EAST);
 	
 	    JPanel panelCentro = new JPanel();

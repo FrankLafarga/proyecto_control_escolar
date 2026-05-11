@@ -1132,6 +1132,6 @@ public class AlumnosView extends JPanel {
 	    contenedor.add(panelSur, BorderLayout.SOUTH);
 	
 	    
-        app.cambiarVista(contenedor, "Alumno", "Editar alumno seleccionado");
+        app.cambiarVista(contenedor, "Alumno", "Agregar alumno");
     }
 }
