@@ -469,34 +469,6 @@ public class GruposView extends JPanel {
     btnGuardar.setFont(new Font("Segoe UI", Font.PLAIN, 18));
     btnGuardar.setPreferredSize(new Dimension(180, 45));
 
-    btnGuardar.addActionListener(new ActionListener() {
-
-        public void actionPerformed(ActionEvent e) {
-
-            LineBorder bordeRojo = new LineBorder(Color.RED, 2, true);
-            LineBorder bordeNormal = new LineBorder(new Color(180,180,180), 1, true);
-
-            txtGrupo.setBorder(bordeNormal);
-            txtCapacidad.setBorder(bordeNormal);
-
-            boolean valido = true;
-
-            if(txtGrupo.getText().trim().isEmpty()) {
-                txtGrupo.setBorder(bordeRojo);
-                valido = false;
-            }
-
-            if(txtCapacidad.getText().trim().isEmpty() || !txtCapacidad.getText().matches("\\d+")) {
-                txtCapacidad.setBorder(bordeRojo);
-                valido = false;
-            }
-
-            if(valido) {
-                System.out.println("Formulario válido");
-            }
-        }
-    });
-
     panelBotones.add(btnCancelar);
     panelBotones.add(btnGuardar);
 
