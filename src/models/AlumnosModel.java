@@ -53,4 +53,61 @@ public class AlumnosModel {
 
         return lista;
     }
+    
+    public Object[] verAlumno(String matricula) {
+
+        Object[] alumno = null;
+
+        String sql = """
+            SELECT 
+                CONCAT(a.nombre, ' ', a.apellido_paterno, ' ', a.apellido_materno) AS nombre_completo,
+                a.matricula,
+                a.semestre,
+                g.nombre AS grupo,
+                a.promedio,
+                a.carrera,
+                a.fecha_nacimiento,
+                a.correo,
+                a.genero,
+                a.telefono
+            FROM ALUMNOS a
+            LEFT JOIN GRUPOS g ON a.id_grupo = g.id_grupo
+            WHERE a.matricula = ?
+        """;
+
+        try (
+            Connection con = DriverManager.getConnection(URL, USER, PASS);
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+
+            ps.setString(1, matricula);
+
+            try (ResultSet rs = ps.executeQuery()) {
+
+                if (rs.next()) {
+
+                    alumno = new Object[] {
+                        rs.getString("nombre_completo"),
+                        rs.getString("matricula"),
+                        rs.getString("semestre"),
+                        rs.getString("grupo"),
+                        rs.getDouble("promedio"),
+                        rs.getString("carrera"),
+                        rs.getString("fecha_nacimiento"),
+                        rs.getString("correo"),
+                        rs.getString("genero"),
+                        rs.getString("telefono")
+                    };
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return alumno;
+    }
+    
+    
+    
 }
