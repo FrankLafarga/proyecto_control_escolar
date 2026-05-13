@@ -6,6 +6,11 @@ import models.AsignaturasModel;
 
 
 public class AsignaturasController {
+	private String nombre;
+	private int semestre;
+	private int creditos;
+	private String grupo;
+	private String docente;
 	
 	private AsignaturasModel model;
 
@@ -22,5 +27,38 @@ public class AsignaturasController {
         for (Object[] fila : datos) {
             modeloTabla.addRow(fila);
         }
+    }
+    public void verAsignatura(String clave) {
+
+        Object[] datos = model.verAsignatura(clave);
+
+        if(datos != null) {
+
+            nombre = (String) datos[0];
+            semestre = (int) datos[2];
+            creditos = (int) datos[3];
+            grupo = (String) datos[4];
+            docente = (String) datos[5];
+        }
+    }
+    
+    public String getNombre() {
+        return nombre;
+    }
+
+    public int getSemestre() {
+        return semestre;
+    }
+
+    public int getCreditos() {
+        return creditos;
+    }
+
+    public String getGrupo() {
+        return grupo;
+    }
+
+    public String getDocente() {
+        return docente;
     }
 }

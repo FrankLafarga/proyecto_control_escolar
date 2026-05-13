@@ -19,46 +19,7 @@ public class GruposModel {
     private int capacidad;
     private int docentes;
 
-    public int getIdGrupo() {
-        return idGrupo;
-    }
-
-    public void setIdGrupo(int idGrupo) {
-        this.idGrupo = idGrupo;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getTurno() {
-        return turno;
-    }
-
-    public void setTurno(String turno) {
-        this.turno = turno;
-    }
-
-    public int getCapacidad() {
-        return capacidad;
-    }
-
-    public void setCapacidad(int capacidad) {
-        this.capacidad = capacidad;
-    }
-
-    public int getDocentes() {
-        return docentes;
-    }
-
-    public void setDocentes(int docentes) {
-        this.docentes = docentes;
-    }
-
+   
     public void obtenerGrupo(String nom) {
 
         String sql = """
@@ -140,4 +101,45 @@ public class GruposModel {
 
         return lista;
     }
+    
+    public int getIdGrupo() {
+        return idGrupo;
+    }
+
+    public void setIdGrupo(int idGrupo) {
+        this.idGrupo = idGrupo;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getTurno() {
+        return turno;
+    }
+
+    public void setTurno(String turno) {
+        this.turno = turno;
+    }
+
+    public int getCapacidad() {
+        return capacidad;
+    }
+
+    public void setCapacidad(int capacidad) {
+        this.capacidad = capacidad;
+    }
+
+    public int getDocentes() {
+        return docentes;
+    }
+
+    public void setDocentes(int docentes) {
+        this.docentes = docentes;
+    }
+
 }

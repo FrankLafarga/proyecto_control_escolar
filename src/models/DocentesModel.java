@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DocentesModel {
-
+	
     private static final String URL = "jdbc:mysql://localhost:3306/educadex";
     private static final String USER = "root";
     private static final String PASS = "educadex2026";
@@ -48,4 +48,65 @@ public class DocentesModel {
 
         return lista;
     }
+    
+    public Object[] verDocente(String clave) {
+
+        Object[] docente = null;
+
+        String sql = """
+            SELECT
+                CONCAT(
+                    nombre,' ',
+                    apellido_paterno,' ',
+                    apellido_materno
+                ) AS nombre_completo,
+                clave,
+                correo,
+                telefono,
+                fecha_nacimiento,
+                grado_estudios,
+                area_estudios,
+                estatus,
+                avatar
+            FROM DOCENTES
+            WHERE clave=?
+        """;
+
+        try(
+            Connection con=DriverManager.getConnection(URL,USER,PASS);
+            PreparedStatement ps=con.prepareStatement(sql)
+        ){
+
+            ps.setString(1, clave);
+
+            try(ResultSet rs=ps.executeQuery()){
+
+                if(rs.next()){
+
+                    docente = new Object[]{
+
+                        rs.getString("nombre_completo"),
+                        rs.getString("clave"),
+                        rs.getString("correo"),
+                        rs.getString("telefono"),
+                        rs.getString("fecha_nacimiento"),
+                        rs.getString("grado_estudios"),
+                        rs.getString("area_estudios"),
+                        rs.getString("estatus"),
+                        rs.getString("avatar")
+                    };
+                }
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return docente;
+    }
+    
+    
+    
+    
+    
 }

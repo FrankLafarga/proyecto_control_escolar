@@ -40,6 +40,16 @@ public class AsignaturasView extends JPanel {
 	private JTable tabla;
 	 Color azul_principal = new Color(14, 48, 170);
 
+	 
+	 private String nombre;
+	 private String clave;
+	 private int semestre;
+	 private int creditos;
+	 private String grupo;
+	 private String docente;
+	 
+	 private AsignaturasController controller=new AsignaturasController();
+	 
     public AsignaturasView(AppView app) {
     	this.app = app;
         setLayout(new BorderLayout());
@@ -111,7 +121,7 @@ public class AsignaturasView extends JPanel {
         modelo.addColumn("Docente");
         modelo.addColumn("Acciones");
 
-        new AsignaturasController().cargarTabla(modelo);
+        controller.cargarTabla(modelo);
 
         for(int i=0;i<modelo.getRowCount();i++){
             modelo.setValueAt("", i, 6);
@@ -133,7 +143,19 @@ public class AsignaturasView extends JPanel {
 
         	        @Override
         	        public void ver(int fila) {
-        	            verAsignatura(fila);
+        	        	
+        	        	clave = tabla.getValueAt(fila,0).toString();
+
+        	        	controller.verAsignatura(clave);
+
+        	        	nombre = controller.getNombre();      	        	
+        	        	semestre = controller.getSemestre();
+        	        	creditos = controller.getCreditos();
+        	        	grupo = controller.getGrupo();
+        	        	docente = controller.getDocente();
+
+        	        	verAsignatura(fila);
+        	            
         	        }
         	        @Override
         	        public void editar(int fila) {
@@ -149,118 +171,123 @@ public class AsignaturasView extends JPanel {
     
     public void verAsignatura(int fila) {
 
-    JPanel contenedor = new JPanel(new BorderLayout());
-    contenedor.setBackground(Color.WHITE);
+        JPanel contenedor = new JPanel(new BorderLayout());
+        contenedor.setBackground(Color.WHITE);
 
-    JPanel panelSuperior = new JPanel(new BorderLayout());
-    panelSuperior.setBackground(Color.WHITE);
-    panelSuperior.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+        JPanel panelSuperior = new JPanel(new BorderLayout());
+        panelSuperior.setBackground(Color.WHITE);
+        panelSuperior.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
 
-    JButton volver = new JButton("Volver");
-    volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
-    volver.setBorder(null);
-    volver.setFocusable(false);
-    volver.setBorderPainted(false);
-    volver.setContentAreaFilled(false);	    
-    volver.setPreferredSize(new Dimension(200, 40));
-    volver.setForeground(new Color(0,0,0));
-    volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-    volver.addMouseListener(new MouseAdapter() {
-    	@Override
-    	public void mouseEntered(MouseEvent e) {
-    		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16Azul.png")));
-    		volver.setForeground(azul_principal);
-    	}
+        JButton volver = new JButton("Volver");
+        volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
+        volver.setBorder(null);
+        volver.setFocusable(false);
+        volver.setBorderPainted(false);
+        volver.setContentAreaFilled(false);	    
+        volver.setPreferredSize(new Dimension(200, 40));
+        volver.setForeground(new Color(0,0,0));
+        volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+        volver.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseEntered(MouseEvent e) {
+        		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16Azul.png")));
+        		volver.setForeground(azul_principal);
+        	}
 
-    	@Override
-    	public void mouseExited(MouseEvent e) {
-    		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
-    		volver.setForeground(new Color(0, 0, 0));
-    	}
-    });	    	
-    volver.addActionListener(e ->
-        app.cambiarVista(new AsignaturasView(app),
-        "Asignaturas",
-        "Gestion integral de asignaturas en el sistema")
-    );
+        	@Override
+        	public void mouseExited(MouseEvent e) {
+        		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
+        		volver.setForeground(new Color(0, 0, 0));
+        	}
+        });	    	
+        volver.addActionListener(e ->
+            app.cambiarVista(new AsignaturasView(app),
+            "Asignaturas",
+            "Gestion integral de asignaturas en el sistema")
+        );
 
-    panelSuperior.add(volver, BorderLayout.EAST);
+        panelSuperior.add(volver, BorderLayout.EAST);
 
-    JPanel centroWrapper = new JPanel(new BorderLayout());
-    centroWrapper.setBackground(Color.WHITE);
-    centroWrapper.setBorder(BorderFactory.createEmptyBorder(0, 40, 0, 40));
+        JPanel centroWrapper = new JPanel(new BorderLayout());
+        centroWrapper.setBackground(Color.WHITE);
+        centroWrapper.setBorder(BorderFactory.createEmptyBorder(0, 40, 0, 40));
 
-    JPanel tarjeta = new JPanel();
-    tarjeta.setLayout(new BoxLayout(tarjeta, BoxLayout.Y_AXIS));
-    tarjeta.setBackground(Color.WHITE);
-    tarjeta.setBorder(BorderFactory.createCompoundBorder(
-        new LineBorder(new Color(200,200,200), 2, true),
-        BorderFactory.createEmptyBorder(20, 30, 20, 30)
-    ));
+        JPanel tarjeta = new JPanel();
+        tarjeta.setLayout(new BoxLayout(tarjeta, BoxLayout.Y_AXIS));
+        tarjeta.setBackground(Color.WHITE);
+        tarjeta.setBorder(BorderFactory.createCompoundBorder(
+            new LineBorder(new Color(200,200,200), 2, true),
+            BorderFactory.createEmptyBorder(20, 30, 20, 30)
+        ));
 
-    JLabel nombre = new JLabel("Matemáticas I");
-    nombre.setFont(new Font("Segoe UI", Font.BOLD, 26));
-    nombre.setAlignmentX(Component.LEFT_ALIGNMENT);
-    nombre.setHorizontalAlignment(SwingConstants.LEFT);
-    
-    JLabel semestre = new JLabel("Semestre: 3");
-    JLabel clave = new JLabel("Clave: MAT-101");
-    JLabel creditos = new JLabel("Créditos: 8");
-    JLabel grupo = new JLabel("Grupo: 1A");
+        JLabel nombreLabel = new JLabel(nombre);
+        nombreLabel.setFont(new Font("Segoe UI", Font.BOLD, 26));
+        nombreLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        nombreLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        
+        JLabel semestreLabel = new JLabel("Semestre: " + semestre);
+        JLabel claveLabel = new JLabel("Clave: " + clave);
+        JLabel creditosLabel = new JLabel("Créditos: " + creditos);
+        JLabel grupoLabel = new JLabel("Grupo: " + grupo);
+        JLabel docenteLabel = new JLabel("Docente: " + docente);
 
-    JLabel[] datos = {semestre, clave, creditos, grupo};
+        JLabel[] datos = {
+            semestreLabel,
+            claveLabel,
+            creditosLabel,
+            grupoLabel,
+            docenteLabel
+        };
 
-    for(JLabel l : datos){
-        l.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-        l.setAlignmentX(Component.LEFT_ALIGNMENT);
-    }
-    
-    JPanel filaNombre = new JPanel(new FlowLayout(FlowLayout.LEFT));
-    filaNombre.setBackground(Color.WHITE);
+        for(JLabel l : datos){
+            l.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+            l.setAlignmentX(Component.LEFT_ALIGNMENT);
+        }
+        
+        JPanel filaNombre = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        filaNombre.setBackground(Color.WHITE);
 
-    filaNombre.add(nombre);
+        filaNombre.add(nombreLabel);
 
-    tarjeta.add(filaNombre);
+        tarjeta.add(filaNombre);
 
-    tarjeta.add(Box.createVerticalStrut(10));
+        tarjeta.add(Box.createVerticalStrut(10));
 
-    for(JLabel l : datos){
+        for(JLabel l : datos){
 
-        JPanel filaDato = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        filaDato.setBackground(Color.WHITE);
+            JPanel filaDato = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            filaDato.setBackground(Color.WHITE);
 
-        l.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+            l.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 
-        filaDato.add(l);
+            filaDato.add(l);
 
-        tarjeta.add(filaDato);
-    }
+            tarjeta.add(filaDato);
+        }
 
-    JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-    panelBoton.setBackground(Color.WHITE);
+        JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        panelBoton.setBackground(Color.WHITE);
 
-    JButton pdf = new JButton(
-    		"<html>" +
-    	    "<span style='color:black; font-family:Segoe UI; font-size:16px;'>Imprimir </span>" +
-    	    "<span style='color:red; font-family:Segoe UI; font-size:16px;'><b>PDF</b></span>" +
-    	    "</html>");
-    pdf.setPreferredSize(new Dimension(180, 40));
-    pdf.setFocusable(false);
-    pdf.setContentAreaFilled(false);
+        JButton pdf = new JButton(
+        		"<html>" +
+        	    "<span style='color:black; font-family:Segoe UI; font-size:16px;'>Imprimir </span>" +
+        	    "<span style='color:red; font-family:Segoe UI; font-size:16px;'><b>PDF</b></span>" +
+        	    "</html>");
+        pdf.setPreferredSize(new Dimension(180, 40));
+        pdf.setFocusable(false);
+        pdf.setContentAreaFilled(false);
 
-    panelBoton.add(pdf);
+        panelBoton.add(pdf);
 
-    tarjeta.add(Box.createVerticalStrut(20));
-    tarjeta.add(panelBoton);
+        tarjeta.add(Box.createVerticalStrut(20));
+        tarjeta.add(panelBoton);
 
-    centroWrapper.add(tarjeta, BorderLayout.NORTH);
+        centroWrapper.add(tarjeta, BorderLayout.NORTH);
 
-    contenedor.add(panelSuperior, BorderLayout.NORTH);
-    contenedor.add(centroWrapper, BorderLayout.CENTER);
+        contenedor.add(panelSuperior, BorderLayout.NORTH);
+        contenedor.add(centroWrapper, BorderLayout.CENTER);
 
-    app.cambiarVista(contenedor,
-        "Asignatura",
-        "Detalle de la asignatura seleccionada");
+        app.cambiarVista(contenedor,"Asignatura","Detalle de la asignatura seleccionada");
     }
 
     public void editarAsignatura(int fila) {

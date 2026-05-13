@@ -36,7 +36,18 @@ public class DocentesView extends JPanel {
 	private AppView app;
 	private JTable tabla;
 	private Color azul_principal = new Color(14, 48, 170);
-
+	
+	private DocentesController controller=new DocentesController();
+	
+	private String nombre;
+	private String clave;
+	private String correo;
+	private String telefono;
+	private String fecha;
+	private String grado;
+	private String area;
+	private String estatus;
+	private String avatar;
 
     public DocentesView(AppView app) {
     	this.app = app;
@@ -108,7 +119,7 @@ public class DocentesView extends JPanel {
         modelo.addColumn("Estatus");
         modelo.addColumn("Acciones");
 
-        new DocentesController().cargarTabla(modelo);
+        controller.cargarTabla(modelo);
 
         tabla = new JTable(modelo);
         tabla.setFillsViewportHeight(true);
@@ -125,7 +136,21 @@ public class DocentesView extends JPanel {
 
         	        @Override
         	        public void ver(int fila) {
-        	            verDocente(fila);
+        	        	clave = tabla.getValueAt(fila,0).toString();
+
+        	        	controller.verDocente(clave);
+
+        	        	nombre = controller.getNombre();
+        	        	clave = controller.getClave();
+        	        	correo = controller.getCorreo();
+        	        	telefono = controller.getTelefono();
+        	        	fecha = controller.getFecha();
+        	        	grado = controller.getGrado();
+        	        	area = controller.getArea();
+        	        	estatus = controller.getEstatus();
+        	        	avatar = controller.getAvatar();
+
+        	        	verDocente(fila);
         	        }
         	        @Override
         	        public void editar(int fila) {
@@ -170,19 +195,19 @@ public class DocentesView extends JPanel {
         }
     }
     
-	public void verDocente(int fila) {
-	
-	    JPanel contenedor = new JPanel(new BorderLayout());
-	    contenedor.setBackground(Color.WHITE);
-	
-	    JPanel panelSuperior = new JPanel(new BorderLayout());
-	    panelSuperior.setBackground(Color.WHITE);
-	    panelSuperior.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
-	
-	    JLabel titulo = new JLabel("Detalle del docente");
-	    titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
-	
-	    JButton volver = new JButton("Volver");
+    public void verDocente(int fila) {
+    	
+    	JPanel contenedor = new JPanel(new BorderLayout());
+    	contenedor.setBackground(Color.WHITE);
+
+    	JPanel panelSuperior = new JPanel(new BorderLayout());
+    	panelSuperior.setBackground(Color.WHITE);
+    	panelSuperior.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+
+    	JLabel titulo = new JLabel("Detalle del docente");
+    	titulo.setFont(new Font("Segoe UI", Font.BOLD, 30));
+
+    	JButton volver = new JButton("Volver");
         volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
         volver.setBorder(null);
         volver.setFocusable(false);
@@ -205,101 +230,93 @@ public class DocentesView extends JPanel {
         	}
         });	    	
         volver.addActionListener(e ->
-            app.cambiarVista(new DocentesView(app),
-            "Docentes",
-            "Gestion integral de docentes en el sistema")
-        );
-	
-	    panelSuperior.add(titulo, BorderLayout.WEST);
-	    panelSuperior.add(volver, BorderLayout.EAST);
-	
-	    JPanel panelCentro = new JPanel(new BorderLayout());
-	    panelCentro.setBackground(Color.WHITE);
-	    panelCentro.setBorder(BorderFactory.createEmptyBorder(0, 40, 20, 40));
-	
-	    JPanel centroWrapper = new JPanel(new BorderLayout());
-	    centroWrapper.setBackground(Color.WHITE);
-	    centroWrapper.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
-	
-	    JPanel tarjeta = new JPanel(new BorderLayout());
-	    tarjeta.setBackground(Color.WHITE);
-	
-	    tarjeta.setBorder(BorderFactory.createCompoundBorder(
-	        new LineBorder(new Color(200, 200, 200), 2, true),
-	        BorderFactory.createEmptyBorder(20, 30, 20, 30)
-	    ));
-	
-	    JPanel contenido = new JPanel();
-	    contenido.setLayout(new BoxLayout(contenido, BoxLayout.Y_AXIS));
-	    contenido.setOpaque(false);
-	
-	    JLabel nombre = new JLabel("Juan Daniel Perez");
-	    nombre.setFont(new Font("Segoe UI", Font.BOLD, 26));
-	    nombre.setAlignmentX(Component.LEFT_ALIGNMENT);
-	
-	    JLabel clave = new JLabel("Clave: D003");
-	    JLabel especialidad = new JLabel("Especialidad: Matematicas");
-	    JLabel estatus = new JLabel("Estatus: Activo");
-	    JLabel grupo = new JLabel("Grupo(s): Ing. Civil 2-A y Matematicas 1-C");
-	
-	    JLabel[] datos = {clave, especialidad, estatus, grupo};
-	
-	    for (JLabel l : datos) {
-	        l.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-	        l.setAlignmentX(Component.LEFT_ALIGNMENT);
-	    }
-	
-	    JPanel filaNombre = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	    filaNombre.setBackground(Color.WHITE);
-	
-	    filaNombre.add(nombre);
-	
-	    contenido.add(filaNombre);
-	
-	    contenido.add(Box.createVerticalStrut(10));
-	
-	    for (JLabel l : datos) {
-	
-	        JPanel filaDato = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	        filaDato.setBackground(Color.WHITE);
-	
-	        filaDato.add(l);
-	
-	        contenido.add(filaDato);
-	    }
-	
-	    tarjeta.add(contenido, BorderLayout.CENTER);
-	
-	    JButton pdf = new JButton(
-	    		"<html>" +
-	    	    "<span style='color:black; font-family:Segoe UI; font-size:16px;'>Imprimir </span>" +
-	    	    "<span style='color:red; font-family:Segoe UI; font-size:16px;'><b>PDF</b></span>" +
-	    	    "</html>");
-	    pdf.setPreferredSize(new Dimension(180, 40));
-	    pdf.setFocusable(false);
-	    pdf.setContentAreaFilled(false);
-	
-	
-	    JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-	    panelBoton.setBackground(Color.WHITE);
-	
-	    panelBoton.add(pdf);
-	
-	    tarjeta.add(panelBoton, BorderLayout.SOUTH);
-	
-	    centroWrapper.add(tarjeta, BorderLayout.NORTH);
-	
-	    panelCentro.add(centroWrapper, BorderLayout.CENTER);
-	
-	    contenedor.add(panelSuperior, BorderLayout.NORTH);
-	    contenedor.add(panelCentro, BorderLayout.CENTER);
-	
-	    app.cambiarVista(
-	        contenedor,
-	        "Docente",
-	        "Detalle del docente seleccionado"
-	    );
-	}
+            app.cambiarVista(new DocentesView(app),"Docentes","Gestion integral de docentes en el sistema"));
+
+    	panelSuperior.add(titulo, BorderLayout.WEST);
+    	panelSuperior.add(volver, BorderLayout.EAST);
+
+    	JPanel panelCentro = new JPanel(new BorderLayout());
+    	panelCentro.setBackground(Color.WHITE);
+    	panelCentro.setBorder(BorderFactory.createEmptyBorder(0, 40, 20, 40));
+
+    	JPanel centroWrapper = new JPanel(new BorderLayout());
+    	centroWrapper.setBackground(Color.WHITE);
+    	centroWrapper.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
+
+    	JPanel tarjeta = new JPanel(new BorderLayout());
+    	tarjeta.setBackground(Color.WHITE);
+
+    	tarjeta.setBorder(BorderFactory.createCompoundBorder(
+    	    new LineBorder(new Color(200, 200, 200), 2, true),
+    	    BorderFactory.createEmptyBorder(20, 30, 20, 30)
+    	));
+
+    	JPanel contenido = new JPanel();
+    	contenido.setLayout(new BoxLayout(contenido, BoxLayout.Y_AXIS));
+    	contenido.setOpaque(false);
+
+    	JLabel nombreDocente = new JLabel(nombre);
+    	nombreDocente.setFont(new Font("Segoe UI", Font.BOLD, 26));
+    	nombreDocente.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+    	JLabel lblClave = new JLabel("Clave: " + clave);
+    	JLabel especialidad = new JLabel("Especialidad: " + area);
+    	JLabel lblEstatus = new JLabel("Estatus: " + estatus);
+    	JLabel grupo = new JLabel("Grado: " + grado);
+
+    	JLabel[] datos = {lblClave, especialidad, lblEstatus, grupo};
+
+    	for (JLabel l : datos) {
+    	    l.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+    	    l.setAlignmentX(Component.LEFT_ALIGNMENT);
+    	}
+
+    	JPanel filaNombre = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    	filaNombre.setBackground(Color.WHITE);
+
+    	filaNombre.add(nombreDocente);
+
+    	contenido.add(filaNombre);
+
+    	contenido.add(Box.createVerticalStrut(10));
+
+    	for (JLabel l : datos) {
+
+    	    JPanel filaDato = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    	    filaDato.setBackground(Color.WHITE);
+
+    	    filaDato.add(l);
+
+    	    contenido.add(filaDato);
+    	}
+
+    	tarjeta.add(contenido, BorderLayout.CENTER);
+
+    	JButton pdf = new JButton(
+        		"<html>" +
+        	    "<span style='color:black; font-family:Segoe UI; font-size:16px;'>Imprimir </span>" +
+        	    "<span style='color:red; font-family:Segoe UI; font-size:16px;'><b>PDF</b></span>" +
+        	    "</html>");
+    	pdf.setPreferredSize(new Dimension(180, 40));
+    	pdf.setFocusable(false);
+    	pdf.setContentAreaFilled(false);
+
+    	JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+    	panelBoton.setBackground(Color.WHITE);
+
+    	panelBoton.add(pdf);
+
+    	tarjeta.add(panelBoton, BorderLayout.SOUTH);
+
+    	centroWrapper.add(tarjeta, BorderLayout.NORTH);
+
+    	panelCentro.add(centroWrapper, BorderLayout.CENTER);
+
+    	contenedor.add(panelSuperior, BorderLayout.NORTH);
+    	contenedor.add(panelCentro, BorderLayout.CENTER);
+
+    	app.cambiarVista(contenedor,"Docente","Detalle del docente seleccionado");
+    }
 
 	public void editarDocente(int fila) {
 		Color azul_principal = new Color(14, 48, 170);

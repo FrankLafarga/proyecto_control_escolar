@@ -54,4 +54,60 @@ public class AsignaturasModel {
 
         return lista;
     }
+    
+    public Object[] verAsignatura(String clave) {
+
+        Object[] asignatura = null;
+
+        String sql = """
+            SELECT 
+                a.nombre,
+                a.clave,
+                a.semestre,
+                a.creditos,
+                g.nombre AS grupo,
+                CONCAT(
+                    d.nombre,' ',
+                    d.apellido_paterno,' ',
+                    d.apellido_materno
+                ) AS docente
+            FROM GRUPO_ASIGNATURA ga
+            INNER JOIN ASIGNATURAS a 
+                ON ga.id_asignatura=a.id_asignatura
+            INNER JOIN GRUPOS g 
+                ON ga.id_grupo=g.id_grupo
+            INNER JOIN DOCENTES d 
+                ON ga.id_docente=d.id_docente
+            WHERE a.clave=?
+        """;
+
+        try(
+            Connection con = DriverManager.getConnection(URL,USER,PASS);
+            PreparedStatement ps = con.prepareStatement(sql)
+        ){
+
+            ps.setString(1, clave);
+
+            try(ResultSet rs=ps.executeQuery()){
+
+                if(rs.next()){
+
+                    asignatura = new Object[]{
+
+                        rs.getString("nombre"),
+                        rs.getString("clave"),
+                        rs.getInt("semestre"),
+                        rs.getInt("creditos"),
+                        rs.getString("grupo"),
+                        rs.getString("docente")
+                    };
+                }
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return asignatura;
+    }
 }
