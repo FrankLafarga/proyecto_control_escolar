@@ -401,14 +401,11 @@ public class AlumnosView extends JPanel {
     	lblNewLabel_9_1.setHorizontalAlignment(SwingConstants.CENTER);
     	panel_25.add(lblNewLabel_9_1, BorderLayout.CENTER);
     	
-    	JTextArea txtrIngenieriaEnDesarrollo = new JTextArea();
-    	txtrIngenieriaEnDesarrollo.setMargin(new Insets(4, 10, 4, 10));
+    	JLabel txtrIngenieriaEnDesarrollo = new JLabel();
     	txtrIngenieriaEnDesarrollo.setForeground(new Color(0, 0, 160));
+    	txtrIngenieriaEnDesarrollo.setHorizontalAlignment(SwingConstants.CENTER);
     	txtrIngenieriaEnDesarrollo.setText(carrera);
     	txtrIngenieriaEnDesarrollo.setFont(new Font("Segoe UI", Font.BOLD, 18));
-    	txtrIngenieriaEnDesarrollo.setLineWrap(true);
-    	txtrIngenieriaEnDesarrollo.setWrapStyleWord(true);
-    	txtrIngenieriaEnDesarrollo.setEditable(false);
     	txtrIngenieriaEnDesarrollo.setOpaque(false);
     	panel_25.add(txtrIngenieriaEnDesarrollo, BorderLayout.SOUTH);
     	
