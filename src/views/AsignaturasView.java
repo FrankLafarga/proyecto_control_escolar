@@ -51,114 +51,177 @@ public class AsignaturasView extends JPanel {
 	 private AsignaturasController controller=new AsignaturasController();
 	 
     public AsignaturasView(AppView app) {
-    	this.app = app;
-        setLayout(new BorderLayout());
-        setBackground(Color.WHITE);
-
-        JTextField txtBusqueda = new JTextField();
-
-        JPanel panel_16 = new JPanel(new BorderLayout());
-        panel_16.setOpaque(false);
-        panel_16.setPreferredSize(new Dimension(10, 50));
-        add(panel_16, BorderLayout.NORTH);
-
-        JPanel panel_17 = new JPanel(new BorderLayout());
-        panel_17.setOpaque(false);
-        panel_16.add(panel_17, BorderLayout.CENTER);
-
-        JButton btnAgregar = new JButton("+ Agregar asignatura");
-        btnAgregar.setPreferredSize(new Dimension(250, 45));
-        btnAgregar.setBorder(new LineBorder(Color.WHITE, 1, true));
-        btnAgregar.setFocusable(false);
-        btnAgregar.setForeground(Color.WHITE);
-        btnAgregar.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-        btnAgregar.setBackground(new Color(14, 48, 170));
-        btnAgregar.addActionListener(e ->{
-        	agregarAsignatura();
-        });
-        panel_17.add(btnAgregar, BorderLayout.EAST);
-
-        panel_17.add(txtBusqueda, BorderLayout.CENTER);
-
-        JPanel panel_18 = new JPanel();
-        panel_18.setOpaque(false);
-        panel_18.setPreferredSize(new Dimension(15, 0));
-        panel_16.add(panel_18, BorderLayout.EAST);
-
-        JPanel panel_19 = new JPanel();
-        panel_19.setOpaque(false);
-        panel_19.setPreferredSize(new Dimension(15, 0));
-        panel_16.add(panel_19, BorderLayout.WEST);       
-
-        JPanel panel_ESPACIADOR = new JPanel(new BorderLayout());
-        panel_ESPACIADOR.setPreferredSize(new Dimension(15,0));
-        add(panel_ESPACIADOR, BorderLayout.WEST);
-
-        JPanel panel_ESPACIADOR2 = new JPanel(new BorderLayout());
-        panel_ESPACIADOR2.setPreferredSize(new Dimension(15,0));
-        add(panel_ESPACIADOR2, BorderLayout.EAST);
-
-        JPanel panel_ESPACIADOR3 = new JPanel(new BorderLayout());
-        panel_ESPACIADOR3.setPreferredSize(new Dimension(0,20));
-        add(panel_ESPACIADOR3, BorderLayout.SOUTH);
-        
-        JPanel panel_tabla = new JPanel(new BorderLayout());
-        panel_tabla.setBackground(Color.WHITE);
-        add(panel_tabla, BorderLayout.CENTER);
-
-        DefaultTableModel modelo = new DefaultTableModel() {
-            public boolean isCellEditable(int r, int c) { 
-            	return c == 6;
-            
-            }
-        };
-
-        modelo.addColumn("Clave");
-        modelo.addColumn("Nombre");
-        modelo.addColumn("Semestre");
-        modelo.addColumn("Créditos");
-        modelo.addColumn("Grupo");
-        modelo.addColumn("Docente");
-        modelo.addColumn("Acciones");
-
-        controller.cargarTabla(modelo);
-
-        for(int i=0;i<modelo.getRowCount();i++){
-            modelo.setValueAt("", i, 6);
-        }
-
-        tabla = new JTable(modelo);
-        tabla.getColumn("Acciones").setCellRenderer(new PanelBotones());
-        configurarTabla(tabla);
-
-        JScrollPane scroll = new JScrollPane(tabla);
-        panel_tabla.add(scroll, BorderLayout.CENTER);
-        tabla.setFillsViewportHeight(true);
-        scroll.getViewport().setBackground(Color.WHITE);
-
-        SwingUtilities.invokeLater(() -> ajustarColumnas(tabla, scroll, new int[]{10,20,10,10,15,20,15}));
-        
-        tabla.getColumn("Acciones").setCellEditor(
-        	    new PanelBotonesEditor(tabla, new AccionesTabla() {
-
-        	        @Override
-        	        public void ver(int fila) {
-        	        	setTodo(fila);       	        	
-        	        	verAsignatura(fila);
-        	            
-        	        }
-        	        @Override
-        	        public void editar(int fila) {
-        	        	setTodo(fila);       	        	
-        	            editarAsignatura(fila);
-        	        }
-        	        @Override
-        	        public void eliminar(int fila) {
-        	        	eliminarAsignatura(fila);
-        	        }
-        	    })
-        	);
-    } 
+		this.app = app;
+	    setLayout(new BorderLayout());
+	    setBackground(Color.WHITE);
+	
+	    JTextField txtBusqueda = new JTextField("Buscar asignatura...");
+	    txtBusqueda.setForeground(Color.GRAY);
+	    txtBusqueda.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+	
+	    JPanel panel_16 = new JPanel(new BorderLayout());
+	    panel_16.setOpaque(false);
+	    panel_16.setPreferredSize(new Dimension(10, 50));
+	    add(panel_16, BorderLayout.NORTH);
+	
+	    JPanel panel_17 = new JPanel(new BorderLayout());
+	    panel_17.setOpaque(false);
+	    panel_16.add(panel_17, BorderLayout.CENTER);
+	
+	    JButton btnAgregar = new JButton("+ Agregar asignatura");
+	    btnAgregar.setPreferredSize(new Dimension(250, 45));
+	    btnAgregar.setBorder(new LineBorder(Color.WHITE, 1, true));
+	    btnAgregar.setFocusable(false);
+	    btnAgregar.setForeground(Color.WHITE);
+	    btnAgregar.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+	    btnAgregar.setBackground(new Color(14, 48, 170));
+	    btnAgregar.addActionListener(e ->{
+	    	agregarAsignatura();
+	    });
+	    panel_17.add(btnAgregar, BorderLayout.EAST);
+	
+	    panel_17.add(txtBusqueda, BorderLayout.CENTER);
+	
+	    JPanel panel_18 = new JPanel();
+	    panel_18.setOpaque(false);
+	    panel_18.setPreferredSize(new Dimension(15, 0));
+	    panel_16.add(panel_18, BorderLayout.EAST);
+	
+	    JPanel panel_19 = new JPanel();
+	    panel_19.setOpaque(false);
+	    panel_19.setPreferredSize(new Dimension(15, 0));
+	    panel_16.add(panel_19, BorderLayout.WEST);       
+	
+	    JPanel panel_ESPACIADOR = new JPanel(new BorderLayout());
+	    panel_ESPACIADOR.setPreferredSize(new Dimension(15,0));
+	    add(panel_ESPACIADOR, BorderLayout.WEST);
+	
+	    JPanel panel_ESPACIADOR2 = new JPanel(new BorderLayout());
+	    panel_ESPACIADOR2.setPreferredSize(new Dimension(15,0));
+	    add(panel_ESPACIADOR2, BorderLayout.EAST);
+	
+	    JPanel panel_ESPACIADOR3 = new JPanel(new BorderLayout());
+	    panel_ESPACIADOR3.setPreferredSize(new Dimension(0,20));
+	    add(panel_ESPACIADOR3, BorderLayout.SOUTH);
+	    
+	    JPanel panel_tabla = new JPanel(new BorderLayout());
+	    panel_tabla.setBackground(Color.WHITE);
+	    add(panel_tabla, BorderLayout.CENTER);
+	
+	    DefaultTableModel modelo = new DefaultTableModel() {
+	        public boolean isCellEditable(int r, int c) { 
+	        	return c == 6;
+	        
+	        }
+	    };
+	
+	    modelo.addColumn("Clave");
+	    modelo.addColumn("Nombre");
+	    modelo.addColumn("Semestre");
+	    modelo.addColumn("Créditos");
+	    modelo.addColumn("Grupo");
+	    modelo.addColumn("Docente");
+	    modelo.addColumn("Acciones");
+	
+	    controller.cargarTabla(modelo);
+	
+	    for(int i=0;i<modelo.getRowCount();i++){
+	        modelo.setValueAt("", i, 6);
+	    }
+	
+	    tabla = new JTable(modelo);
+	    tabla.getColumn("Acciones").setCellRenderer(new PanelBotones());
+	    configurarTabla(tabla);
+	
+	    javax.swing.table.TableRowSorter<DefaultTableModel> sorter =
+	            new javax.swing.table.TableRowSorter<>(modelo);
+	
+	    tabla.setRowSorter(sorter);
+	
+	    txtBusqueda.addMouseListener(new MouseAdapter() {
+	
+	    	@Override
+	    	public void mouseClicked(MouseEvent e) {
+	
+	    		if(txtBusqueda.getText().equals("Buscar asignatura...")) {
+	    			txtBusqueda.setText("");
+	    			txtBusqueda.setForeground(Color.BLACK);
+	    		}
+	    	}
+	    });
+	
+	    txtBusqueda.addFocusListener(new java.awt.event.FocusAdapter() {
+	
+	    	@Override
+	    	public void focusLost(java.awt.event.FocusEvent e) {
+	
+	    		if(txtBusqueda.getText().trim().isEmpty()) {
+	    			txtBusqueda.setText("Buscar asignatura...");
+	    			txtBusqueda.setForeground(Color.GRAY);
+	    		}
+	    	}
+	    });
+	
+	    txtBusqueda.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+	
+			public void insertUpdate(javax.swing.event.DocumentEvent e) {
+				buscar();
+			}
+	
+			public void removeUpdate(javax.swing.event.DocumentEvent e) {
+				buscar();
+			}
+	
+			public void changedUpdate(javax.swing.event.DocumentEvent e) {
+				buscar();
+			}
+	
+			private void buscar() {
+	
+				String texto = txtBusqueda.getText();
+	
+				if(texto.equals("Buscar asignatura...")) {
+					sorter.setRowFilter(null);
+				}
+				else if(texto.trim().isEmpty()) {
+					sorter.setRowFilter(null);
+				}
+				else {
+					sorter.setRowFilter(
+						javax.swing.RowFilter.regexFilter("(?i)" + texto)
+					);
+				}
+			}
+		});
+	
+	    JScrollPane scroll = new JScrollPane(tabla);
+	    panel_tabla.add(scroll, BorderLayout.CENTER);
+	    tabla.setFillsViewportHeight(true);
+	    scroll.getViewport().setBackground(Color.WHITE);
+	
+	    SwingUtilities.invokeLater(() -> ajustarColumnas(tabla, scroll, new int[]{10,20,10,10,15,20,15}));
+	    
+	    tabla.getColumn("Acciones").setCellEditor(
+	    	    new PanelBotonesEditor(tabla, new AccionesTabla() {
+	
+	    	        @Override
+	    	        public void ver(int fila) {
+	    	        	setTodo(fila);       	        	
+	    	        	verAsignatura(fila);
+	    	            
+	    	        }
+	    	        @Override
+	    	        public void editar(int fila) {
+	    	        	setTodo(fila);       	        	
+	    	            editarAsignatura(fila);
+	    	        }
+	    	        @Override
+	    	        public void eliminar(int fila) {
+	    	        	eliminarAsignatura(fila);
+	    	        }
+	    	    })
+	    	);
+    }
     
     public void verAsignatura(int fila) {
 
