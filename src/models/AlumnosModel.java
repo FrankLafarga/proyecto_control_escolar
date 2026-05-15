@@ -116,7 +116,7 @@ public class AlumnosModel {
         return alumno;
     }
     
-	 public boolean addAlumno(
+	public boolean addAlumno(
 	            String matricula,
 	            int semestre,
 	            String carrera,
@@ -195,5 +195,84 @@ public class AlumnosModel {
 	
 	        return false;
     }
+	 
+	public boolean updateAlumno(
+		        String matriculaOriginal,
+		        String matricula,
+		        int semestre,
+		        String carrera,
+		        String genero,
+		        String nombre,
+		        String apellidoPat,
+		        String apellidoMat,
+		        String correo,
+		        String telefono,
+		        String fecha,
+		        double promedio,
+		        String estatus,
+		        int grupo
+		) {
+
+		    String query = """
+		            UPDATE ALUMNOS SET
+		                matricula = ?,
+		                semestre = ?,
+		                carrera = ?,
+		                genero = ?,
+		                nombre = ?,
+		                apellido_paterno = ?,
+		                apellido_materno = ?,
+		                correo = ?,
+		                telefono = ?,
+		                fecha_nacimiento = ?,
+		                promedio = ?,
+		                estatus = ?,
+		                id_grupo = ?
+		            WHERE matricula = ?
+		            """;
+
+		    Connection conn = null;
+
+		    try {
+
+		        Class.forName("com.mysql.cj.jdbc.Driver");
+
+		        conn = DriverManager.getConnection(
+		                URL,
+		                USER,
+		                PASS
+		        );
+
+		        PreparedStatement ps = conn.prepareStatement(query);
+
+		        ps.setString(1, matricula);
+		        ps.setInt(2, semestre);
+		        ps.setString(3, carrera);
+		        ps.setString(4, genero);
+		        ps.setString(5, nombre);
+		        ps.setString(6, apellidoPat);
+		        ps.setString(7, apellidoMat);
+		        ps.setString(8, correo);
+		        ps.setString(9, telefono);
+		        ps.setDate(10, java.sql.Date.valueOf(fecha));
+		        ps.setDouble(11, promedio);
+		        ps.setString(12, estatus);
+		        ps.setInt(13, grupo);
+
+		        ps.setString(14, matriculaOriginal);
+
+		        int rowsAffected = ps.executeUpdate();
+
+		        ps.close();
+		        conn.close();
+
+		        return rowsAffected > 0;
+
+		    } catch(Exception e) {
+		        e.printStackTrace();
+		    }
+
+		    return false;
+	}
 
 }
