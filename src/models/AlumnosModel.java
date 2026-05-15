@@ -53,13 +53,16 @@ public class AlumnosModel {
 
         return lista;
     }
-    
+
     public Object[] verAlumno(String matricula) {
 
         Object[] alumno = null;
 
         String sql = """
             SELECT 
+                a.nombre,
+                a.apellido_paterno,
+                a.apellido_materno,
                 CONCAT(a.nombre, ' ', a.apellido_paterno, ' ', a.apellido_materno) AS nombre_completo,
                 a.matricula,
                 a.semestre,
@@ -69,7 +72,8 @@ public class AlumnosModel {
                 a.fecha_nacimiento,
                 a.correo,
                 a.genero,
-                a.telefono
+                a.telefono,
+                a.estatus
             FROM ALUMNOS a
             LEFT JOIN GRUPOS g ON a.id_grupo = g.id_grupo
             WHERE a.matricula = ?
@@ -87,6 +91,9 @@ public class AlumnosModel {
                 if (rs.next()) {
 
                     alumno = new Object[] {
+                        rs.getString("nombre"),
+                        rs.getString("apellido_paterno"),
+                        rs.getString("apellido_materno"),
                         rs.getString("nombre_completo"),
                         rs.getString("matricula"),
                         rs.getString("semestre"),
@@ -96,7 +103,8 @@ public class AlumnosModel {
                         rs.getString("fecha_nacimiento"),
                         rs.getString("correo"),
                         rs.getString("genero"),
-                        rs.getString("telefono")
+                        rs.getString("telefono"),
+                        rs.getString("estatus")
                     };
                 }
             }
@@ -107,7 +115,5 @@ public class AlumnosModel {
 
         return alumno;
     }
-    
-    
-    
+
 }

@@ -42,7 +42,11 @@ public class AlumnosView extends JPanel {
 	
 	
 	//variables para ver alumno
-	private String nombre;
+	private String nombres;
+	private String apellidoPat;
+	private String apellidoMat;
+
+	private String nombre_completo;
 	private String matricula;
 	private String semestre;
 	private String grupo;
@@ -53,7 +57,8 @@ public class AlumnosView extends JPanel {
 	private String correo;
 	private String genero;
 	private String telefono;
-	
+    private String estatus;
+
 	private AlumnosController controller = new AlumnosController();
 	
 	
@@ -147,27 +152,13 @@ public class AlumnosView extends JPanel {
         	    new PanelBotonesEditor(tabla, new AccionesTabla() {
 
         	    	@Override
-        	    	public void ver(int fila) {
-
-        	    		String matriculaAlumno = tabla.getValueAt(fila, 0).toString();
-        	    		controller.verAlumno(matriculaAlumno);
-
-        	    		nombre = controller.getNombre();
-        	    		matricula = controller.getMatricula();
-        	    		semestre = controller.getSemestre();
-        	    		grupo = controller.getGrupo();
-        	    		promedio = controller.getPromedio();
-        	    		carrera = controller.getCarrera();
-
-        	    		fecha = controller.getFecha();
-        	    		correo = controller.getCorreo();
-        	    		genero = controller.getGenero();
-        	    		telefono = controller.getTelefono();
-
+        	    	public void ver(int fila) {     	    
+        	    		setTodo(fila);
         	    		verAlumno(fila);
         	    	}
         	        @Override
         	        public void editar(int fila) {
+        	        	setTodo(fila);
         	            editarAlumno(fila);
         	        }
         	        @Override
@@ -217,7 +208,7 @@ public class AlumnosView extends JPanel {
     	panel_11.setBackground(new Color(28,57,152));
     	panel_centro.add(panel_11, BorderLayout.NORTH);
     	
-    	JLabel lblNewLabel_6 = new JLabel(nombre);
+    	JLabel lblNewLabel_6 = new JLabel(nombre_completo);
     	lblNewLabel_6.setForeground(new Color(255, 255, 255));
     	lblNewLabel_6.setFont(new Font("Times New Roman", Font.PLAIN, 40));
     	
@@ -632,15 +623,15 @@ public class AlumnosView extends JPanel {
 	
 	    JTextField txtClave = new JTextField();
 	    txtClave.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-	    txtClave.setText("D11");
+	    txtClave.setText(matricula);
 	
 	    JTextField txtGrado = new JTextField();
 	    txtGrado.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-	    txtGrado.setText("Licenciatura");
+	    txtGrado.setText(semestre);
 	
 	    JTextField txtGrupo = new JTextField();
 	    txtGrupo.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-	    txtGrupo.setText("1A");
+	    txtGrupo.setText(grupo);
 	
 	    panelCentro.add(txtClave);
 	    panelCentro.add(txtGrado);
@@ -659,11 +650,11 @@ public class AlumnosView extends JPanel {
 	
 	    JTextField txtEstatus = new JTextField();
 	    txtEstatus.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-	    txtEstatus.setText("Activo");
+	    txtEstatus.setText(promedio+"");
 	
 	    JTextField txtArea = new JTextField();
 	    txtArea.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-	    txtArea.setText("Matematicas");
+	    txtArea.setText(estatus);
 	
 	    panelCentro.add(txtEstatus);
 	    panelCentro.add(txtArea);
@@ -692,15 +683,15 @@ public class AlumnosView extends JPanel {
 	
 	    JTextField txtNombre = new JTextField();
 	    txtNombre.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-	    txtNombre.setText("Juan");
+	    txtNombre.setText(nombres);
 	
 	    JTextField txtPaterno = new JTextField();
 	    txtPaterno.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-	    txtPaterno.setText("Perez");
+	    txtPaterno.setText(apellidoPat);
 	
 	    JTextField txtMaterno = new JTextField();
 	    txtMaterno.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-	    txtMaterno.setText("Silva");
+	    txtMaterno.setText(apellidoMat);
 	
 	    panelCentro.add(txtNombre);
 	    panelCentro.add(txtPaterno);
@@ -721,15 +712,15 @@ public class AlumnosView extends JPanel {
 	
 	    JTextField txtEmail = new JTextField();
 	    txtEmail.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-	    txtEmail.setText("juanp_24@educadex.com");
+	    txtEmail.setText(correo);
 	
 	    JTextField txtTelefono = new JTextField();
 	    txtTelefono.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-	    txtTelefono.setText("6124568412");
+	    txtTelefono.setText(telefono);
 	
 	    JTextField txtFecha = new JTextField();
 	    txtFecha.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-	    txtFecha.setText("10/02/1998");
+	    txtFecha.setText(fecha);
 	
 	    panelCentro.add(txtEmail);
 	    panelCentro.add(txtTelefono);
@@ -788,7 +779,7 @@ public class AlumnosView extends JPanel {
 	                valido = false;
 	            }
 	
-	            if(txtGrado.getText().trim().isEmpty() || txtGrado.getText().matches(".*\\d.*")) {
+	            if(txtGrado.getText().trim().isEmpty()) {
 	                txtGrado.setBorder(bordeRojo);
 	                valido = false;
 	            }
@@ -798,7 +789,7 @@ public class AlumnosView extends JPanel {
 	                valido = false;
 	            }
 	
-	            if(txtEstatus.getText().trim().isEmpty() || txtEstatus.getText().matches(".*\\d.*")) {
+	            if(txtEstatus.getText().trim().isEmpty()) {
 	                txtEstatus.setBorder(bordeRojo);
 	                valido = false;
 	            }
@@ -861,25 +852,13 @@ public class AlumnosView extends JPanel {
 
 		String nombreAlumno = tabla.getValueAt(fila, 1).toString();
         
-        int confirm = JOptionPane.showConfirmDialog(
-                null,
-                "¿Estás seguro de eliminar el alumno " + nombreAlumno + "?",
-                "Confirmar eliminación",
-                JOptionPane.YES_NO_OPTION
-        );
+        int confirm = JOptionPane.showConfirmDialog(null,"¿Estás seguro de eliminar el alumno " + nombreAlumno + "?","Confirmar eliminación",JOptionPane.YES_NO_OPTION);
         
         if (confirm == JOptionPane.YES_OPTION) {
-        	JOptionPane.showMessageDialog(
-        			null,
-        			"Se eliminó el alumno: " + nombreAlumno,
-        			"Alumno eliminado",
-        			JOptionPane.INFORMATION_MESSAGE
-        			
-        			);
+        	JOptionPane.showMessageDialog(null,"Se eliminó el alumno: " + nombreAlumno,"Alumno eliminado",JOptionPane.INFORMATION_MESSAGE);
         	
         } else if (confirm == JOptionPane.NO_OPTION) {
         	System.out.println("Accion cancelada");
-        	
         }
     }
     
@@ -1163,6 +1142,28 @@ public class AlumnosView extends JPanel {
         app.cambiarVista(contenedor, "Alumno", "Agregar alumno");
     }
     
+    
+    //este metodo es para mostrtar los datos de el alumno al que diste click y funciona en ver y en editar alumnop
+    private void setTodo(int fila) {
+    	String matriculaAlumno = tabla.getValueAt(fila, 0).toString();
+		controller.verAlumno(matriculaAlumno);
+
+		nombres = controller.getNombres();
+		apellidoPat = controller.getApellidoPat();
+		apellidoMat = controller.getApellidoMat();
+		nombre_completo = controller.getNombre_completo();
+		matricula = controller.getMatricula();
+		semestre = controller.getSemestre();
+		grupo = controller.getGrupo();
+		promedio = controller.getPromedio();
+		carrera = controller.getCarrera();
+
+		fecha = controller.getFecha();
+		correo = controller.getCorreo();
+		genero = controller.getGenero();
+		telefono = controller.getTelefono();
+		estatus = controller.getEstatus();
+    }
     
     
     

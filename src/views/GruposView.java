@@ -41,6 +41,13 @@ public class GruposView extends JPanel {
 	private JTable tabla;
 	private Color azul_principal = new Color(14, 48, 170);
 
+	private int idGrupo;
+    private String nombre;
+    private String turno;
+    private int capacidad;
+    private int docentes;
+    
+    GruposController controller = new GruposController();
 
     public GruposView(AppView app) {
     	this.app = app;
@@ -114,7 +121,7 @@ public class GruposView extends JPanel {
         modelo.addColumn("Docentes");
         modelo.addColumn("Acciones");
 
-        new GruposController().cargarTabla(modelo);
+        controller.cargarTabla(modelo);
 
         for(int i=0;i<modelo.getRowCount();i++){
             modelo.setValueAt("", i, 5);
@@ -136,10 +143,12 @@ public class GruposView extends JPanel {
 
         	        @Override
         	        public void ver(int fila) {
+        	        	setTodo(fila);
         	            verGrupos(fila);
         	        }
         	        @Override
         	        public void editar(int fila) {
+        	        	setTodo(fila);
         	            editarGrupo(fila);
         	        }
         	        @Override
@@ -232,32 +241,26 @@ public class GruposView extends JPanel {
 	        new LineBorder(new Color(200,200,200), 2, true),
 	        BorderFactory.createEmptyBorder(20, 30, 20, 30)
 	    ));
-	    
-	    GruposController controller = new GruposController();
-	    
-	    String nom = tabla.getValueAt(fila, 0).toString();
-
-	    controller.cargarGrupo(nom);
-
-	    JLabel nombre = new JLabel("Grupo: " + controller.getNombre());
+	    	    	    
+	    JLabel nombre = new JLabel("Grupo: " + this.nombre);
 	    nombre.setFont(new Font("Segoe UI", Font.BOLD, 26));
 	    nombre.setAlignmentX(Component.LEFT_ALIGNMENT);
 	    nombre.setHorizontalAlignment(SwingConstants.LEFT);
 
 	    JLabel turno = new JLabel(
-	        "Turno: " + controller.getTurno()
+	        "Turno: " + this.turno
 	    );
 
 	    JLabel capacidad = new JLabel(
-	        "Capacidad: " + controller.getCapacidad()
+	        "Capacidad: " + this.capacidad
 	    );
 
 	    JLabel docentes = new JLabel(
-	        "Docentes: " + controller.getDocentes()
+	        "Docentes: " + this.docentes
 	    );
 	    
 	    JLabel idGrupo = new JLabel(
-	    	    "ID Grupo: " + controller.getIdGrupo()
+	    	    "ID Grupo: " + this.idGrupo
 	    	);
 	
 	    JLabel[] datos = {idGrupo, turno, capacidad, docentes};
@@ -380,7 +383,7 @@ public class GruposView extends JPanel {
     JLabel lblSemestre = new JLabel("Semestre");
     lblSemestre.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 
-    JTextField txtGrupo = new JTextField("1A");
+    JTextField txtGrupo = new JTextField(nombre);
     txtGrupo.setFont(new Font("Segoe UI", Font.PLAIN, 18));
     txtGrupo.setPreferredSize(new Dimension(200, 45));
 
@@ -408,10 +411,18 @@ public class GruposView extends JPanel {
     comboTurno.setFont(new Font("Segoe UI", Font.PLAIN, 18));
     comboTurno.setPreferredSize(new Dimension(200, 45));
 
-    comboTurno.addItem("Matutino");
-    comboTurno.addItem("Vespertino");
+    if(turno.equals("MATUTINO")) {	
+    	comboTurno.addItem(turno);
+    	comboTurno.addItem("VESPERTINO");
+    }
+    else{comboTurno.addItem(turno);
+    	comboTurno.addItem("MATUTINO");
+    }
+    
+    
 
-    JTextField txtCapacidad = new JTextField("40");
+    JTextField txtCapacidad = new JTextField();
+    txtCapacidad.setText(capacidad+"");
     txtCapacidad.setFont(new Font("Segoe UI", Font.PLAIN, 18));
     txtCapacidad.setPreferredSize(new Dimension(200, 45));
 
@@ -737,5 +748,15 @@ public class GruposView extends JPanel {
             "Grupo",
             "Gestion integral de grupos en el sistema"
         );
+    }
+    
+    private void setTodo(int fila) {
+    	String nom = tabla.getValueAt(fila, 0).toString();
+	    controller.cargarGrupo(nom);
+	    idGrupo=controller.getIdGrupo();
+	    nombre=controller.getNombre();
+	    turno=controller.getTurno();
+	    capacidad=controller.getCapacidad();
+	    docentes=controller.getDocentes();
     }
 }

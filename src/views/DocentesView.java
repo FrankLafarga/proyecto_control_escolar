@@ -39,7 +39,7 @@ public class DocentesView extends JPanel {
 	
 	private DocentesController controller=new DocentesController();
 	
-	private String nombre;
+	private String nombre_completo;
 	private String clave;
 	private String correo;
 	private String telefono;
@@ -49,6 +49,10 @@ public class DocentesView extends JPanel {
 	private String estatus;
 	private String avatar;
 
+	private String nombre;
+	private String apellidoPat;
+	private String apellidoMat;
+	
     public DocentesView(AppView app) {
     	this.app = app;
         setLayout(new BorderLayout());
@@ -135,25 +139,13 @@ public class DocentesView extends JPanel {
         	    new PanelBotonesEditor(tabla, new AccionesTabla() {
 
         	        @Override
-        	        public void ver(int fila) {
-        	        	clave = tabla.getValueAt(fila,0).toString();
-
-        	        	controller.verDocente(clave);
-
-        	        	nombre = controller.getNombre();
-        	        	clave = controller.getClave();
-        	        	correo = controller.getCorreo();
-        	        	telefono = controller.getTelefono();
-        	        	fecha = controller.getFecha();
-        	        	grado = controller.getGrado();
-        	        	area = controller.getArea();
-        	        	estatus = controller.getEstatus();
-        	        	avatar = controller.getAvatar();
-
+        	        public void ver(int fila) {        	       
+        	        	setTodo(fila);
         	        	verDocente(fila);
         	        }
         	        @Override
         	        public void editar(int fila) {
+        	        	setTodo(fila);
         	            editarDocente(fila);
         	        }
         	        @Override
@@ -255,7 +247,7 @@ public class DocentesView extends JPanel {
     	contenido.setLayout(new BoxLayout(contenido, BoxLayout.Y_AXIS));
     	contenido.setOpaque(false);
 
-    	JLabel nombreDocente = new JLabel(nombre);
+    	JLabel nombreDocente = new JLabel(nombre_completo);
     	nombreDocente.setFont(new Font("Segoe UI", Font.BOLD, 26));
     	nombreDocente.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -387,11 +379,11 @@ public class DocentesView extends JPanel {
 	
 	    JTextField txtClave = new JTextField();
 	    txtClave.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-	    txtClave.setText("D11");
+	    txtClave.setText(clave);
 	
 	    JTextField txtGrado = new JTextField();
 	    txtGrado.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-	    txtGrado.setText("Licenciatura");
+	    txtGrado.setText(grado);
 	
 	    JLabel imagen = new JLabel("");
 	    imagen.setHorizontalAlignment(SwingConstants.CENTER);
@@ -413,11 +405,11 @@ public class DocentesView extends JPanel {
 	
 	    JTextField txtEstatus = new JTextField();
 	    txtEstatus.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-	    txtEstatus.setText("Activo");
+	    txtEstatus.setText(estatus);
 	
 	    JTextField txtArea = new JTextField();
 	    txtArea.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-	    txtArea.setText("Matematicas");
+	    txtArea.setText(area);
 	
 	    panelCentro.add(txtEstatus);
 	    panelCentro.add(txtArea);
@@ -445,15 +437,15 @@ public class DocentesView extends JPanel {
 	
 	    JTextField txtNombre = new JTextField();
 	    txtNombre.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-	    txtNombre.setText("Juan");
+	    txtNombre.setText(nombre);
 	
 	    JTextField txtPaterno = new JTextField();
 	    txtPaterno.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-	    txtPaterno.setText("Perez");
+	    txtPaterno.setText(apellidoPat);
 	
 	    JTextField txtMaterno = new JTextField();
 	    txtMaterno.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-	    txtMaterno.setText("Silva");
+	    txtMaterno.setText(apellidoMat);
 	
 	    panelCentro.add(txtNombre);
 	    panelCentro.add(txtPaterno);
@@ -474,15 +466,15 @@ public class DocentesView extends JPanel {
 	
 	    JTextField txtEmail = new JTextField();
 	    txtEmail.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-	    txtEmail.setText("juanp_24@educadex.com");
+	    txtEmail.setText(correo);
 	
 	    JTextField txtTelefono = new JTextField();
 	    txtTelefono.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-	    txtTelefono.setText("6124568412");
+	    txtTelefono.setText(telefono);
 	
 	    JTextField txtFecha = new JTextField();
 	    txtFecha.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-	    txtFecha.setText("10/02/1998");
+	    txtFecha.setText(fecha);
 	
 	    panelCentro.add(txtEmail);
 	    panelCentro.add(txtTelefono);
@@ -916,5 +908,23 @@ public class DocentesView extends JPanel {
 	        "Docente",
 	        "Crear docente"
 	    );
+	}
+	
+	private void setTodo(int fila) {
+		clave = tabla.getValueAt(fila,0).toString();
+		controller.verDocente(clave);
+		nombre_completo = controller.getNombre_completo();
+    	correo = controller.getCorreo();
+    	telefono = controller.getTelefono();
+    	fecha = controller.getFecha();
+    	grado = controller.getGrado();
+    	area = controller.getArea();
+    	estatus = controller.getEstatus();
+    	avatar = controller.getAvatar();
+    	nombre=controller.getNombre();
+    	apellidoPat=controller.getApellidoPat();
+    	apellidoMat=controller.getApellidoMat();
+
+    	    	
 	}
 }

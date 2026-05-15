@@ -5,7 +5,7 @@ import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
 public class DocentesController {
-	private String nombre;
+	private String nombre_completo;
 	private String clave;
 	private String correo;
 	private String telefono;
@@ -15,6 +15,9 @@ public class DocentesController {
 	private String estatus;
 	private String avatar;
     private DocentesModel model;
+	private String nombre;
+	private String apellidoPat;
+	private String apellidoMat;
 
     public DocentesController() {
         model = new DocentesModel();
@@ -37,7 +40,7 @@ public class DocentesController {
 
         if(datos != null) {
 
-            nombre = (String) datos[0];
+        	nombre_completo = (String) datos[0];
             this.clave = (String) datos[1];
             correo = (String) datos[2];
             telefono = (String) datos[3];
@@ -46,11 +49,14 @@ public class DocentesController {
             area = (String) datos[6];
             estatus = (String) datos[7];
             avatar = (String) datos[8];
+            nombre = (String) datos[9];
+            apellidoPat = (String) datos[10];
+            apellidoMat = (String) datos[11];
         }
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombre_completo() {
+        return nombre_completo;
     }
 
     public String getClave() {
@@ -84,6 +90,18 @@ public class DocentesController {
     public String getAvatar() {
         return avatar;
     }
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public String getApellidoPat() {
+		return apellidoPat;
+	}
+
+	public String getApellidoMat() {
+		return apellidoMat;
+	}
     
     
     

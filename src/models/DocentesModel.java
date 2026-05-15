@@ -67,7 +67,10 @@ public class DocentesModel {
                 grado_estudios,
                 area_estudios,
                 estatus,
-                avatar
+                avatar,
+                nombre,
+                apellido_paterno,
+                apellido_materno
             FROM DOCENTES
             WHERE clave=?
         """;
@@ -93,7 +96,10 @@ public class DocentesModel {
                         rs.getString("grado_estudios"),
                         rs.getString("area_estudios"),
                         rs.getString("estatus"),
-                        rs.getString("avatar")
+                        rs.getString("avatar"),
+                        rs.getString("nombre"),
+                        rs.getString("apellido_paterno"),
+                        rs.getString("apellido_materno")
                     };
                 }
             }

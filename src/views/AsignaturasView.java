@@ -143,22 +143,13 @@ public class AsignaturasView extends JPanel {
 
         	        @Override
         	        public void ver(int fila) {
-        	        	
-        	        	clave = tabla.getValueAt(fila,0).toString();
-
-        	        	controller.verAsignatura(clave);
-
-        	        	nombre = controller.getNombre();      	        	
-        	        	semestre = controller.getSemestre();
-        	        	creditos = controller.getCreditos();
-        	        	grupo = controller.getGrupo();
-        	        	docente = controller.getDocente();
-
+        	        	setTodo(fila);       	        	
         	        	verAsignatura(fila);
         	            
         	        }
         	        @Override
         	        public void editar(int fila) {
+        	        	setTodo(fila);       	        	
         	            editarAsignatura(fila);
         	        }
         	        @Override
@@ -357,19 +348,15 @@ public class AsignaturasView extends JPanel {
     JLabel lblAsignatura = new JLabel("Nombre de la asignatura");
     lblAsignatura.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 
-    JTextField txtGrupo = new JTextField("MAT101");
+    JTextField txtGrupo = new JTextField(clave);
     txtGrupo.setFont(new Font("Segoe UI", Font.PLAIN, 18));
     txtGrupo.setPreferredSize(new Dimension(200, 45));
+    
+    JTextField txtAsignatura = new JTextField(nombre);
+    txtAsignatura.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+    txtAsignatura.setPreferredSize(new Dimension(200, 45));
 
-    JComboBox<String> comboAsignatura = new JComboBox<>();
-    comboAsignatura.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-    comboAsignatura.setPreferredSize(new Dimension(200, 45));
-
-    comboAsignatura.addItem("Programación");
-    comboAsignatura.addItem("Métodos Numericos");
-    comboAsignatura.addItem("Base de datos");
-    comboAsignatura.addItem("Estructura de Datos");
-    comboAsignatura.addItem("Paradigmas de la Programación");
+   
 
     JLabel lblSemestre = new JLabel("Semestre");
     lblSemestre.setFont(new Font("Segoe UI", Font.PLAIN, 20));
@@ -391,7 +378,7 @@ public class AsignaturasView extends JPanel {
     comboSemestre.addItem("8vo semestre");
     comboSemestre.addItem("9no semestre");
 
-    JTextField txtCreditos = new JTextField("6");
+    JTextField txtCreditos = new JTextField(creditos+"");
     txtCreditos.setFont(new Font("Segoe UI", Font.PLAIN, 18));
     txtCreditos.setPreferredSize(new Dimension(200, 45));
 
@@ -407,7 +394,7 @@ public class AsignaturasView extends JPanel {
     tarjeta.add(txtGrupo, gbc);
 
     gbc.gridx = 1;
-    tarjeta.add(comboAsignatura, gbc);
+    tarjeta.add(txtAsignatura, gbc);
 
     gbc.gridx = 0;
     gbc.gridy = 2;
@@ -707,4 +694,16 @@ public class AsignaturasView extends JPanel {
             tabla.getColumnModel().getColumn(i).setPreferredWidth((w*p[i])/100);
         }
     }
+    
+    private void setTodo(int fila) {
+    	clave = tabla.getValueAt(fila,0).toString();
+    	controller.verAsignatura(clave);
+    	
+    	nombre = controller.getNombre();      	        	
+    	semestre = controller.getSemestre();
+    	creditos = controller.getCreditos();
+    	grupo = controller.getGrupo();
+    	docente = controller.getDocente();
+    }
+   
 }
