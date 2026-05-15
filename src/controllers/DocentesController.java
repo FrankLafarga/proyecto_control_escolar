@@ -54,6 +54,35 @@ public class DocentesController {
             apellidoMat = (String) datos[11];
         }
     }
+    
+    public boolean addDocente(
+    		String clave,
+    		String nombre,
+    		String apellidoPat,
+    		String apellidoMat,
+    		String correo,
+    		String telefono,
+    		String fecha,
+    		String grado,
+    		String area,
+    		String estatus
+    ) {
+    	
+    	boolean flag = model.make(
+    			clave,
+    			nombre,
+    			apellidoPat,
+    			apellidoMat,
+    			correo,
+    			telefono,
+    			fecha,
+    			grado,
+    			area,
+    			estatus
+    	);
+    	
+    	return flag;
+    }
 
     public String getNombre_completo() {
         return nombre_completo;

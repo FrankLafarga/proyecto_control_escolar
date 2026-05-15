@@ -65,6 +65,39 @@ public class AlumnosController {
             estatus = alumno[13].toString();
         }
     }
+    
+    public boolean addAlumno(
+            String matricula,
+            int semestre,
+            String carrera,
+            String genero,
+            String nombre,
+            String apellidoPat,
+            String apellidoMat,
+            String correo,
+            String telefono,
+            String fecha,
+            double promedio,
+            String estatus,
+            int grupo
+    ) {
+
+        return model.addAlumno(
+                matricula,
+                semestre,
+                carrera,
+                genero,
+                nombre,
+                apellidoPat,
+                apellidoMat,
+                correo,
+                telefono,
+                fecha,
+                promedio,
+                estatus,
+                grupo
+        );
+    }
 
     public String getNombres() {
         return nombres;

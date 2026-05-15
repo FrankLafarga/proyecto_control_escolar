@@ -109,10 +109,76 @@ public class DocentesModel {
         }
 
         return docente;
+    } 
+    
+    public boolean make(
+    		String clave,
+    		String nombre,
+    		String apellidoPat,
+    		String apellidoMat,
+    		String correo,
+    		String telefono,
+    		String fecha,
+    		String grado,
+    		String area,
+    		String estatus
+    ) {
+    	
+    	String query = """
+    			INSERT INTO DOCENTES(
+    				clave,
+    				nombre,
+    				apellido_paterno,
+    				apellido_materno,
+    				correo,
+    				telefono,
+    				fecha_nacimiento,
+    				grado_estudios,
+    				area_estudios,
+    				estatus
+    			)
+    			VALUES(?,?,?,?,?,?,?,?,?,?)
+    			""";
+    	
+    	Connection conn = null;
+    	
+    	try {
+    		
+    		Class.forName("com.mysql.cj.jdbc.Driver");
+    		
+    		conn = DriverManager.getConnection(
+    				"jdbc:mysql://localhost:3306/educadex",
+    				"root",
+    				"educadex2026"
+    		);
+    		
+    		PreparedStatement ps = conn.prepareStatement(query);
+    		
+    		ps.setString(1, clave);
+    		ps.setString(2, nombre);
+    		ps.setString(3, apellidoPat);
+    		ps.setString(4, apellidoMat);
+    		ps.setString(5, correo);
+    		ps.setString(6, telefono);
+    		ps.setString(7, fecha);
+    		ps.setString(8, grado);
+    		ps.setString(9, area);
+    		ps.setString(10, estatus);
+    		
+    		int rowsAffected = ps.executeUpdate();
+    		
+    		if(rowsAffected > 0) {
+    			
+    			ps.close();
+    			conn.close();
+    			
+    			return true;
+    		}
+    		
+    	}catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	
+    	return false;
     }
-    
-    
-    
-    
-    
 }

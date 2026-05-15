@@ -17,6 +17,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -31,7 +32,7 @@ import javax.swing.table.DefaultTableModel;
 
 import constructor_ventanas.App;
 import controllers.DocentesController;
-
+							
 public class DocentesView extends JPanel {
 	private AppView app;
 	private JTable tabla;
@@ -720,14 +721,29 @@ public class DocentesView extends JPanel {
 	    panelCentro.add(lblArea);
 	    panelCentro.add(new JLabel(""));
 	
-	    JTextField txtEstatus = new JTextField();
-	    txtEstatus.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    String[] estatuses = {
+	    		"ACTIVO",
+	    		"INACTIVO"
+	    };
+
+	    JComboBox<String> cbEstatus = new JComboBox<>(estatuses);
+	    cbEstatus.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 	
-	    JTextField txtArea = new JTextField();
-	    txtArea.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    String[] areas = {
+	    	    "Matematicas",
+	    	    "Fisica",
+	    	    "Quimica",
+	    	    "Historia",
+	    	    "Programacion",
+	    	    "Biologia",
+	    	    "Ingles"
+	    	};
+
+	    	JComboBox<String> cbArea = new JComboBox<>(areas);
+	    	cbArea.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 	
-	    panelCentro.add(txtEstatus);
-	    panelCentro.add(txtArea);
+	    panelCentro.add(cbEstatus);
+	    panelCentro.add(cbArea);
 	    panelCentro.add(new JLabel(""));
 	
 	    JLabel subtitulo2 = new JLabel("Información personal");
@@ -827,8 +843,8 @@ public class DocentesView extends JPanel {
 	
 	            txtClave.setBorder(bordeNormal);
 	            txtGrado.setBorder(bordeNormal);
-	            txtEstatus.setBorder(bordeNormal);
-	            txtArea.setBorder(bordeNormal);
+	            cbEstatus.setBorder(bordeNormal);
+	            cbArea.setBorder(bordeNormal);
 	            txtNombre.setBorder(bordeNormal);
 	            txtPaterno.setBorder(bordeNormal);
 	            txtMaterno.setBorder(bordeNormal);
@@ -845,16 +861,6 @@ public class DocentesView extends JPanel {
 	
 	            if(txtGrado.getText().trim().isEmpty() || txtGrado.getText().matches(".*\\d.*")) {
 	                txtGrado.setBorder(bordeRojo);
-	                valido = false;
-	            }
-	
-	            if(txtEstatus.getText().trim().isEmpty() || txtEstatus.getText().matches(".*\\d.*")) {
-	                txtEstatus.setBorder(bordeRojo);
-	                valido = false;
-	            }
-	
-	            if(txtArea.getText().trim().isEmpty() || txtArea.getText().matches(".*\\d.*")) {
-	                txtArea.setBorder(bordeRojo);
 	                valido = false;
 	            }
 	
@@ -889,7 +895,46 @@ public class DocentesView extends JPanel {
 	            }
 	
 	            if(valido) {
-	                System.out.println("Formulario válido");
+	            	
+	            	boolean agregado = controller.addDocente(
+	            			
+	            			txtClave.getText().trim(),
+	            			txtNombre.getText().trim(),
+	            			txtPaterno.getText().trim(),
+	            			txtMaterno.getText().trim(),
+	            			txtEmail.getText().trim(),
+	            			txtTelefono.getText().trim(),
+	            			txtFecha.getText().trim(),
+	            			txtGrado.getText().trim(),
+	            			cbEstatus.getSelectedItem().toString(),
+	            			cbArea.getSelectedItem().toString()
+	            	);
+	            	
+	            	if(agregado) {
+	            		
+	            		JOptionPane.showMessageDialog(
+	            				null,
+	            				"Docente agregado correctamente",
+	            				"Exito",
+	            				JOptionPane.INFORMATION_MESSAGE
+	            		);
+	            		
+	            		app.cambiarVista(
+	            				new DocentesView(app),
+	            				"Docentes",
+	            				"Gestion integral de docentes en el sistema"
+	            		);
+	            		
+	            	}
+	            	else {
+	            		
+	            		JOptionPane.showMessageDialog(
+	            				null,
+	            				"No se pudo agregar el docente",
+	            				"Error",
+	            				JOptionPane.ERROR_MESSAGE
+	            		);
+	            	}
 	            }
 	        }
 	    });
