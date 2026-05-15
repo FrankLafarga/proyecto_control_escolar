@@ -10,6 +10,8 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -29,9 +31,13 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.RowFilter;
 import javax.swing.border.LineBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import constructor_ventanas.App;
 import controllers.AlumnosController;
@@ -69,7 +75,29 @@ public class AlumnosView extends JPanel {
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
-        JTextField txtBusqueda = new JTextField();
+        JTextField txtBusqueda = new JTextField("Buscar alumno...");
+        txtBusqueda.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        txtBusqueda.setForeground(Color.GRAY);
+        txtBusqueda.setBorder(new LineBorder(new Color(200,200,200),1,true));
+        
+        txtBusqueda.addFocusListener(new FocusAdapter() {
+
+        	@Override
+        	public void focusGained(FocusEvent e) {
+        		if(txtBusqueda.getText().equals("Buscar alumno...")) {
+        			txtBusqueda.setText("");
+        			txtBusqueda.setForeground(Color.BLACK);
+        		}
+        	}
+
+        	@Override
+        	public void focusLost(FocusEvent e) {
+        		if(txtBusqueda.getText().trim().isEmpty()) {
+        			txtBusqueda.setText("Buscar alumno...");
+        			txtBusqueda.setForeground(Color.GRAY);
+        		}
+        	}
+        });
 
         JPanel panel_16 = new JPanel(new BorderLayout());
         panel_16.setOpaque(false);
@@ -138,6 +166,38 @@ public class AlumnosView extends JPanel {
         controller.cargarTabla(modelo);
 
         tabla = new JTable(modelo);
+        
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelo);
+        tabla.setRowSorter(sorter);
+        
+        txtBusqueda.getDocument().addDocumentListener(new DocumentListener() {
+
+        	public void insertUpdate(DocumentEvent e) {
+        		filtrar();
+        	}
+
+        	public void removeUpdate(DocumentEvent e) {
+        		filtrar();
+        	}
+
+        	public void changedUpdate(DocumentEvent e) {
+        		filtrar();
+        	}
+
+        	private void filtrar() {
+
+        		String texto = txtBusqueda.getText();
+
+        		if(texto.equals("Buscar alumno...") || texto.trim().isEmpty()) {
+
+        			sorter.setRowFilter(null);
+
+        		} else {
+
+        			sorter.setRowFilter(RowFilter.regexFilter("(?i)" + texto));
+        		}
+        	}
+        });
         tabla.getColumn("Acciones").setCellRenderer(new PanelBotones());
         configurarTabla(tabla);
 
