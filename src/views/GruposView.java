@@ -27,11 +27,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import constructor_ventanas.App;
 import controllers.GruposController;
@@ -50,115 +52,172 @@ public class GruposView extends JPanel {
     GruposController controller = new GruposController();
 
     public GruposView(AppView app) {
-    	this.app = app;
-        setLayout(new BorderLayout());
-        setBackground(Color.WHITE);
-
-        JTextField txtBusqueda = new JTextField();
-
-        JPanel panel_16 = new JPanel(new BorderLayout());
-        panel_16.setOpaque(false);
-        panel_16.setPreferredSize(new Dimension(10, 50));
-        add(panel_16, BorderLayout.NORTH);
-
-        JPanel panel_17 = new JPanel(new BorderLayout());
-        panel_17.setOpaque(false);
-        panel_16.add(panel_17, BorderLayout.CENTER);
-
-        JButton btnAgregar = new JButton("+ Agregar grupo");
-        btnAgregar.setPreferredSize(new Dimension(250, 45));
-        btnAgregar.setBorder(new LineBorder(Color.WHITE, 1, true));
-        btnAgregar.setFocusable(false);
-        btnAgregar.setForeground(Color.WHITE);
-        btnAgregar.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-        btnAgregar.setBackground(new Color(14, 48, 170));
-        btnAgregar.addActionListener(e ->{
-        	agregarGrupo();
-        });
-        panel_17.add(btnAgregar, BorderLayout.EAST);
-
-        panel_17.add(txtBusqueda, BorderLayout.CENTER);
-        
-        JPanel panel_18 = new JPanel();
-        panel_18.setOpaque(false);
-        panel_18.setPreferredSize(new Dimension(15, 0));
-        panel_16.add(panel_18, BorderLayout.EAST);
-
-        JPanel panel_19 = new JPanel();
-        panel_19.setOpaque(false);
-        panel_19.setPreferredSize(new Dimension(15, 0));
-        panel_16.add(panel_19, BorderLayout.WEST);
-      
-        JPanel panel_ESPACIADOR = new JPanel(new BorderLayout());
-        panel_ESPACIADOR.setOpaque(false);
-        panel_ESPACIADOR.setPreferredSize(new Dimension(15,0));
-        add(panel_ESPACIADOR, BorderLayout.WEST);
-
-        JPanel panel_ESPACIADOR2 = new JPanel(new BorderLayout());
-        panel_ESPACIADOR2.setOpaque(false);
-        panel_ESPACIADOR2.setPreferredSize(new Dimension(15,0));
-        add(panel_ESPACIADOR2, BorderLayout.EAST);
-
-        JPanel panel_ESPACIADOR3 = new JPanel(new BorderLayout());
-        panel_ESPACIADOR3.setOpaque(false);
-        panel_ESPACIADOR3.setPreferredSize(new Dimension(0,20));
-        add(panel_ESPACIADOR3, BorderLayout.SOUTH);
-
-        JPanel panel_tabla = new JPanel(new BorderLayout());
-        panel_tabla.setBackground(Color.WHITE);
-        add(panel_tabla, BorderLayout.CENTER);
-        
-        DefaultTableModel modelo = new DefaultTableModel(){
-            public boolean isCellEditable(int r,int c){
-            	return c == 5; // cambiar en cada view a la coluiman view
-            }
-        };
-
-        modelo.addColumn("Nombre");
-        modelo.addColumn("Turno");
-        modelo.addColumn("Capacidad");
-        modelo.addColumn("Alumnos");
-        modelo.addColumn("Docentes");
-        modelo.addColumn("Acciones");
-
-        controller.cargarTabla(modelo);
-
-        for(int i=0;i<modelo.getRowCount();i++){
-            modelo.setValueAt("", i, 5);
-        }
-
-        tabla = new JTable(modelo);
-        tabla.getColumn("Acciones").setCellRenderer(new PanelBotones());
-        configurarTabla(tabla);
-
-        JScrollPane scroll = new JScrollPane(tabla);
-        panel_tabla.add(scroll, BorderLayout.CENTER);
-        tabla.setFillsViewportHeight(true);
-        scroll.getViewport().setBackground(Color.WHITE);
-
-        SwingUtilities.invokeLater(() -> ajustarColumnas(tabla, scroll, new int[]{20,15,15,15,20,15}));
-        
-        tabla.getColumn("Acciones").setCellEditor(
-        	    new PanelBotonesEditor(tabla, new AccionesTabla() {
-
-        	        @Override
-        	        public void ver(int fila) {
-        	        	setTodo(fila);
-        	            verGrupos(fila);
-        	        }
-        	        @Override
-        	        public void editar(int fila) {
-        	        	setTodo(fila);
-        	            editarGrupo(fila);
-        	        }
-        	        @Override
-        	        public void eliminar(int fila) {
-        	        	eliminarGrupo(fila);
-        	        }
-        	    })
-        	);
-        
-    }
+		this.app = app;
+	    setLayout(new BorderLayout());
+	    setBackground(Color.WHITE);
+	
+	    JTextField txtBusqueda = new JTextField("Buscar grupo...");
+	    txtBusqueda.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+	    txtBusqueda.setForeground(Color.GRAY);
+	
+	    JPanel panel_16 = new JPanel(new BorderLayout());
+	    panel_16.setOpaque(false);
+	    panel_16.setPreferredSize(new Dimension(10, 50));
+	    add(panel_16, BorderLayout.NORTH);
+	
+	    JPanel panel_17 = new JPanel(new BorderLayout());
+	    panel_17.setOpaque(false);
+	    panel_16.add(panel_17, BorderLayout.CENTER);
+	
+	    JButton btnAgregar = new JButton("+ Agregar grupo");
+	    btnAgregar.setPreferredSize(new Dimension(250, 45));
+	    btnAgregar.setBorder(new LineBorder(Color.WHITE, 1, true));
+	    btnAgregar.setFocusable(false);
+	    btnAgregar.setForeground(Color.WHITE);
+	    btnAgregar.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+	    btnAgregar.setBackground(new Color(14, 48, 170));
+	
+	    btnAgregar.addActionListener(e ->{
+	    	agregarGrupo();
+	    });
+	
+	    panel_17.add(btnAgregar, BorderLayout.EAST);
+	    panel_17.add(txtBusqueda, BorderLayout.CENTER);
+	
+	    JPanel panel_18 = new JPanel();
+	    panel_18.setOpaque(false);
+	    panel_18.setPreferredSize(new Dimension(15, 0));
+	    panel_16.add(panel_18, BorderLayout.EAST);
+	
+	    JPanel panel_19 = new JPanel();
+	    panel_19.setOpaque(false);
+	    panel_19.setPreferredSize(new Dimension(15, 0));
+	    panel_16.add(panel_19, BorderLayout.WEST);
+	
+	    JPanel panel_ESPACIADOR = new JPanel(new BorderLayout());
+	    panel_ESPACIADOR.setOpaque(false);
+	    panel_ESPACIADOR.setPreferredSize(new Dimension(15,0));
+	    add(panel_ESPACIADOR, BorderLayout.WEST);
+	
+	    JPanel panel_ESPACIADOR2 = new JPanel(new BorderLayout());
+	    panel_ESPACIADOR2.setOpaque(false);
+	    panel_ESPACIADOR2.setPreferredSize(new Dimension(15,0));
+	    add(panel_ESPACIADOR2, BorderLayout.EAST);
+	
+	    JPanel panel_ESPACIADOR3 = new JPanel(new BorderLayout());
+	    panel_ESPACIADOR3.setOpaque(false);
+	    panel_ESPACIADOR3.setPreferredSize(new Dimension(0,20));
+	    add(panel_ESPACIADOR3, BorderLayout.SOUTH);
+	
+	    JPanel panel_tabla = new JPanel(new BorderLayout());
+	    panel_tabla.setBackground(Color.WHITE);
+	    add(panel_tabla, BorderLayout.CENTER);
+	
+	    DefaultTableModel modelo = new DefaultTableModel(){
+	        public boolean isCellEditable(int r,int c){
+	        	return c == 5;
+	        }
+	    };
+	
+	    modelo.addColumn("Nombre");
+	    modelo.addColumn("Turno");
+	    modelo.addColumn("Capacidad");
+	    modelo.addColumn("Alumnos");
+	    modelo.addColumn("Docentes");
+	    modelo.addColumn("Acciones");
+	
+	    controller.cargarTabla(modelo);
+	
+	    for(int i=0;i<modelo.getRowCount();i++){
+	        modelo.setValueAt("", i, 5);
+	    }
+	
+	    tabla = new JTable(modelo);
+	
+	    tabla.getColumn("Acciones").setCellRenderer(new PanelBotones());
+	
+	    configurarTabla(tabla);
+	
+	    JScrollPane scroll = new JScrollPane(tabla);
+	
+	    panel_tabla.add(scroll, BorderLayout.CENTER);
+	
+	    tabla.setFillsViewportHeight(true);
+	
+	    scroll.getViewport().setBackground(Color.WHITE);
+	
+	    SwingUtilities.invokeLater(() -> 
+	    	ajustarColumnas(tabla, scroll, new int[]{20,15,15,15,20,15})
+	    );
+	
+	    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelo);
+	    tabla.setRowSorter(sorter);
+	
+	    txtBusqueda.addFocusListener(new java.awt.event.FocusAdapter() {
+	
+	    	@Override
+	    	public void focusGained(java.awt.event.FocusEvent e) {
+	
+	    		if(txtBusqueda.getText().equals("Buscar grupo...")) {
+	
+	    			txtBusqueda.setText("");
+	    			txtBusqueda.setForeground(Color.BLACK);
+	    		}
+	    	}
+	
+	    	@Override
+	    	public void focusLost(java.awt.event.FocusEvent e) {
+	
+	    		if(txtBusqueda.getText().trim().isEmpty()) {
+	
+	    			txtBusqueda.setText("Buscar grupo...");
+	    			txtBusqueda.setForeground(Color.GRAY);
+	    		}
+	    	}
+	    });
+	
+	    txtBusqueda.addKeyListener(new java.awt.event.KeyAdapter() {
+	
+	    	@Override
+	    	public void keyReleased(java.awt.event.KeyEvent e) {
+	
+	    		String texto = txtBusqueda.getText();
+	
+	    		if(texto.equals("Buscar grupo...")) {
+	
+	    			sorter.setRowFilter(null);
+	    		}
+	    		else {
+	
+	    			sorter.setRowFilter(
+	    				RowFilter.regexFilter("(?i)" + texto)
+	    			);
+	    		}
+	    	}
+	    });
+	
+	    tabla.getColumn("Acciones").setCellEditor(
+		    new PanelBotonesEditor(tabla, new AccionesTabla() {
+	
+		        @Override
+		        public void ver(int fila) {
+		        	setTodo(fila);
+		            verGrupos(fila);
+		        }
+	
+		        @Override
+		        public void editar(int fila) {
+		        	setTodo(fila);
+		            editarGrupo(fila);
+		        }
+	
+		        @Override
+		        public void eliminar(int fila) {
+		        	eliminarGrupo(fila);
+		        }
+		    })
+		);
+}
 
     private void configurarTabla(JTable tabla){
         tabla.setRowHeight(30);

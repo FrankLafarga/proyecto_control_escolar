@@ -189,7 +189,6 @@ public class AlumnosView extends JPanel {
         		String texto = txtBusqueda.getText();
 
         		if(texto.equals("Buscar alumno...") || texto.trim().isEmpty()) {
-
         			sorter.setRowFilter(null);
 
         		} else {
