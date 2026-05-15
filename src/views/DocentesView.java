@@ -906,8 +906,8 @@ public class DocentesView extends JPanel {
 	            			txtTelefono.getText().trim(),
 	            			txtFecha.getText().trim(),
 	            			txtGrado.getText().trim(),
-	            			cbEstatus.getSelectedItem().toString(),
-	            			cbArea.getSelectedItem().toString()
+	            			cbArea.getSelectedItem().toString(),
+	            			cbEstatus.getSelectedItem().toString()
 	            	);
 	            	
 	            	if(agregado) {
