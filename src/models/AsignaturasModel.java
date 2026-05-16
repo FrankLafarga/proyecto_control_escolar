@@ -18,18 +18,28 @@ public class AsignaturasModel {
         List<Object[]> lista = new ArrayList<>();
 
         String sql = """
-            SELECT 
-                a.clave,
-                a.nombre,
-                a.semestre,
-                a.creditos,
-                g.nombre AS grupo,
-                CONCAT(d.nombre, ' ', d.apellido_paterno, ' ', d.apellido_materno) AS docente
-            FROM GRUPO_ASIGNATURA ga
-            INNER JOIN ASIGNATURAS a ON ga.id_asignatura = a.id_asignatura
-            INNER JOIN GRUPOS g ON ga.id_grupo = g.id_grupo
-            INNER JOIN DOCENTES d ON ga.id_docente = d.id_docente
-        """;
+        	    SELECT 
+        	        a.clave,
+        	        a.nombre,
+        	        a.semestre,
+        	        a.creditos,
+        	        IFNULL(g.nombre, 'Sin grupo') AS grupo,
+        	        IFNULL(
+        	            CONCAT(
+        	                d.nombre,' ',
+        	                d.apellido_paterno,' ',
+        	                d.apellido_materno
+        	            ),
+        	            'Sin docente'
+        	        ) AS docente
+        	    FROM ASIGNATURAS a
+        	    LEFT JOIN GRUPO_ASIGNATURA ga 
+        	        ON a.id_asignatura = ga.id_asignatura
+        	    LEFT JOIN GRUPOS g 
+        	        ON ga.id_grupo = g.id_grupo
+        	    LEFT JOIN DOCENTES d 
+        	        ON ga.id_docente = d.id_docente
+        	""";
 
         try (
             Connection con = DriverManager.getConnection(URL, USER, PASS);
@@ -60,26 +70,29 @@ public class AsignaturasModel {
         Object[] asignatura = null;
 
         String sql = """
-            SELECT 
-                a.nombre,
-                a.clave,
-                a.semestre,
-                a.creditos,
-                g.nombre AS grupo,
-                CONCAT(
-                    d.nombre,' ',
-                    d.apellido_paterno,' ',
-                    d.apellido_materno
-                ) AS docente
-            FROM GRUPO_ASIGNATURA ga
-            INNER JOIN ASIGNATURAS a 
-                ON ga.id_asignatura=a.id_asignatura
-            INNER JOIN GRUPOS g 
-                ON ga.id_grupo=g.id_grupo
-            INNER JOIN DOCENTES d 
-                ON ga.id_docente=d.id_docente
-            WHERE a.clave=?
-        """;
+        	    SELECT 
+        	        a.nombre,
+        	        a.clave,
+        	        a.semestre,
+        	        a.creditos,
+        	        IFNULL(g.nombre, 'Sin grupo') AS grupo,
+        	        IFNULL(
+        	            CONCAT(
+        	                d.nombre,' ',
+        	                d.apellido_paterno,' ',
+        	                d.apellido_materno
+        	            ),
+        	            'Sin docente'
+        	        ) AS docente
+        	    FROM ASIGNATURAS a
+        	    LEFT JOIN GRUPO_ASIGNATURA ga 
+        	        ON a.id_asignatura = ga.id_asignatura
+        	    LEFT JOIN GRUPOS g 
+        	        ON ga.id_grupo = g.id_grupo
+        	    LEFT JOIN DOCENTES d 
+        	        ON ga.id_docente = d.id_docente
+        	    WHERE a.clave=?
+        	""";
 
         try(
             Connection con = DriverManager.getConnection(URL,USER,PASS);
@@ -109,5 +122,55 @@ public class AsignaturasModel {
         }
 
         return asignatura;
+    }
+    
+    public boolean addAsignatura(
+            String nombre,
+            String clave,
+            int semestre,
+            int creditos
+    ) {
+
+        String query = """
+                INSERT INTO ASIGNATURAS(
+                    nombre,
+                    clave,
+                    semestre,
+                    creditos
+                )
+                VALUES(?,?,?,?)
+                """;
+
+        Connection conn = null;
+
+        try {
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            conn = DriverManager.getConnection(
+                    URL,
+                    USER,
+                    PASS
+            );
+
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            ps.setString(1, nombre);
+            ps.setString(2, clave);
+            ps.setInt(3, semestre);
+            ps.setInt(4, creditos);
+
+            int rowsAffected = ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+
+            return rowsAffected > 0;
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }

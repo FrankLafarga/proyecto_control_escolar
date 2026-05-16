@@ -28,6 +28,7 @@ public class AsignaturasController {
             modeloTabla.addRow(fila);
         }
     }
+    
     public void verAsignatura(String clave) {
 
         Object[] datos = model.verAsignatura(clave);
@@ -40,6 +41,21 @@ public class AsignaturasController {
             grupo = (String) datos[4];
             docente = (String) datos[5];
         }
+    }
+    
+    public boolean addAsignatura(
+            String nombre,
+            String clave,
+            int semestre,
+            int creditos
+    ) {
+
+        return model.addAsignatura(
+                nombre,
+                clave,
+                semestre,
+                creditos
+        );
     }
     
     public String getNombre() {
