@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,6 +101,174 @@ public class GruposModel {
         }
 
         return lista;
+    }
+    
+    public ArrayList<String> obtenerDocentes() {
+
+        ArrayList<String> docentes = new ArrayList<>();
+
+        String query = """
+                SELECT nombre, apellido_paterno, apellido_materno
+                FROM DOCENTES
+                """;
+
+        Connection conn = null;
+
+        try {
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            conn = DriverManager.getConnection(
+                    URL,
+                    USER,
+                    PASS
+            );
+
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+
+                String nombreCompleto =
+                        rs.getString("nombre") + " "
+                        + rs.getString("apellido_paterno") + " "
+                        + rs.getString("apellido_materno");
+
+                docentes.add(nombreCompleto);
+            }
+
+            rs.close();
+            ps.close();
+            conn.close();
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return docentes;
+    }
+    
+    public boolean addGrupo(
+            String nombre,
+            String turno,
+            int capacidad,
+            String docente1,
+            String docente2,
+            String docente3,
+            String docente4
+    ) {
+
+        String queryGrupo = """
+                INSERT INTO GRUPOS(
+                    nombre,
+                    turno,
+                    capacidad
+                )
+                VALUES(?,?,?)
+                """;
+
+        String queryDocente = """
+                SELECT id_docente
+                FROM DOCENTES
+                WHERE CONCAT(
+                    nombre,' ',
+                    apellido_paterno,' ',
+                    apellido_materno
+                ) = ?
+                """;
+
+        String queryGrupoAsignatura = """
+                INSERT INTO GRUPO_ASIGNATURA(
+                    id_grupo,
+                    id_asignatura,
+                    id_docente
+                )
+                VALUES(?,?,?)
+                """;
+
+        Connection conn = null;
+
+        try {
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            conn = DriverManager.getConnection(
+                    URL,
+                    USER,
+                    PASS
+            );
+
+            PreparedStatement psGrupo =
+                    conn.prepareStatement(
+                            queryGrupo,
+                            Statement.RETURN_GENERATED_KEYS
+                    );
+
+            psGrupo.setString(1, nombre);
+            psGrupo.setString(2, turno);
+            psGrupo.setInt(3, capacidad);
+
+            int rows = psGrupo.executeUpdate();
+
+            if(rows > 0) {
+
+                ResultSet rsGrupo = psGrupo.getGeneratedKeys();
+
+                int idGrupo = 0;
+
+                if(rsGrupo.next()) {
+                    idGrupo = rsGrupo.getInt(1);
+                }
+
+                String[] docentes = {
+                        docente1,
+                        docente2,
+                        docente3,
+                        docente4
+                };
+
+                for(int i = 0; i < docentes.length; i++) {
+
+                    PreparedStatement psDocente =
+                            conn.prepareStatement(queryDocente);
+
+                    psDocente.setString(1, docentes[i]);
+
+                    ResultSet rsDocente = psDocente.executeQuery();
+
+                    int idDocente = 0;
+
+                    if(rsDocente.next()) {
+                        idDocente = rsDocente.getInt("id_docente");
+                    }
+
+                    PreparedStatement psGA =
+                            conn.prepareStatement(queryGrupoAsignatura);
+
+                    psGA.setInt(1, idGrupo);
+                    psGA.setInt(2, i + 1);
+                    psGA.setInt(3, idDocente);
+
+                    psGA.executeUpdate();
+
+                    rsDocente.close();
+                    psDocente.close();
+                    psGA.close();
+                }
+
+                rsGrupo.close();
+                psGrupo.close();
+                conn.close();
+
+                return true;
+            }
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
     
     public int getIdGrupo() {

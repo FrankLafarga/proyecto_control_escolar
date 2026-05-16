@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import models.GruposModel;
@@ -25,6 +26,32 @@ public class GruposController {
 
     public void cargarGrupo(String nom) {
         model.obtenerGrupo(nom);
+    }
+    
+    public ArrayList<String> obtenerDocentes() {
+
+        return model.obtenerDocentes();
+    }
+    
+    public boolean addGrupo(
+            String nombre,
+            String turno,
+            int capacidad,
+            String docente1,
+            String docente2,
+            String docente3,
+            String docente4
+    ) {
+
+        return model.addGrupo(
+                nombre,
+                turno,
+                capacidad,
+                docente1,
+                docente2,
+                docente3,
+                docente4
+        );
     }
 
     public int getIdGrupo() {
