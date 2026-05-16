@@ -1065,8 +1065,19 @@ public class AlumnosView extends JPanel {
 		JTextField txtMatricula = new JTextField();
 		txtMatricula.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 	
-		JTextField txtSemestre = new JTextField();
-		txtSemestre.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        JComboBox<String> cbSemestre = new JComboBox<>();
+        cbSemestre.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        cbSemestre.setPreferredSize(new Dimension(200, 45));
+
+        cbSemestre.addItem("1er semestre");
+        cbSemestre.addItem("2do semestre");
+        cbSemestre.addItem("3er semestre");
+        cbSemestre.addItem("4to semestre");
+        cbSemestre.addItem("5to semestre");
+        cbSemestre.addItem("6to semestre");
+        cbSemestre.addItem("7mo semestre");
+        cbSemestre.addItem("8vo semestre");
+        cbSemestre.addItem("9no semestre");
 	
 		String[] grupos = {"1A", "1B", "1C", "1D", "1E"};
 
@@ -1074,7 +1085,7 @@ public class AlumnosView extends JPanel {
 		cbGrupo.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 	
 		panelCentro.add(txtMatricula);
-		panelCentro.add(txtSemestre);
+		panelCentro.add(cbSemestre);
 		panelCentro.add(cbGrupo);
 	
 		JLabel lblCarrera = new JLabel("Carrera");
@@ -1230,7 +1241,7 @@ public class AlumnosView extends JPanel {
 				LineBorder bordeNormal = new LineBorder(new Color(180,180,180), 1, true);
 	
 				txtMatricula.setBorder(bordeNormal);
-				txtSemestre.setBorder(bordeNormal);
+				cbSemestre.setBorder(bordeNormal);
 				cbGrupo.setBorder(bordeNormal);
 				cbCarrera.setBorder(bordeNormal);
 				cbGenero.setBorder(bordeNormal);
@@ -1247,11 +1258,6 @@ public class AlumnosView extends JPanel {
 	
 				if(txtMatricula.getText().trim().isEmpty()) {
 					txtMatricula.setBorder(bordeRojo);
-					valido = false;
-				}
-	
-				if(txtSemestre.getText().trim().isEmpty() || !txtSemestre.getText().matches("\\d+")) {
-					txtSemestre.setBorder(bordeRojo);
 					valido = false;
 				}
 	
@@ -1295,7 +1301,7 @@ public class AlumnosView extends JPanel {
 	
 					controller.addAlumno(
 							txtMatricula.getText(),
-							Integer.parseInt(txtSemestre.getText()),
+							cbSemestre.getSelectedIndex() + 1,
 							cbCarrera.getSelectedItem().toString(),
 							cbGenero.getSelectedItem().toString(),
 							txtNombre.getText(),
