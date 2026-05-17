@@ -1,7 +1,11 @@
 package controllers;
 
 import models.DocentesModel;
+
+import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
+
+import java.awt.Image;
 import java.util.List;
 
 public class DocentesController {
@@ -18,7 +22,15 @@ public class DocentesController {
 	private String nombre;
 	private String apellidoPat;
 	private String apellidoMat;
-
+	
+	private ImageIcon iconoOriginal = new ImageIcon(getClass().getResource("/resources/activo-icon.png"));
+    private	Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(136,26,Image.SCALE_SMOOTH);
+    private	ImageIcon iconoActivo = new ImageIcon(imagenEscalada);
+    
+    private ImageIcon iconoinOriginal = new ImageIcon(getClass().getResource("/resources/inactivo-icon.png"));
+    private	Image imageninEscalada = iconoinOriginal.getImage().getScaledInstance(136,26,Image.SCALE_SMOOTH);
+    private	ImageIcon iconoInactivo = new ImageIcon(imageninEscalada);
+    
     public DocentesController() {
         model = new DocentesModel();
     }
@@ -30,6 +42,12 @@ public class DocentesController {
         List<Object[]> datos = model.obtenerDatosTabla();
 
         for (Object[] fila : datos) {
+        	if(fila[3].equals("ACTIVO")) {
+           	 fila[3]=iconoActivo;
+           	}
+        	else if(fila[3].equals("INACTIVO")) {
+        		fila[3]=iconoInactivo;
+        	}
             modeloTabla.addRow(fila);
         }
     }
@@ -131,7 +149,16 @@ public class DocentesController {
 	public String getApellidoMat() {
 		return apellidoMat;
 	}
-    
+	public ImageIcon getImgEstatus() {
+    	if(estatus.equals("ACTIVO")) {
+            return iconoActivo;
+
+        }
+       	else if(estatus.equals("INACTIVO")) {
+            return iconoInactivo;
+       	}
+		return null;
+    }
     
     
     

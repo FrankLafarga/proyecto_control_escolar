@@ -54,6 +54,8 @@ public class DocentesView extends JPanel {
 	private String apellidoPat;
 	private String apellidoMat;
 	
+	private ImageIcon imgEstatus;
+	
     public DocentesView(AppView app) {
 		this.app = app;
 	    setLayout(new BorderLayout());
@@ -114,6 +116,10 @@ public class DocentesView extends JPanel {
 	    add(panel_tabla, BorderLayout.CENTER);
 	
 	    DefaultTableModel modelo = new DefaultTableModel() {
+	    	@Override
+	    	public Class<?> getColumnClass(int columna){
+	    	    return columna == 3 ? ImageIcon.class : Object.class;
+	    	}
 	        public boolean isCellEditable(int r, int c) { 
 	        	return c == 4; 
 	        
@@ -133,8 +139,7 @@ public class DocentesView extends JPanel {
 	    tabla.getColumn("Acciones").setCellRenderer(new PanelBotones());
 	    configurarTabla(tabla);
 	
-	    javax.swing.table.TableRowSorter<DefaultTableModel> sorter =
-	            new javax.swing.table.TableRowSorter<>(modelo);
+	    javax.swing.table.TableRowSorter<DefaultTableModel> sorter = new javax.swing.table.TableRowSorter<>(modelo);
 	
 	    tabla.setRowSorter(sorter);
 	
@@ -218,7 +223,8 @@ public class DocentesView extends JPanel {
     	        }
     	    })
     	);
-	}
+    
+    }
 
     private void configurarTabla(JTable tabla){
         tabla.setRowHeight(30);
@@ -238,7 +244,7 @@ public class DocentesView extends JPanel {
         c.setHorizontalAlignment(SwingConstants.CENTER);
 
         for(int i=0;i<tabla.getColumnCount();i++){
-            if(!tabla.getColumnName(i).equals("Acciones")){
+            if(!tabla.getColumnName(i).equals("Acciones")&&!tabla.getColumnName(i).equals("Estatus")){
                 tabla.getColumnModel().getColumn(i).setCellRenderer(c);
             }
         }
@@ -317,7 +323,11 @@ public class DocentesView extends JPanel {
 
     	JLabel lblClave = new JLabel("Clave: " + clave);
     	JLabel especialidad = new JLabel("Especialidad: " + area);
-    	JLabel lblEstatus = new JLabel("Estatus: " + estatus);
+    	JLabel lblEstatus = new JLabel("Estatus: ");
+    	lblEstatus.setIcon(imgEstatus);
+    	lblEstatus.setHorizontalTextPosition(SwingConstants.LEFT);
+    	lblEstatus.setIconTextGap(8);
+    	
     	JLabel grupo = new JLabel("Grado: " + grado);
 
     	JLabel[] datos = {lblClave, especialidad, lblEstatus, grupo};
@@ -664,7 +674,7 @@ public class DocentesView extends JPanel {
 	        "Editar docente seleccionado"
 	    );
 	}
-
+	
     public void eliminarDocente(int fila) {
 
     	String nombreDocente = tabla.getValueAt(fila, 1).toString();
@@ -1026,8 +1036,19 @@ public class DocentesView extends JPanel {
     	telefono = controller.getTelefono();
     	fecha = controller.getFecha();
     	grado = controller.getGrado();
+    	//agregué esto en lo que corregimos la bae de datos porque el grado se muestra abreviado y se ve mal, hay que cambiar la db para que salga Maestría y no Mtr.
+    	if (grado.contains("M")) {
+    		grado="Maestría";
+    	}
+    	else if(grado.contains("L")) {
+    		grado="Licenciatura";
+    	}
+    	else if(grado.contains("D")) {
+    		grado="Doctorado";
+    	}
     	area = controller.getArea();
     	estatus = controller.getEstatus();
+    	imgEstatus=controller.getImgEstatus();
     	avatar = controller.getAvatar();
     	nombre=controller.getNombre();
     	apellidoPat=controller.getApellidoPat();

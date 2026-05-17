@@ -1,3 +1,6 @@
-/views/
+/application/
+/constructor_ventanas/
 /controllers/
 /models/
+/views/
+/resources/

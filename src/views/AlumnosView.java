@@ -149,6 +149,11 @@ public class AlumnosView extends JPanel {
         add(panel_tabla, BorderLayout.CENTER);
 
         DefaultTableModel modelo = new DefaultTableModel() {
+        	@Override
+        	public Class<?> getColumnClass(int columna){
+        	    return columna == 5 ? ImageIcon.class : Object.class;
+        	}
+        	
             public boolean isCellEditable(int r, int c) { 
             	return c == 6; 
             
@@ -203,7 +208,7 @@ public class AlumnosView extends JPanel {
         JScrollPane scroll = new JScrollPane(tabla);
         panel_tabla.add(scroll, BorderLayout.CENTER);
 
-        SwingUtilities.invokeLater(() -> ajustarColumnas(tabla, scroll, new int[]{12,20,12,12,12,12,20}));
+        SwingUtilities.invokeLater(() -> ajustarColumnas(tabla, scroll, new int[]{12,18,10,10,12,12,26}));
         
         tabla.getColumn("Acciones").setCellEditor(
         	    new PanelBotonesEditor(tabla, new AccionesTabla() {
@@ -244,7 +249,7 @@ public class AlumnosView extends JPanel {
         c.setHorizontalAlignment(SwingConstants.CENTER);
 
         for(int i=0;i<tabla.getColumnCount();i++){
-            if(!tabla.getColumnName(i).equals("Acciones")){
+            if(!tabla.getColumnName(i).equals("Acciones")&& !tabla.getColumnName(i).equals("Estatus")){
                 tabla.getColumnModel().getColumn(i).setCellRenderer(c);
             }
         }

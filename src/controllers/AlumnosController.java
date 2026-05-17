@@ -1,7 +1,12 @@
 package controllers;
 
 import models.AlumnosModel;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
+
+import java.awt.Image;
 import java.util.List;
 
 public class AlumnosController {
@@ -24,8 +29,14 @@ public class AlumnosController {
     private String genero;
     private String telefono;
     private String estatus;
+    private ImageIcon iconoOriginal = new ImageIcon(getClass().getResource("/resources/activo-icon.png"));
+    private	Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(136,26,Image.SCALE_SMOOTH);
+    private	ImageIcon iconoActivo = new ImageIcon(imagenEscalada);
 
-
+    private ImageIcon iconoinOriginal = new ImageIcon(getClass().getResource("/resources/inactivo-icon.png"));
+    private	Image imageninEscalada = iconoinOriginal.getImage().getScaledInstance(136,26,Image.SCALE_SMOOTH);
+    private	ImageIcon iconoInactivo = new ImageIcon(imageninEscalada);
+    
     public AlumnosController() {
         model = new AlumnosModel();
     }
@@ -37,6 +48,12 @@ public class AlumnosController {
         List<Object[]> datos = model.obtenerDatosTabla();
 
         for (Object[] fila : datos) {
+        	if(fila[5].equals("ACTIVO")) {
+              	 fila[5]=iconoActivo;
+              	}
+           	else if(fila[5].equals("INACTIVO")) {
+           		fila[5]=iconoInactivo;
+           	}
             modeloTabla.addRow(fila);
         }
     }
