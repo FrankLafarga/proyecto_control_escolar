@@ -522,31 +522,55 @@ public class AsignaturasView extends JPanel {
     );
     }
 
-    public void eliminarAsignatura(int fila) {
-
-    	String nombreAsignatura = tabla.getValueAt(fila, 1).toString();
-        
-        int confirm = JOptionPane.showConfirmDialog(
-                null,
-                "¿Estás seguro de eliminar la asignatura " + nombreAsignatura + "?",
-                "Confirmar eliminación",
-                JOptionPane.YES_NO_OPTION
-        );
-        
-        if (confirm == JOptionPane.YES_OPTION) {
-        	JOptionPane.showMessageDialog(
-        			null,
-        			"Se eliminó la asignatura: " + nombreAsignatura,
-        			"Asignatura eliminado",
-        			JOptionPane.INFORMATION_MESSAGE
-        			
-        			);
-        	
-        } else if (confirm == JOptionPane.NO_OPTION) {
-        	System.out.println("Accion cancelada");
-        	
-        }
-    }
+	public void eliminarAsignatura(int fila) {
+	
+	    String nombreAsignatura =
+	            tabla.getValueAt(fila, 1).toString();
+	
+	    int confirm = JOptionPane.showConfirmDialog(
+	            null,
+	            "¿Estás seguro de eliminar la asignatura "
+	                    + nombreAsignatura + "?",
+	            "Confirmar eliminación",
+	            JOptionPane.YES_NO_OPTION
+	    );
+	
+	    if(confirm == JOptionPane.YES_OPTION) {
+	
+	        boolean eliminado =
+	                controller.eliminarAsignatura(
+	                        nombreAsignatura
+	                );
+	
+	        if(eliminado) {
+	
+	            ((DefaultTableModel)
+	                    tabla.getModel())
+	                    .removeRow(fila);
+	
+	            JOptionPane.showMessageDialog(
+	                    null,
+	                    "Se eliminó la asignatura: "
+	                            + nombreAsignatura,
+	                    "Asignatura eliminada",
+	                    JOptionPane.INFORMATION_MESSAGE
+	            );
+	
+	        } else {
+	
+	            JOptionPane.showMessageDialog(
+	                    null,
+	                    "No se pudo eliminar la asignatura",
+	                    "Error",
+	                    JOptionPane.ERROR_MESSAGE
+	            );
+	        }
+	
+	    } else if(confirm == JOptionPane.NO_OPTION) {
+	
+	        System.out.println("Accion cancelada");
+	    }
+	}
     
     public void agregarAsignatura() {
       

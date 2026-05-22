@@ -58,6 +58,11 @@ public class AsignaturasController {
         );
     }
     
+    public boolean eliminarAsignatura(String nombreAsignatura) {
+
+        return model.eliminarAsignatura(nombreAsignatura);
+    }
+    
     public String getNombre() {
         return nombre;
     }

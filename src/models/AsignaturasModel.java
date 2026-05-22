@@ -124,6 +124,92 @@ public class AsignaturasModel {
         return asignatura;
     }
     
+    public boolean eliminarAsignatura(String nombreAsignatura) {
+
+        String queryIdAsignatura = """
+                SELECT id_asignatura
+                FROM ASIGNATURAS
+                WHERE nombre = ?
+                """;
+
+        String queryEliminarGA = """
+                DELETE FROM GRUPO_ASIGNATURA
+                WHERE id_asignatura = ?
+                """;
+
+        String queryEliminarAsignatura = """
+                DELETE FROM ASIGNATURAS
+                WHERE id_asignatura = ?
+                """;
+
+        Connection conn = null;
+
+        try {
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            conn = DriverManager.getConnection(
+                    URL,
+                    USER,
+                    PASS
+            );
+
+            PreparedStatement psId =
+                    conn.prepareStatement(queryIdAsignatura);
+
+            psId.setString(1, nombreAsignatura);
+
+            ResultSet rs = psId.executeQuery();
+
+            int idAsignatura = -1;
+
+            if(rs.next()) {
+
+                idAsignatura =
+                        rs.getInt("id_asignatura");
+            }
+
+            rs.close();
+            psId.close();
+
+            if(idAsignatura == -1) {
+                return false;
+            }
+
+            PreparedStatement psGA =
+                    conn.prepareStatement(
+                            queryEliminarGA
+                    );
+
+            psGA.setInt(1, idAsignatura);
+
+            psGA.executeUpdate();
+
+            psGA.close();
+
+            PreparedStatement psAsignatura =
+                    conn.prepareStatement(
+                            queryEliminarAsignatura
+                    );
+
+            psAsignatura.setInt(1, idAsignatura);
+
+            int rows =
+                    psAsignatura.executeUpdate();
+
+            psAsignatura.close();
+            conn.close();
+
+            return rows > 0;
+
+        } catch(Exception e) {
+
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+    
     public boolean addAsignatura(
             String nombre,
             String clave,
