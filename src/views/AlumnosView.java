@@ -1324,7 +1324,18 @@ public class AlumnosView extends JPanel {
 				}
 	
 				if(valido) {
+					
+					Integer grupo = null;
+					
 				    String grupoSeleccionado = cbGrupo.getSelectedItem().toString();
+				    
+				    if(!grupoSeleccionado.equals("Sin grupo")) {
+
+				        grupo =
+				            controller.obtenerIdGrupo(
+				                grupoSeleccionado
+				            );
+				    }
 
 				    int idGrupo=controller.obtenerIdGrupo(grupoSeleccionado);
 

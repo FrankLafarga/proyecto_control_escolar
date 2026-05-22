@@ -21,7 +21,7 @@ public class AlumnosModel {
             SELECT 
                 a.matricula,
                 CONCAT(a.nombre, ' ', a.apellido_paterno, ' ', a.apellido_materno) AS nombre_completo,
-                g.nombre AS grupo,
+                IFNULL(g.nombre, 'Sin grupo') AS grupo,
                 a.semestre,
                 a.promedio,
                 a.estatus
@@ -66,7 +66,7 @@ public class AlumnosModel {
                 CONCAT(a.nombre, ' ', a.apellido_paterno, ' ', a.apellido_materno) AS nombre_completo,
                 a.matricula,
                 a.semestre,
-                g.nombre AS grupo,
+                IFNULL(g.nombre, 'Sin grupo') AS grupo,
                 a.promedio,
                 a.carrera,
                 a.fecha_nacimiento,
@@ -129,7 +129,7 @@ public class AlumnosModel {
 	            String fecha,
 	            double promedio,
 	            String estatus,
-	            int grupo
+	            Integer grupo
 	    ) {
 	
 	        String query = """
@@ -177,7 +177,14 @@ public class AlumnosModel {
 	            ps.setDate(10, java.sql.Date.valueOf(fecha));
 	            ps.setDouble(11, promedio);
 	            ps.setString(12, estatus);
-	            ps.setInt(13, grupo);
+	            if(grupo == null) {
+
+	                ps.setNull(13, java.sql.Types.INTEGER);
+
+	            } else {
+
+	                ps.setInt(13, grupo);
+	            }
 	
 	            int rowsAffected = ps.executeUpdate();
 	
@@ -210,7 +217,7 @@ public class AlumnosModel {
 		        String fecha,
 		        double promedio,
 		        String estatus,
-		        int grupo
+		        Integer grupo
 		) {
 
 		    String query = """
@@ -257,7 +264,14 @@ public class AlumnosModel {
 		        ps.setDate(10, java.sql.Date.valueOf(fecha));
 		        ps.setDouble(11, promedio);
 		        ps.setString(12, estatus);
-		        ps.setInt(13, grupo);
+		        if(grupo == null) {
+
+		            ps.setNull(13, java.sql.Types.INTEGER);
+
+		        } else {
+
+		            ps.setInt(13, grupo);
+		        }
 
 		        ps.setString(14, matriculaOriginal);
 
@@ -286,7 +300,7 @@ public class AlumnosModel {
 	        PreparedStatement ps = con.prepareStatement(sql);
 	        ResultSet rs = ps.executeQuery()
 	    ){
-
+	    	grupos.add("Sin grupo");
 	        while(rs.next()){
 	            grupos.add(rs.getString("nombre"));
 	        }
@@ -299,6 +313,10 @@ public class AlumnosModel {
 	}
 	
 	public int obtenerIdGrupo(String nombreGrupo){
+		
+		if(nombreGrupo.equals("Sin grupo")) {
+		    return -1;
+		}
 
 	    int id = -1;
 

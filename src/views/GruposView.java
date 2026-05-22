@@ -575,6 +575,16 @@ public class GruposView extends JPanel {
         );
         
         if (confirm == JOptionPane.YES_OPTION) {
+        	
+        	boolean eliminado =
+                    controller.eliminarGrupo(nombreGrupo);
+
+            if(eliminado) {
+
+                ((DefaultTableModel)
+                        tabla.getModel())
+                        .removeRow(fila);
+        	
         	JOptionPane.showMessageDialog(
         			null,
         			"Se eliminó el grupo: " + nombreGrupo,
@@ -583,9 +593,20 @@ public class GruposView extends JPanel {
         			
         			);
         	
+            } else {
+
+                JOptionPane.showMessageDialog(
+                        null,
+                        "No se pudo eliminar el grupo",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
+        	
         } else if (confirm == JOptionPane.NO_OPTION) {
         	System.out.println("Accion cancelada");
-     }
+        }
+        
         	
 
 

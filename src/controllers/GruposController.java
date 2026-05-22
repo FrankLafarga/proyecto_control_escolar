@@ -87,6 +87,11 @@ public class GruposController {
                 docente6
         );
     }
+    
+    public boolean eliminarGrupo(String nombreGrupo) {
+
+        return model.eliminarGrupo(nombreGrupo);
+    }
 
     public int getIdGrupo() {
         return model.getIdGrupo();

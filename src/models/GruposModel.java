@@ -384,6 +384,45 @@ public class GruposModel {
 	
 	    return false;
 	}
+	
+	public boolean eliminarGrupo(String nombreGrupo) {
+	
+	    String queryEliminar = """
+	            DELETE FROM GRUPOS
+	            WHERE nombre = ?
+	            """;
+	
+	    Connection conn = null;
+	
+	    try {
+	
+	        Class.forName("com.mysql.cj.jdbc.Driver");
+	
+	        conn = DriverManager.getConnection(
+	                URL,
+	                USER,
+	                PASS
+	        );
+	
+	        PreparedStatement ps =
+	                conn.prepareStatement(queryEliminar);
+	
+	        ps.setString(1, nombreGrupo);
+	
+	        int rows = ps.executeUpdate();
+	
+	        ps.close();
+	        conn.close();
+	
+	        return rows > 0;
+	
+	    } catch(Exception e) {
+	
+	        e.printStackTrace();
+	    }
+	
+	    return false;
+	}
     
     public int getIdGrupo() {
         return idGrupo;
