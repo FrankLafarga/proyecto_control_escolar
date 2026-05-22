@@ -1024,7 +1024,7 @@ public class DocentesView extends JPanel {
 	    app.cambiarVista(
 	        contenedor,
 	        "Docente",
-	        "Crear docente"
+	        ""
 	    );
 	}
 	

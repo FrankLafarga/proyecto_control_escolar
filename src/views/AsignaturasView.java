@@ -557,7 +557,7 @@ public class AsignaturasView extends JPanel {
 	    panelSuperior.setBackground(new Color(245, 247, 250));
 	    panelSuperior.setBorder(BorderFactory.createEmptyBorder(25, 40, 10, 40));
 	
-	    JLabel subtitulo1 = new JLabel("Editar Asignatura seleccionada");
+	    JLabel subtitulo1 = new JLabel("Agregar asignatura al sistema");
 	    subtitulo1.setForeground(azul_principal);
 	    subtitulo1.setFont(new Font("Times New Roman", Font.BOLD, 28));
 	    
