@@ -101,6 +101,11 @@ public class DocentesController {
     	
     	return flag;
     }
+    
+    public boolean eliminarDocente(String clave) {
+
+        return model.eliminarDocente(clave);
+    }
 
     public String getNombre_completo() {
         return nombre_completo;

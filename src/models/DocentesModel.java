@@ -111,6 +111,39 @@ public class DocentesModel {
         return docente;
     } 
     
+    public boolean eliminarDocente(String clave) {
+
+        String sql = """
+                DELETE FROM DOCENTES
+                WHERE clave = ?
+                """;
+
+        try(
+            Connection con =
+                    DriverManager.getConnection(
+                            URL,
+                            USER,
+                            PASS
+                    );
+
+            PreparedStatement ps =
+                    con.prepareStatement(sql)
+        ){
+
+            ps.setString(1, clave);
+
+            int rows = ps.executeUpdate();
+
+            return rows > 0;
+
+        } catch(Exception e) {
+
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+    
     public boolean make(
     		String clave,
     		String nombre,
