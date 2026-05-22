@@ -53,7 +53,13 @@ public class GruposController {
             String docente3,
 
             String asignatura4,
-            String docente4
+            String docente4,
+            
+            String asignatura5,
+            String docente5,
+
+            String asignatura6,
+            String docente6
     ) {
 
         return model.addGrupo(
@@ -72,7 +78,13 @@ public class GruposController {
                 docente3,
 
                 asignatura4,
-                docente4
+                docente4,
+                
+                asignatura5,
+                docente5,
+
+                asignatura6,
+                docente6
         );
     }
 

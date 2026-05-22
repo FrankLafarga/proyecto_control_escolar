@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 public class GruposModel {
     
     private static final String URL = "jdbc:mysql://localhost:3306/educadex";
@@ -207,7 +209,13 @@ public class GruposModel {
 	        String docente3,
 	
 	        String asignatura4,
-	        String docente4
+	        String docente4,
+	        
+	        String asignatura5,
+            String docente5,
+            
+            String asignatura6,
+            String docente6
 	) {
 	
 	    String queryGrupo = """
@@ -283,74 +291,79 @@ public class GruposModel {
 	                    asignatura1,
 	                    asignatura2,
 	                    asignatura3,
-	                    asignatura4
+	                    asignatura4,
+	                    asignatura5,
+	                    asignatura6
 	            };
 	
 	            String[] docentes = {
 	                    docente1,
 	                    docente2,
 	                    docente3,
-	                    docente4
+	                    docente4,
+	                    docente5,
+	                    docente6
 	            };
 	
-	            for(int i = 0; i < 4; i++) {
-	
-	                int idAsignatura = 0;
-	                int idDocente = 0;
-	
+	            for(int i = 0; i < 6; i++) {
+
+	                if(
+	                    asignaturas[i].equals("Sin selección")
+	                    || docentes[i].equals("Sin selección")
+	                ) {
+	                    continue;
+	                }
+
+	                int idAsignatura = -1;
+	                int idDocente = -1;
+
 	                PreparedStatement psAsignatura =
 	                        conn.prepareStatement(queryAsignatura);
-	
-	                psAsignatura.setString(
-	                        1,
-	                        asignaturas[i]
-	                );
-	
+
+	                psAsignatura.setString(1, asignaturas[i]);
+
 	                ResultSet rsAsignatura =
 	                        psAsignatura.executeQuery();
-	
+
 	                if(rsAsignatura.next()) {
-	
+
 	                    idAsignatura =
-	                            rsAsignatura.getInt(
-	                                    "id_asignatura"
-	                            );
+	                            rsAsignatura.getInt("id_asignatura");
 	                }
-	
+
+	                rsAsignatura.close();
+	                psAsignatura.close();
+
 	                PreparedStatement psDocente =
 	                        conn.prepareStatement(queryDocente);
-	
-	                psDocente.setString(
-	                        1,
-	                        docentes[i]
-	                );
-	
+
+	                psDocente.setString(1, docentes[i]);
+
 	                ResultSet rsDocente =
 	                        psDocente.executeQuery();
-	
+
 	                if(rsDocente.next()) {
-	
+
 	                    idDocente =
-	                            rsDocente.getInt(
-	                                    "id_docente"
-	                            );
+	                            rsDocente.getInt("id_docente");
 	                }
-	
+
+	                rsDocente.close();
+	                psDocente.close();
+
+	                if(idAsignatura == -1 || idDocente == -1) {
+	                    continue;
+	                }
+
 	                PreparedStatement psGA =
 	                        conn.prepareStatement(queryGA);
-	
+
 	                psGA.setInt(1, idGrupo);
 	                psGA.setInt(2, idAsignatura);
 	                psGA.setInt(3, idDocente);
-	
+
 	                psGA.executeUpdate();
-	
-	                rsAsignatura.close();
-	                psAsignatura.close();
-	
-	                rsDocente.close();
-	                psDocente.close();
-	
+
 	                psGA.close();
 	            }
 	
@@ -363,6 +376,10 @@ public class GruposModel {
 	
 	    } catch(Exception e) {
 	        e.printStackTrace();
+	        JOptionPane.showMessageDialog(
+	                null,
+	                e.getMessage()
+            );
 	    }
 	
 	    return false;

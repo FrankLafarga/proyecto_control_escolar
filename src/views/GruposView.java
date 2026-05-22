@@ -251,7 +251,7 @@ public class GruposView extends JPanel {
         }
     }
     
-     public void verGrupos(int fila) {
+    public void verGrupos(int fila) {
 
 	    JPanel contenedor = new JPanel(new BorderLayout());
 	    contenedor.setBackground(Color.WHITE);
@@ -374,7 +374,7 @@ public class GruposView extends JPanel {
 	    app.cambiarVista(contenedor,
 	        "Grupo",
 	        "Detalle de los grupos seleccionada");
-     }
+    }
     
     public void editarGrupo(int fila) {
 
@@ -563,7 +563,6 @@ public class GruposView extends JPanel {
     );
     }
     
-    
     public void eliminarGrupo(int fila) {
 
         String nombreGrupo = tabla.getValueAt(fila, 0).toString();
@@ -724,6 +723,40 @@ public class GruposView extends JPanel {
 	    JComboBox<String> comboDocente4 = new JComboBox<>();
 	    comboDocente4.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 	    
+	    JLabel lblAsignatura5 = new JLabel("Asignatura 5");
+	    lblAsignatura5.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	    JComboBox<String> comboAsignatura5 = new JComboBox<>();
+	    comboAsignatura5.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+
+	    JLabel lblAsignatura6 = new JLabel("Asignatura 6");
+	    lblAsignatura6.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	    JComboBox<String> comboAsignatura6 = new JComboBox<>();
+	    comboAsignatura6.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+
+	    JLabel lblDocente5 = new JLabel("Docente 5");
+	    lblDocente5.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	    JComboBox<String> comboDocente5 = new JComboBox<>();
+	    comboDocente5.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+
+	    JLabel lblDocente6 = new JLabel("Docente 6");
+	    lblDocente6.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	    JComboBox<String> comboDocente6 = new JComboBox<>();
+	    comboDocente6.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    
+	    comboAsignatura1.addItem("Sin selección");
+	    comboAsignatura2.addItem("Sin selección");
+	    comboAsignatura3.addItem("Sin selección");
+	    comboAsignatura4.addItem("Sin selección");
+	    comboAsignatura5.addItem("Sin selección");
+	    comboAsignatura6.addItem("Sin selección");
+
+	    comboDocente1.addItem("Sin selección");
+	    comboDocente2.addItem("Sin selección");
+	    comboDocente3.addItem("Sin selección");
+	    comboDocente4.addItem("Sin selección");
+	    comboDocente5.addItem("Sin selección");
+	    comboDocente6.addItem("Sin selección");
+	    
 	    ArrayList<String> asignaturas = controller.obtenerAsignaturas();
 
 	    for(String asignatura : asignaturas) {
@@ -732,6 +765,8 @@ public class GruposView extends JPanel {
 	        comboAsignatura2.addItem(asignatura);
 	        comboAsignatura3.addItem(asignatura);
 	        comboAsignatura4.addItem(asignatura);
+	        comboAsignatura5.addItem(asignatura);
+	        comboAsignatura6.addItem(asignatura);
 	    }
 	
 	    ArrayList<String> docentes = controller.obtenerDocentes();
@@ -742,6 +777,8 @@ public class GruposView extends JPanel {
 	        comboDocente2.addItem(docente);
 	        comboDocente3.addItem(docente);
 	        comboDocente4.addItem(docente);
+	        comboDocente5.addItem(docente);
+	        comboDocente6.addItem(docente);
 	    }
 	
 	    gbc.gridx = 0;
@@ -824,6 +861,34 @@ public class GruposView extends JPanel {
 	    
 	    gbc.gridx = 1;
 	    tarjeta.add(comboDocente4, gbc);
+	    
+	    gbc.gridx = 0;
+	    gbc.gridy = 12;
+	    tarjeta.add(lblAsignatura5, gbc);
+
+	    gbc.gridx = 1;
+	    tarjeta.add(lblDocente5, gbc);
+
+	    gbc.gridx = 0;
+	    gbc.gridy = 13;
+	    tarjeta.add(comboAsignatura5, gbc);
+
+	    gbc.gridx = 1;
+	    tarjeta.add(comboDocente5, gbc);
+
+	    gbc.gridx = 0;
+	    gbc.gridy = 14;
+	    tarjeta.add(lblAsignatura6, gbc);
+
+	    gbc.gridx = 1;
+	    tarjeta.add(lblDocente6, gbc);
+
+	    gbc.gridx = 0;
+	    gbc.gridy = 15;
+	    tarjeta.add(comboAsignatura6, gbc);
+
+	    gbc.gridx = 1;
+	    tarjeta.add(comboDocente6, gbc);
 	
 	    JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
 	    panelBotones.setBackground(Color.WHITE);
@@ -893,7 +958,13 @@ public class GruposView extends JPanel {
 	                    comboDocente3.getSelectedItem().toString(),
 
 	                    comboAsignatura4.getSelectedItem().toString(),
-	                    comboDocente4.getSelectedItem().toString()
+	                    comboDocente4.getSelectedItem().toString(),
+	                    
+	                    comboAsignatura5.getSelectedItem().toString(),
+	                    comboDocente5.getSelectedItem().toString(),
+	                    
+	                    comboAsignatura6.getSelectedItem().toString(),
+	                    comboDocente6.getSelectedItem().toString()
 	                );
 	
 	                if(agregado) {
@@ -926,7 +997,7 @@ public class GruposView extends JPanel {
 	    panelBotones.add(btnGuardar);
 	
 	    gbc.gridx = 0;
-	    gbc.gridy = 12;
+	    gbc.gridy = 16;
 	    gbc.gridwidth = 2;
 	    gbc.anchor = GridBagConstraints.EAST;
 	    gbc.fill = GridBagConstraints.HORIZONTAL;
