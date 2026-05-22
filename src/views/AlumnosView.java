@@ -706,11 +706,13 @@ public class AlumnosView extends JPanel {
         cbSemestre.addItem("8vo semestre");
         cbSemestre.addItem("9no semestre");
 	
-		String[] opgrupos = {"1A", "1B", "1C", "1D", "1E"};
+        JComboBox<String> cbGrupo = new JComboBox<>();
 
-		JComboBox<String> cbGrupo = new JComboBox<>(opgrupos);
-		cbGrupo.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		cbGrupo.setSelectedItem(grupo);
+        for(String grupo : controller.obtenerGrupos()){
+            cbGrupo.addItem(grupo);
+        }
+
+        cbGrupo.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 	
 		panelCentro.add(txtMatricula);
 		panelCentro.add(cbSemestre);
@@ -939,34 +941,41 @@ public class AlumnosView extends JPanel {
 				}
 	
 				if(valido) {
-	
-					controller.updateAlumno(
-					        matriculaOriginal,
-					        txtMatricula.getText(),
-					        cbSemestre.getSelectedIndex() + 1,
-					        cbCarrera.getSelectedItem().toString(),
-					        cbGenero.getSelectedItem().toString(),
-					        txtNombre.getText(),
-					        txtPaterno.getText(),
-					        txtMaterno.getText(),
-					        txtEmail.getText(),
-					        txtTelefono.getText(),
-					        txtFecha.getText(),
-					        Double.parseDouble(txtPromedio.getText()),
-					        cbEstatus.getSelectedItem().toString(),
-					        cbGrupo.getSelectedIndex() + 1
-					);
-	
-					JOptionPane.showMessageDialog(
-						null,
-						"Alumno actualizado correctamente"
-					);
-	
-					app.cambiarVista(
-						new AlumnosView(app),
-						"Alumnos",
-						"Gestion integral de alumnos en el sistema"
-					);
+
+				    String nuevaMatricula =txtMatricula.getText();
+				
+				    if(!matriculaOriginal.equals(nuevaMatricula)&&controller.existeMatricula(nuevaMatricula)){				
+				        JOptionPane.showMessageDialog(null,"La matrícula ya existe");				
+				        txtMatricula.requestFocus();		
+				        txtMatricula.setBorder(bordeRojo);
+				        return;
+				    }
+				
+				    String grupoSeleccionado =cbGrupo.getSelectedItem().toString();		
+				    int idGrupo = controller.obtenerIdGrupo(grupoSeleccionado);
+				
+				    controller.updateAlumno(
+				            matriculaOriginal,
+				            nuevaMatricula,
+				            cbSemestre.getSelectedIndex()+1,
+				            cbCarrera.getSelectedItem().toString(),
+				            cbGenero.getSelectedItem().toString(),
+				            txtNombre.getText(),
+				            txtPaterno.getText(),
+				            txtMaterno.getText(),
+				            txtEmail.getText(),
+				            txtTelefono.getText(),
+				            txtFecha.getText(),
+				            Double.parseDouble(
+				                    txtPromedio.getText()
+				            ),
+				            cbEstatus.getSelectedItem().toString(),
+				            idGrupo
+				    );
+				
+				    JOptionPane.showMessageDialog(null,"Alumno actualizado correctamente" );
+				
+				    app.cambiarVista(new AlumnosView(app),"Alumnos","Gestion integral de alumnos en el sistema");
 				}
 			}
 		});
@@ -987,7 +996,9 @@ public class AlumnosView extends JPanel {
 		);
     }
 
+    
     public void eliminarAlumno(int fila) {
+
 
 		String nombreAlumno = tabla.getValueAt(fila, 1).toString();
         
@@ -999,6 +1010,8 @@ public class AlumnosView extends JPanel {
         } else if (confirm == JOptionPane.NO_OPTION) {
         	System.out.println("Accion cancelada");
         }
+        
+        
     }
     
 	
@@ -1089,10 +1102,13 @@ public class AlumnosView extends JPanel {
         cbSemestre.addItem("8vo semestre");
         cbSemestre.addItem("9no semestre");
 	
-		String[] grupos = {"1A", "1B", "1C", "1D", "1E"};
+      
+        JComboBox<String> cbGrupo = new JComboBox<>();
+        for(String grupo : controller.obtenerGrupos()){
+            cbGrupo.addItem(grupo);
+        }
 
-		JComboBox<String> cbGrupo = new JComboBox<>(grupos);
-		cbGrupo.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        cbGrupo.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 	
 		panelCentro.add(txtMatricula);
 		panelCentro.add(cbSemestre);
@@ -1308,33 +1324,36 @@ public class AlumnosView extends JPanel {
 				}
 	
 				if(valido) {
-	
-					controller.addAlumno(
-							txtMatricula.getText(),
-							cbSemestre.getSelectedIndex() + 1,
-							cbCarrera.getSelectedItem().toString(),
-							cbGenero.getSelectedItem().toString(),
-							txtNombre.getText(),
-							txtPaterno.getText(),
-							txtMaterno.getText(),
-							txtEmail.getText(),
-							txtTelefono.getText(),
-							txtFecha.getText(),
-							Double.parseDouble(txtPromedio.getText()),
-							cbEstatus.getSelectedItem().toString(),
-							cbGrupo.getSelectedIndex() + 1
-						);
-	
-					JOptionPane.showMessageDialog(
-						null,
-						"Alumno agregado correctamente"
-					);
-	
-					app.cambiarVista(
-						new AlumnosView(app),
-						"Alumnos",
-						"Gestion integral de alumnos en el sistema"
-					);
+				    String grupoSeleccionado = cbGrupo.getSelectedItem().toString();
+
+				    int idGrupo=controller.obtenerIdGrupo(grupoSeleccionado);
+
+				    controller.addAlumno(
+				            txtMatricula.getText(),
+				            cbSemestre.getSelectedIndex() + 1,
+				            cbCarrera.getSelectedItem().toString(),
+				            cbGenero.getSelectedItem().toString(),
+				            txtNombre.getText(),
+				            txtPaterno.getText(),
+				            txtMaterno.getText(),
+				            txtEmail.getText(),
+				            txtTelefono.getText(),
+				            txtFecha.getText(),
+				            Double.parseDouble(txtPromedio.getText()),
+				            cbEstatus.getSelectedItem().toString(),
+				            idGrupo
+				    );
+
+				    JOptionPane.showMessageDialog(
+				            null,
+				            "Alumno agregado correctamente"
+				    );
+
+				    app.cambiarVista(
+				            new AlumnosView(app),
+				            "Alumnos",
+				            "Gestion integral de alumnos en el sistema"
+				    );
 				}
 			}
 		});
@@ -1355,10 +1374,13 @@ public class AlumnosView extends JPanel {
 		);
 		
 		
+		
 	}
     
     //este metodo es para mostrtar los datos de el alumno al que diste click y funciona en ver y en editar alumnop
+    
     private void setTodo(int fila) {
+
     	String matriculaAlumno = tabla.getValueAt(fila, 0).toString();
 		controller.verAlumno(matriculaAlumno);
 
@@ -1378,4 +1400,10 @@ public class AlumnosView extends JPanel {
 		telefono = controller.getTelefono();
 		estatus = controller.getEstatus();
     }  
+    
+    
+    
+    
+    
+    
 }

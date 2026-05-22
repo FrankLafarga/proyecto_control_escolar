@@ -150,6 +150,23 @@ public class AlumnosController {
                 grupo
         );
     }
+    
+    public List<String> obtenerGrupos(){
+        return model.obtenerGrupos();
+    }
+    
+    public boolean existeMatricula(String matricula){
+        return model.existeMatricula(matricula);
+    }    
+    
+    public int obtenerIdGrupo(String nombre){
+        return model.obtenerIdGrupo(nombre);
+    }
+    
+    
+    
+    
+    
 
     public String getNombres() {
         return nombres;

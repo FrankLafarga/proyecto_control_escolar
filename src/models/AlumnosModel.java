@@ -274,5 +274,86 @@ public class AlumnosModel {
 
 		    return false;
 	}
+	
+	public List<String> obtenerGrupos() {
 
+	    List<String> grupos = new ArrayList<>();
+
+	    String sql = "SELECT nombre FROM GRUPOS ORDER BY nombre";
+
+	    try(
+	        Connection con = DriverManager.getConnection(URL, USER, PASS);
+	        PreparedStatement ps = con.prepareStatement(sql);
+	        ResultSet rs = ps.executeQuery()
+	    ){
+
+	        while(rs.next()){
+	            grupos.add(rs.getString("nombre"));
+	        }
+
+	    }catch(Exception e){
+	        e.printStackTrace();
+	    }
+
+	    return grupos;
+	}
+	
+	public int obtenerIdGrupo(String nombreGrupo){
+
+	    int id = -1;
+
+	    String sql = """
+	            SELECT id_grupo
+	            FROM GRUPOS
+	            WHERE nombre = ?
+	            """;
+
+	    try(
+	        Connection con = DriverManager.getConnection(URL,USER,PASS);
+	        PreparedStatement ps = con.prepareStatement(sql)
+	    ){
+
+	        ps.setString(1,nombreGrupo);
+
+	        ResultSet rs = ps.executeQuery();
+
+	        if(rs.next()){
+	            id = rs.getInt("id_grupo");
+	        }
+
+	    }catch(Exception e){
+	        e.printStackTrace();
+	    }
+
+	    return id;
+	}
+
+	public boolean existeMatricula(String matricula){
+
+	    String sql = """
+	        SELECT COUNT(*)
+	        FROM ALUMNOS
+	        WHERE matricula = ?
+	    """;
+
+	    try(
+	        Connection con = DriverManager.getConnection(URL,USER,PASS);
+	        PreparedStatement ps = con.prepareStatement(sql)
+	    ){
+
+	        ps.setString(1, matricula);
+
+	        ResultSet rs = ps.executeQuery();
+
+	        if(rs.next()){
+	            return rs.getInt(1) > 0;
+	        }
+
+	    }catch(Exception e){
+	        e.printStackTrace();
+	    }
+
+	    return false;
+	}
+	
 }
