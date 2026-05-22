@@ -202,6 +202,39 @@ public class AlumnosModel {
 	
 	        return false;
     }
+	
+	public boolean eliminarAlumno(String matricula) {
+
+	    String sql = """
+	            DELETE FROM ALUMNOS
+	            WHERE matricula = ?
+	            """;
+
+	    try(
+	        Connection con =
+	                DriverManager.getConnection(
+	                        URL,
+	                        USER,
+	                        PASS
+	                );
+
+	        PreparedStatement ps =
+	                con.prepareStatement(sql)
+	    ){
+
+	        ps.setString(1, matricula);
+
+	        int rows = ps.executeUpdate();
+
+	        return rows > 0;
+
+	    } catch(Exception e) {
+
+	        e.printStackTrace();
+	    }
+
+	    return false;
+	}
 	 
 	public boolean updateAlumno(
 		        String matriculaOriginal,

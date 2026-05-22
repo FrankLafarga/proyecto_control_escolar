@@ -998,19 +998,55 @@ public class AlumnosView extends JPanel {
 
     
     public void eliminarAlumno(int fila) {
+    	String matricula =
+                tabla.getValueAt(fila, 0).toString();
 
+        String nombreAlumno =
+                tabla.getValueAt(fila, 1).toString();
 
-		String nombreAlumno = tabla.getValueAt(fila, 1).toString();
-        
-        int confirm = JOptionPane.showConfirmDialog(null,"¿Estás seguro de eliminar el alumno " + nombreAlumno + "?","Confirmar eliminación",JOptionPane.YES_NO_OPTION);
-        
-        if (confirm == JOptionPane.YES_OPTION) {
-        	JOptionPane.showMessageDialog(null,"Se eliminó el alumno: " + nombreAlumno,"Alumno eliminado",JOptionPane.INFORMATION_MESSAGE);
-        	
-        } else if (confirm == JOptionPane.NO_OPTION) {
-        	System.out.println("Accion cancelada");
+        int confirm = JOptionPane.showConfirmDialog(
+                null,
+                "¿Estás seguro de eliminar el alumno "
+                + nombreAlumno + "?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if(confirm == JOptionPane.YES_OPTION) {
+
+            boolean eliminado =
+                    controller.eliminarAlumno(
+                            matricula
+                    );
+
+            if(eliminado) {
+
+                ((DefaultTableModel)
+                        tabla.getModel())
+                        .removeRow(fila);
+
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Se eliminó el alumno: "
+                        + nombreAlumno,
+                        "Alumno eliminado",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+
+            } else {
+
+                JOptionPane.showMessageDialog(
+                        null,
+                        "No se pudo eliminar el alumno",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
+
+        } else if(confirm == JOptionPane.NO_OPTION) {
+
+            System.out.println("Accion cancelada");
         }
-        
         
     }
     

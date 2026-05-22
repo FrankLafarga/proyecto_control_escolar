@@ -116,6 +116,11 @@ public class AlumnosController {
         );
     }
     
+    public boolean eliminarAlumno(String matricula) {
+
+        return model.eliminarAlumno(matricula);
+    }
+    
     public boolean updateAlumno(
             String matriculaOriginal,
             String matricula,
@@ -162,11 +167,6 @@ public class AlumnosController {
     public int obtenerIdGrupo(String nombre){
         return model.obtenerIdGrupo(nombre);
     }
-    
-    
-    
-    
-    
 
     public String getNombres() {
         return nombres;
