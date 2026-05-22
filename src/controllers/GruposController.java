@@ -33,23 +33,45 @@ public class GruposController {
         return model.obtenerDocentes();
     }
     
+    public ArrayList<String> obtenerAsignaturas() {
+
+        return model.obtenerAsignaturas();
+    }
+    
     public boolean addGrupo(
             String nombre,
             String turno,
             int capacidad,
+
+            String asignatura1,
             String docente1,
+
+            String asignatura2,
             String docente2,
+
+            String asignatura3,
             String docente3,
+
+            String asignatura4,
             String docente4
     ) {
 
         return model.addGrupo(
+
                 nombre,
                 turno,
                 capacidad,
+
+                asignatura1,
                 docente1,
+
+                asignatura2,
                 docente2,
+
+                asignatura3,
                 docente3,
+
+                asignatura4,
                 docente4
         );
     }

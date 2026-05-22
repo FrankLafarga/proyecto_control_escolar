@@ -678,25 +678,61 @@ public class GruposView extends JPanel {
 	
 	    JLabel lblCapacidad = new JLabel("Capacidad");
 	    lblCapacidad.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-	
-	    JLabel lblDocente1 = new JLabel("Docente 1");
-	    lblDocente1.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-	
+	    
 	    JTextField txtCapacidad = new JTextField();
 	    txtCapacidad.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 	    txtCapacidad.setPreferredSize(new Dimension(200, 45));
-	
+	    
+	    JLabel lblAsignatura1 = new JLabel("Asignatura 1");
+	    lblAsignatura1.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	    JComboBox<String> comboAsignatura1 = new JComboBox<>();
+	    comboAsignatura1.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    
+	    JLabel lblAsignatura2 = new JLabel("Asignatura 2");
+	    lblAsignatura2.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	    JComboBox<String> comboAsignatura2 = new JComboBox<>();
+	    comboAsignatura2.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    
+	    JLabel lblAsignatura3 = new JLabel("Asignatura 3");
+	    lblAsignatura3.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	    JComboBox<String> comboAsignatura3 = new JComboBox<>();
+	    comboAsignatura3.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+
+	    JLabel lblAsignatura4 = new JLabel("Asignatura 4");
+	    lblAsignatura4.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	    JComboBox<String> comboAsignatura4 = new JComboBox<>();
+	    comboAsignatura4.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+
+	    
+	    JLabel lblDocente1 = new JLabel("Docente 1");
+	    lblDocente1.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 	    JComboBox<String> comboDocente1 = new JComboBox<>();
 	    comboDocente1.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-	
+	    
+	    JLabel lblDocente2 = new JLabel("Docente 2");
+	    lblDocente2.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 	    JComboBox<String> comboDocente2 = new JComboBox<>();
 	    comboDocente2.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-	
+	    
+	    JLabel lblDocente3 = new JLabel("Docente 3");
+	    lblDocente3.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 	    JComboBox<String> comboDocente3 = new JComboBox<>();
 	    comboDocente3.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-	
+	    
+	    JLabel lblDocente4 = new JLabel("Docente 4");
+	    lblDocente4.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 	    JComboBox<String> comboDocente4 = new JComboBox<>();
 	    comboDocente4.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    
+	    ArrayList<String> asignaturas = controller.obtenerAsignaturas();
+
+	    for(String asignatura : asignaturas) {
+
+	        comboAsignatura1.addItem(asignatura);
+	        comboAsignatura2.addItem(asignatura);
+	        comboAsignatura3.addItem(asignatura);
+	        comboAsignatura4.addItem(asignatura);
+	    }
 	
 	    ArrayList<String> docentes = controller.obtenerDocentes();
 	
@@ -707,15 +743,6 @@ public class GruposView extends JPanel {
 	        comboDocente3.addItem(docente);
 	        comboDocente4.addItem(docente);
 	    }
-	
-	    JLabel lblDocente2 = new JLabel("Docente 2");
-	    lblDocente2.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-	
-	    JLabel lblDocente3 = new JLabel("Docente 3");
-	    lblDocente3.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-	
-	    JLabel lblDocente4 = new JLabel("Docente 4");
-	    lblDocente4.setFont(new Font("Segoe UI", Font.PLAIN, 20));
 	
 	    gbc.gridx = 0;
 	    gbc.gridy = 0;
@@ -736,35 +763,66 @@ public class GruposView extends JPanel {
 	    tarjeta.add(lblCapacidad, gbc);
 	
 	    gbc.gridx = 1;
-	    tarjeta.add(lblDocente1, gbc);
-	
+	    tarjeta.add(new JLabel(""), gbc);
+	    
 	    gbc.gridx = 0;
 	    gbc.gridy = 3;
 	    tarjeta.add(txtCapacidad, gbc);
+	    
+	    gbc.gridx = 0;
+	    gbc.gridy = 4;
+	    tarjeta.add(lblAsignatura1, gbc);
+	    
+	    gbc.gridx = 1;
+	    tarjeta.add(lblDocente1, gbc);
+	    
+	    gbc.gridx = 0;
+	    gbc.gridy = 5;
+	    tarjeta.add(comboAsignatura1, gbc);
 	
 	    gbc.gridx = 1;
 	    tarjeta.add(comboDocente1, gbc);
-	
+	    
 	    gbc.gridx = 0;
-	    gbc.gridy = 4;
-	    tarjeta.add(lblDocente2, gbc);
+	    gbc.gridy = 6;
+	    tarjeta.add(lblAsignatura2, gbc);
 	
 	    gbc.gridx = 1;
-	    tarjeta.add(lblDocente3, gbc);
-	
+	    tarjeta.add(lblDocente2, gbc);
+	    
 	    gbc.gridx = 0;
-	    gbc.gridy = 5;
+	    gbc.gridy = 7;
+	    tarjeta.add(comboAsignatura2, gbc);
+	
+	    gbc.gridx = 1;
 	    tarjeta.add(comboDocente2, gbc);
+	    
+	    gbc.gridx = 0;
+	    gbc.gridy = 8;
+	    tarjeta.add(lblAsignatura3, gbc);
+	    
+	    gbc.gridx = 1;
+	    tarjeta.add(lblDocente3, gbc);
+	    
+	    gbc.gridx = 0;
+	    gbc.gridy = 9;
+	    tarjeta.add(comboAsignatura3, gbc);
 	
 	    gbc.gridx = 1;
 	    tarjeta.add(comboDocente3, gbc);
-	
+	    
 	    gbc.gridx = 0;
-	    gbc.gridy = 6;
+	    gbc.gridy = 10;
+	    tarjeta.add(lblAsignatura4, gbc);
+	
+	    gbc.gridx = 1;
 	    tarjeta.add(lblDocente4, gbc);
 	
 	    gbc.gridx = 0;
-	    gbc.gridy = 7;
+	    gbc.gridy = 11;
+	    tarjeta.add(comboAsignatura4, gbc);
+	    
+	    gbc.gridx = 1;
 	    tarjeta.add(comboDocente4, gbc);
 	
 	    JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
@@ -825,9 +883,16 @@ public class GruposView extends JPanel {
 	                    comboTurno.getSelectedItem().toString(),
 	                    Integer.parseInt(txtCapacidad.getText().trim()),
 	
+	                    comboAsignatura1.getSelectedItem().toString(),
 	                    comboDocente1.getSelectedItem().toString(),
+
+	                    comboAsignatura2.getSelectedItem().toString(),
 	                    comboDocente2.getSelectedItem().toString(),
+
+	                    comboAsignatura3.getSelectedItem().toString(),
 	                    comboDocente3.getSelectedItem().toString(),
+
+	                    comboAsignatura4.getSelectedItem().toString(),
 	                    comboDocente4.getSelectedItem().toString()
 	                );
 	
@@ -861,7 +926,7 @@ public class GruposView extends JPanel {
 	    panelBotones.add(btnGuardar);
 	
 	    gbc.gridx = 0;
-	    gbc.gridy = 8;
+	    gbc.gridy = 12;
 	    gbc.gridwidth = 2;
 	    gbc.anchor = GridBagConstraints.EAST;
 	    gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -870,8 +935,18 @@ public class GruposView extends JPanel {
 	
 	    panelCentroWrapper.add(tarjeta, BorderLayout.NORTH);
 	
+	    JScrollPane scroll = new JScrollPane(panelCentroWrapper);
+
+	    scroll.setBorder(null);
+
+	    scroll.getVerticalScrollBar().setUnitIncrement(16);
+
+	    scroll.setHorizontalScrollBarPolicy(
+	        JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
+	    );
+
 	    contenedor.add(panelSuperior, BorderLayout.NORTH);
-	    contenedor.add(panelCentroWrapper, BorderLayout.CENTER);
+	    contenedor.add(scroll, BorderLayout.CENTER);
 	
 	    app.cambiarVista(
 	        contenedor,
