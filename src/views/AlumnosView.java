@@ -996,7 +996,6 @@ public class AlumnosView extends JPanel {
 		);
     }
 
-    
     public void eliminarAlumno(int fila) {
     	String matricula =
                 tabla.getValueAt(fila, 0).toString();
@@ -1050,7 +1049,6 @@ public class AlumnosView extends JPanel {
         
     }
     
-	
     public void agregarAlumno() {
 	
 		JPanel contenedor = new JPanel(new BorderLayout());
@@ -1447,10 +1445,4 @@ public class AlumnosView extends JPanel {
 		telefono = controller.getTelefono();
 		estatus = controller.getEstatus();
     }  
-    
-    
-    
-    
-    
-    
 }

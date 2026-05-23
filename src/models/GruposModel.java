@@ -21,6 +21,8 @@ public class GruposModel {
     private String turno;
     private int capacidad;
     private int docentes;
+    private String asignaturas;
+    private String nombresDocentes;
 
    
     public void obtenerGrupo(String nom) {
@@ -31,10 +33,32 @@ public class GruposModel {
                 g.nombre,
                 g.turno,
                 g.capacidad,
-                COUNT(DISTINCT ga.id_docente) AS docentes
+                COUNT(DISTINCT ga.id_docente) AS docentes,
+                
+        		GROUP_CONCAT(
+    		      DISTINCT a.nombre
+    		      SEPARATOR ', '
+    			) AS asignaturas,
+    			
+        		GROUP_CONCAT(
+    		     DISTINCT CONCAT(
+        		    d.nombre,' ',
+        		    d.apellido_paterno,' ',
+        		    d.apellido_materno
+    		     )
+	 			 SEPARATOR ', '
+        		) AS nombres_docentes
+                
             FROM GRUPOS g
             LEFT JOIN GRUPO_ASIGNATURA ga 
             ON g.id_grupo = ga.id_grupo
+            
+            LEFT JOIN ASIGNATURAS a
+    		ON ga.id_asignatura = a.id_asignatura
+
+    		LEFT JOIN DOCENTES d
+    		ON ga.id_docente = d.id_docente
+    		
             WHERE g.nombre = ?
             GROUP BY g.id_grupo, g.nombre, g.turno, g.capacidad
         """;
@@ -55,6 +79,8 @@ public class GruposModel {
                 turno = rs.getString("turno");
                 capacidad = rs.getInt("capacidad");
                 docentes = rs.getInt("docentes");
+                asignaturas = rs.getString("asignaturas");
+                nombresDocentes = rs.getString("nombres_docentes");
             }
 
         } catch (Exception e) {
@@ -458,6 +484,14 @@ public class GruposModel {
 
     public int getDocentes() {
         return docentes;
+    }
+    
+    public String getAsignaturas() {
+        return asignaturas;
+    }
+
+    public String getNombresDocentes() {
+        return nombresDocentes;
     }
 
     public void setDocentes(int docentes) {

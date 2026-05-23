@@ -9,12 +9,14 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -37,6 +39,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import constructor_ventanas.App;
+import controllers.AlumnosController;
 import controllers.GruposController;
 
 public class GruposView extends JPanel {
@@ -50,7 +53,27 @@ public class GruposView extends JPanel {
     private int capacidad;
     private int docentes;
     
+    private AlumnosController alumnosController = new AlumnosController();
+    
     GruposController controller = new GruposController();
+    
+    private ImageIcon iconoOriginal =
+            new ImageIcon(getClass().getResource("/resources/activo-icon.png"));
+
+    private Image imagenEscalada =
+            iconoOriginal.getImage().getScaledInstance(136,26,Image.SCALE_SMOOTH);
+
+    private ImageIcon iconoActivo =
+            new ImageIcon(imagenEscalada);
+
+    private ImageIcon iconoinOriginal =
+            new ImageIcon(getClass().getResource("/resources/inactivo-icon.png"));
+
+    private Image imageninEscalada =
+            iconoinOriginal.getImage().getScaledInstance(136,26,Image.SCALE_SMOOTH);
+
+    private ImageIcon iconoInactivo =
+            new ImageIcon(imageninEscalada);
 
     public GruposView(AppView app) {
 		this.app = app;
@@ -218,7 +241,7 @@ public class GruposView extends JPanel {
 		        }
 		    })
 		);
-}
+    }
 
     private void configurarTabla(JTable tabla){
         tabla.setRowHeight(30);
@@ -258,7 +281,7 @@ public class GruposView extends JPanel {
 	
 	    JPanel panelSuperior = new JPanel(new BorderLayout());
 	    panelSuperior.setBackground(new Color(240,240,240));
-	    panelSuperior.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+	    panelSuperior.setBorder(BorderFactory.createEmptyBorder(10, 40, 20, 40));
 	
 	    JButton volver = new JButton("Volver");
         volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
@@ -290,7 +313,8 @@ public class GruposView extends JPanel {
 	
 	    panelSuperior.add(volver, BorderLayout.EAST);
 	
-	    JPanel centroWrapper = new JPanel(new BorderLayout());
+	    JPanel centroWrapper = new JPanel();
+	    centroWrapper.setLayout(new BoxLayout(centroWrapper, BoxLayout.Y_AXIS));
 	    centroWrapper.setBackground(new Color(240,240,240));
 	    centroWrapper.setBorder(BorderFactory.createEmptyBorder(0, 40, 0, 40));
 	
@@ -299,7 +323,7 @@ public class GruposView extends JPanel {
 	    tarjeta.setBackground(Color.WHITE);
 	    tarjeta.setBorder(BorderFactory.createCompoundBorder(
 	        new LineBorder(new Color(200,200,200), 2, true),
-	        BorderFactory.createEmptyBorder(20, 30, 20, 30)
+	        BorderFactory.createEmptyBorder(0, 10, 0, 10)
 	    ));
 	    	    	    
 	    JLabel nombre = new JLabel("Grupo: " + this.nombre);
@@ -321,14 +345,15 @@ public class GruposView extends JPanel {
 	    
 	    JLabel idGrupo = new JLabel(
 	    	    "ID Grupo: " + this.idGrupo
-	    	);
-	
-	    JLabel[] datos = {idGrupo, turno, capacidad, docentes};
-	
-	    for(JLabel l : datos){
-	        l.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-	        l.setAlignmentX(Component.LEFT_ALIGNMENT);
-	    }
+    	);
+	    
+	    JLabel asignaturas = new JLabel(
+	            "Asignaturas: " + controller.getAsignaturas()
+	    );
+
+	    JLabel nombresDocentes = new JLabel(
+	            "Docentes: " + controller.getNombresDocentes()
+	    );
 	    
 	    JPanel filaNombre = new JPanel(new FlowLayout(FlowLayout.LEFT));
 	    filaNombre.setBackground(Color.WHITE);
@@ -337,17 +362,38 @@ public class GruposView extends JPanel {
 	    tarjeta.add(filaNombre);
 	    tarjeta.add(Box.createVerticalStrut(10));
 	
-	    for(JLabel l : datos){
 	
-	        JPanel filaDato = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	        filaDato.setBackground(Color.WHITE);
-	
-	        l.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-	
-	        filaDato.add(l);
-	
-	        tarjeta.add(filaDato);
-	    }
+        JPanel filaDato = new JPanel(new FlowLayout(FlowLayout.LEFT,30,10));
+        filaDato.setBackground(Color.WHITE);
+        
+        JLabel[] datos = {idGrupo, turno, capacidad, docentes};
+
+        for(JLabel l : datos){
+
+            l.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        filaDato.add(l);
+        }
+
+        tarjeta.add(filaDato);
+        
+        asignaturas.setFont(new Font("Segoe UI",Font.PLAIN,20));
+
+        nombresDocentes.setFont(new Font("Segoe UI",Font.PLAIN,20));
+
+        JPanel filaAsignaturas = new JPanel(new FlowLayout(FlowLayout.LEFT,25,10));
+        filaAsignaturas.setBackground(Color.WHITE);
+        filaAsignaturas.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+        filaAsignaturas.add(asignaturas);
+
+        tarjeta.add(filaAsignaturas);
+
+        JPanel filaDocentes = new JPanel(new FlowLayout(FlowLayout.LEFT,25,10));
+        filaDocentes.setBackground(Color.WHITE);
+        filaDocentes.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+        filaDocentes.add(nombresDocentes);
+
+        tarjeta.add(filaDocentes);
+	    
 	
 	    JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 	    panelBoton.setBackground(Color.WHITE);
@@ -366,10 +412,127 @@ public class GruposView extends JPanel {
 	    tarjeta.add(Box.createVerticalStrut(20));
 	    tarjeta.add(panelBoton);
 	
-	    centroWrapper.add(tarjeta, BorderLayout.NORTH);
+	    tarjeta.setAlignmentX(Component.LEFT_ALIGNMENT);
+	    centroWrapper.add(tarjeta);
+	    
+	    JPanel panelTabla = new JPanel(new BorderLayout());
+	    panelTabla.setBackground(Color.WHITE);
+	    panelTabla.setBorder(BorderFactory.createCompoundBorder(
+	    	    new LineBorder(new Color(200,200,200), 2, true),
+	    	    BorderFactory.createEmptyBorder(15, 15, 15, 15)
+    	));
+
+	    centroWrapper.add(tarjeta);
+	    centroWrapper.add(Box.createVerticalStrut(20));
+	    centroWrapper.add(panelTabla);
+	    
+	    JLabel tituloTabla = new JLabel("Alumnos del grupo");
+	    tituloTabla.setFont(new Font("Segoe UI", Font.BOLD, 22));
+	    tituloTabla.setForeground(azul_principal);
+
+	    panelTabla.add(tituloTabla, BorderLayout.NORTH);
+		
+		DefaultTableModel modelo = new DefaultTableModel(){
+
+		    @Override
+		    public boolean isCellEditable(int row, int column){
+		        return false;
+		    }
+
+		    @Override
+		    public Class<?> getColumnClass(int column){
+
+		        if(column == 4){
+		            return ImageIcon.class;
+		        }
+
+		        return Object.class;
+		    }
+		};
+		
+		modelo.addColumn("Matrícula");
+		modelo.addColumn("Nombre Completo");
+		modelo.addColumn("Semestre");
+		modelo.addColumn("Promedio");
+		modelo.addColumn("Estatus");
+		
+		List<Object[]> alumnos =
+		        alumnosController.obtenerAlumnosPorGrupo(this.idGrupo);
 	
-	    contenedor.add(panelSuperior, BorderLayout.NORTH);
-	    contenedor.add(centroWrapper, BorderLayout.CENTER);
+		
+		for(Object[] filaAlumno : alumnos){
+
+		    if(filaAlumno[4].equals("ACTIVO")){
+		        filaAlumno[4] = iconoActivo;
+
+		    }else if(filaAlumno[4].equals("INACTIVO")){
+		        filaAlumno[4] = iconoInactivo;
+		    }
+
+		    modelo.addRow(filaAlumno);
+		}
+		
+		JTable tabla = new JTable(modelo);
+		
+		tabla.setRowHeight(30);
+		tabla.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+		tabla.setBackground(Color.WHITE);
+		tabla.setForeground(new Color(60,60,60));
+		tabla.setGridColor(new Color(235,235,235));
+		
+		tabla.getTableHeader().setBackground(Color.WHITE);
+		tabla.getTableHeader().setForeground(new Color(14,48,170));
+		tabla.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
+		
+		tabla.setShowVerticalLines(false);
+		tabla.setShowHorizontalLines(true);
+		
+		DefaultTableCellRenderer c =
+		        new DefaultTableCellRenderer();
+		
+		c.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		for(int i=0;i<tabla.getColumnCount();i++){
+
+		    if(i != 4){
+
+		        tabla.getColumnModel()
+		             .getColumn(i)
+		             .setCellRenderer(c);
+		    }
+		}
+		
+		JScrollPane scroll = new JScrollPane(tabla);
+		
+		scroll.setBorder(BorderFactory.createCompoundBorder(
+		    new LineBorder(new Color(200,200,200), 2, true),
+		    BorderFactory.createEmptyBorder(5,5,5,5)
+		));
+		
+		panelTabla.add(Box.createVerticalStrut(10),
+		        BorderLayout.NORTH);
+		
+		JPanel contenedorTabla = new JPanel(new BorderLayout());
+		contenedorTabla.setBackground(Color.WHITE);
+		
+		contenedorTabla.add(tituloTabla, BorderLayout.NORTH);
+		contenedorTabla.add(scroll, BorderLayout.CENTER);
+		
+		panelTabla.add(contenedorTabla, BorderLayout.CENTER);
+		
+		panelTabla.setAlignmentX(Component.LEFT_ALIGNMENT);
+		centroWrapper.add(panelTabla);
+	
+		JScrollPane scrollPrincipal = new JScrollPane(centroWrapper);
+
+		scrollPrincipal.setBorder(null);
+
+		scrollPrincipal.getVerticalScrollBar().setUnitIncrement(16);
+
+		scrollPrincipal.getViewport().setBackground(new Color(240,240,240));
+
+		contenedor.add(panelSuperior, BorderLayout.NORTH);
+		contenedor.add(scrollPrincipal, BorderLayout.CENTER);
 	
 	    app.cambiarVista(contenedor,
 	        "Grupo",

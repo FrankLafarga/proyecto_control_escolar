@@ -112,6 +112,14 @@ public class GruposController {
     public int getDocentes() {
         return model.getDocentes();
     }
+    
+    public String getAsignaturas() {
+        return model.getAsignaturas();
+    }
+
+    public String getNombresDocentes() {
+        return model.getNombresDocentes();
+    }
 
     public void setIdGrupo(int idGrupo) {
         model.setIdGrupo(idGrupo);

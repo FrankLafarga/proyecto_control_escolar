@@ -345,6 +345,48 @@ public class AlumnosModel {
 	    return grupos;
 	}
 	
+	public List<Object[]> obtenerAlumnosPorGrupo(int idGrupo){
+
+	    List<Object[]> lista = new ArrayList<>();
+
+	    String sql = """
+	        SELECT
+	            matricula,
+	            CONCAT(nombre,' ',apellido_paterno,' ',apellido_materno) AS nombre_completo,
+	            semestre,
+	            promedio,
+	            estatus
+	        FROM ALUMNOS
+	        WHERE id_grupo = ?
+	    """;
+
+	    try(
+	        Connection con = DriverManager.getConnection(URL, USER, PASS);
+	        PreparedStatement ps = con.prepareStatement(sql)
+	    ){
+
+	        ps.setInt(1, idGrupo);
+
+	        ResultSet rs = ps.executeQuery();
+
+	        while(rs.next()){
+
+	            lista.add(new Object[]{
+	                rs.getString("matricula"),
+	                rs.getString("nombre_completo"),
+	                rs.getInt("semestre"),
+	                rs.getDouble("promedio"),
+	                rs.getString("estatus")
+	            });
+	        }
+
+	    }catch(Exception e){
+	        e.printStackTrace();
+	    }
+
+	    return lista;
+	}
+	
 	public int obtenerIdGrupo(String nombreGrupo){
 		
 		if(nombreGrupo.equals("Sin grupo")) {

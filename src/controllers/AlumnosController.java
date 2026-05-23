@@ -160,6 +160,10 @@ public class AlumnosController {
         return model.obtenerGrupos();
     }
     
+    public List<Object[]> obtenerAlumnosPorGrupo(int idGrupo){
+        return model.obtenerAlumnosPorGrupo(idGrupo);
+    }
+    
     public boolean existeMatricula(String matricula){
         return model.existeMatricula(matricula);
     }    
