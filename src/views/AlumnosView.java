@@ -1371,8 +1371,6 @@ public class AlumnosView extends JPanel {
 				            );
 				    }
 
-				    int idGrupo=controller.obtenerIdGrupo(grupoSeleccionado);
-
 				    controller.addAlumno(
 				            txtMatricula.getText(),
 				            cbSemestre.getSelectedIndex() + 1,
@@ -1386,7 +1384,7 @@ public class AlumnosView extends JPanel {
 				            txtFecha.getText(),
 				            Double.parseDouble(txtPromedio.getText()),
 				            cbEstatus.getSelectedItem().toString(),
-				            idGrupo
+				            grupo
 				    );
 
 				    JOptionPane.showMessageDialog(

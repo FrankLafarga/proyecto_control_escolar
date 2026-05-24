@@ -96,7 +96,7 @@ public class AlumnosController {
             String fecha,
             double promedio,
             String estatus,
-            int grupo
+            Integer grupo
     ) {
 
         return model.addAlumno(
@@ -135,7 +135,7 @@ public class AlumnosController {
             String fecha,
             double promedio,
             String estatus,
-            int grupo
+            Integer grupo
     ) {
 
         return model.updateAlumno(
