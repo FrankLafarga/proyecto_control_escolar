@@ -168,7 +168,7 @@ public class AlumnosController {
         return model.existeMatricula(matricula);
     }    
     
-    public int obtenerIdGrupo(String nombre){
+    public Integer obtenerIdGrupo(String nombre){
         return model.obtenerIdGrupo(nombre);
     }
 

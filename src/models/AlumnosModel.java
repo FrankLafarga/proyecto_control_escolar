@@ -387,38 +387,38 @@ public class AlumnosModel {
 	    return lista;
 	}
 	
-	public int obtenerIdGrupo(String nombreGrupo){
-		
-		if(nombreGrupo.equals("Sin grupo")) {
-		    return -1;
-		}
+	public Integer obtenerIdGrupo(String nombreGrupo){
 
-	    int id = -1;
+    if(nombreGrupo == null || nombreGrupo.equals("Sin grupo")){
+        return null;
+    }
 
-	    String sql = """
-	            SELECT id_grupo
-	            FROM GRUPOS
-	            WHERE nombre = ?
-	            """;
+    Integer id = null;
 
-	    try(
-	        Connection con = DriverManager.getConnection(URL,USER,PASS);
-	        PreparedStatement ps = con.prepareStatement(sql)
-	    ){
+    String sql = """
+            SELECT id_grupo
+            FROM GRUPOS
+            WHERE nombre = ?
+            """;
 
-	        ps.setString(1,nombreGrupo);
+    try(
+        Connection con = DriverManager.getConnection(URL,USER,PASS);
+        PreparedStatement ps = con.prepareStatement(sql)
+    ){
 
-	        ResultSet rs = ps.executeQuery();
+        ps.setString(1,nombreGrupo);
 
-	        if(rs.next()){
-	            id = rs.getInt("id_grupo");
-	        }
+        ResultSet rs = ps.executeQuery();
 
-	    }catch(Exception e){
-	        e.printStackTrace();
-	    }
+        if(rs.next()){
+            id = rs.getInt("id_grupo");
+        }
 
-	    return id;
+    }catch(Exception e){
+        e.printStackTrace();
+    }
+
+    return id;
 	}
 
 	public boolean existeMatricula(String matricula){

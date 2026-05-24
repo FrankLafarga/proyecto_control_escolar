@@ -705,7 +705,10 @@ public class AlumnosView extends JPanel {
         cbSemestre.addItem("7mo semestre");
         cbSemestre.addItem("8vo semestre");
         cbSemestre.addItem("9no semestre");
-	
+        int nSemestre = Integer.parseInt(semestre);
+
+        cbSemestre.setSelectedIndex(nSemestre-1);
+        
         JComboBox<String> cbGrupo = new JComboBox<>();
 
         for(String grupo : controller.obtenerGrupos()){
@@ -713,6 +716,7 @@ public class AlumnosView extends JPanel {
         }
 
         cbGrupo.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        cbGrupo.setSelectedItem(grupo);
 	
 		panelCentro.add(txtMatricula);
 		panelCentro.add(cbSemestre);
@@ -951,10 +955,10 @@ public class AlumnosView extends JPanel {
 				        return;
 				    }
 				
-				    String grupoSeleccionado =cbGrupo.getSelectedItem().toString();		
-				    int idGrupo = controller.obtenerIdGrupo(grupoSeleccionado);
-				
-				    controller.updateAlumno(
+				    String grupoSeleccionado =cbGrupo.getSelectedItem().toString();
+				    Integer idGrupo =controller.obtenerIdGrupo(grupoSeleccionado);
+
+				    if(controller.updateAlumno(
 				            matriculaOriginal,
 				            nuevaMatricula,
 				            cbSemestre.getSelectedIndex()+1,
@@ -966,14 +970,15 @@ public class AlumnosView extends JPanel {
 				            txtEmail.getText(),
 				            txtTelefono.getText(),
 				            txtFecha.getText(),
-				            Double.parseDouble(
-				                    txtPromedio.getText()
-				            ),
+				            Double.parseDouble(txtPromedio.getText()),
 				            cbEstatus.getSelectedItem().toString(),
 				            idGrupo
-				    );
-				
-				    JOptionPane.showMessageDialog(null,"Alumno actualizado correctamente" );
+				    )==true) {
+				    	JOptionPane.showMessageDialog(null,"Alumno actualizado correctamente" );
+				    }else{
+				    	JOptionPane.showMessageDialog(null,"No fue posible actualizar el alumno" );
+
+				    };
 				
 				    app.cambiarVista(new AlumnosView(app),"Alumnos","Gestion integral de alumnos en el sistema");
 				}
