@@ -259,4 +259,53 @@ public class AsignaturasModel {
 
         return false;
     }
+    
+    public boolean editarAsignatura(
+            String claveOriginal,
+            String nombre,
+            String clave,
+            int semestre,
+            int creditos
+    ) {
+
+        String query = """
+                UPDATE ASIGNATURAS
+                SET
+                    nombre=?,
+                    clave=?,
+                    semestre=?,
+                    creditos=?
+                WHERE clave=?
+                """;
+
+        try(
+
+            Connection conn =
+                    DriverManager.getConnection(
+                            URL,
+                            USER,
+                            PASS
+                    );
+
+            PreparedStatement ps =
+                    conn.prepareStatement(query)
+
+        ){
+
+            ps.setString(1, nombre);
+            ps.setString(2, clave);
+            ps.setInt(3, semestre);
+            ps.setInt(4, creditos);
+            ps.setString(5, claveOriginal);
+
+            int rows = ps.executeUpdate();
+
+            return rows > 0;
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 }

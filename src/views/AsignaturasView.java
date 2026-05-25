@@ -347,179 +347,248 @@ public class AsignaturasView extends JPanel {
     public void editarAsignatura(int fila) {
 
         JPanel contenedor = new JPanel(new BorderLayout());
-    contenedor.setBackground(new Color(245, 247, 250));
+	    contenedor.setBackground(new Color(245, 247, 250));
+	
+	    JPanel panelSuperior = new JPanel(new BorderLayout());
+	    panelSuperior.setBackground(new Color(245, 247, 250));
+	    panelSuperior.setBorder(BorderFactory.createEmptyBorder(25, 40, 10, 40));
+	
+	    JLabel subtitulo1 = new JLabel("Editar Asignatura seleccionada");
+	    subtitulo1.setForeground(azul_principal);
+	    subtitulo1.setFont(new Font("Times New Roman", Font.BOLD, 28));
+	    
+	    JButton volver = new JButton("Volver");
+	    volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
+	    volver.setBorder(null);
+	    volver.setFocusable(false);
+	    volver.setBorderPainted(false);
+	    volver.setContentAreaFilled(false);	    
+	    volver.setPreferredSize(new Dimension(200, 40));
+	    volver.setForeground(new Color(0,0,0));
+	    volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+	    volver.addMouseListener(new MouseAdapter() {
+	    	@Override
+	    	public void mouseEntered(MouseEvent e) {
+	    		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16Azul.png")));
+	    		volver.setForeground(azul_principal);
+	    	}
+	
+	    	@Override
+	    	public void mouseExited(MouseEvent e) {
+	    		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
+	    		volver.setForeground(new Color(0, 0, 0));
+	    	}
+	    });	    	
+	    volver.addActionListener(e ->
+	        app.cambiarVista(new AsignaturasView(app),
+	        "Asignaturas",
+	        "Gestion integral de asignaturas en el sistema")
+	    );
+	    
+	    panelSuperior.add(volver, BorderLayout.EAST);
+	    panelSuperior.add(subtitulo1, BorderLayout.WEST);
+	
+	    JPanel panelCentroWrapper = new JPanel(new BorderLayout());
+	    panelCentroWrapper.setBackground(new Color(245, 247, 250));
+	    panelCentroWrapper.setBorder(BorderFactory.createEmptyBorder(0, 40, 20, 40));
+	
+	    JPanel tarjeta = new JPanel();
+	    tarjeta.setBackground(Color.WHITE);
+	    tarjeta.setLayout(new GridBagLayout());
+	    tarjeta.setBorder(BorderFactory.createCompoundBorder(
+	        BorderFactory.createLineBorder(new Color(220,220,220), 1, true),
+	        BorderFactory.createEmptyBorder(35, 35, 35, 35)
+	    ));
+	
+	    GridBagConstraints gbc = new GridBagConstraints();
+	    gbc.insets = new Insets(10, 10, 10, 10);
+	    gbc.fill = GridBagConstraints.HORIZONTAL;
+	    gbc.weightx = 1;
+	
+	    JLabel lblNombreGrupo = new JLabel("Clave");
+	    lblNombreGrupo.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	
+	    JLabel lblAsignatura = new JLabel("Nombre de la asignatura");
+	    lblAsignatura.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	
+	    JTextField txtGrupo = new JTextField(clave);
+	    txtGrupo.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    txtGrupo.setPreferredSize(new Dimension(200, 45));
+	    
+	    JTextField txtAsignatura = new JTextField(nombre);
+	    txtAsignatura.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    txtAsignatura.setPreferredSize(new Dimension(200, 45));
+	
+	
+	    JLabel lblSemestre = new JLabel("Semestre");
+	    lblSemestre.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	
+	    JLabel lblCapacidad = new JLabel("Créditos");
+	    lblCapacidad.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	
+	    JComboBox<String> comboSemestre = new JComboBox<>();
+	    comboSemestre.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    comboSemestre.setPreferredSize(new Dimension(200, 45));
+	
+	    comboSemestre.addItem("1er semestre");
+	    comboSemestre.addItem("2do semestre");
+	    comboSemestre.addItem("3er semestre");
+	    comboSemestre.addItem("4to semestre");
+	    comboSemestre.addItem("5to semestre");
+	    comboSemestre.addItem("6to semestre");
+	    comboSemestre.addItem("7mo semestre");
+	    comboSemestre.addItem("8vo semestre");
+	    comboSemestre.addItem("9no semestre");
+	
+	    JTextField txtCreditos = new JTextField(creditos+"");
+	    txtCreditos.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    txtCreditos.setPreferredSize(new Dimension(200, 45));
+	
+	    gbc.gridx = 0;
+	    gbc.gridy = 0;
+	    tarjeta.add(lblNombreGrupo, gbc);
+	
+	    gbc.gridx = 1;
+	    tarjeta.add(lblAsignatura, gbc);
+	
+	    gbc.gridx = 0;
+	    gbc.gridy = 1;
+	    tarjeta.add(txtGrupo, gbc);
+	
+	    gbc.gridx = 1;
+	    tarjeta.add(txtAsignatura, gbc);
+	
+	    gbc.gridx = 0;
+	    gbc.gridy = 2;
+	    tarjeta.add(lblSemestre, gbc);
+	
+	    gbc.gridx = 1;
+	    tarjeta.add(lblCapacidad, gbc);
+	
+	    gbc.gridx = 0;
+	    gbc.gridy = 3;
+	    tarjeta.add(comboSemestre, gbc);
+	
+	    gbc.gridx = 1;
+	    tarjeta.add(txtCreditos, gbc);
+	
+	    JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
+	    panelBotones.setBackground(Color.WHITE);
+	
+	    JButton btnCancelar = new JButton("Cancelar");
+	    btnCancelar.setFocusable(false);
+	    btnCancelar.setForeground(new Color(180, 0, 0));
+	    btnCancelar.setBackground(Color.WHITE);
+	    btnCancelar.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    btnCancelar.setBorder(new LineBorder(new Color(180, 0, 0), 2, true));
+	    btnCancelar.setPreferredSize(new Dimension(180, 45));
+	
+	    btnCancelar.addActionListener(e ->
+	        app.cambiarVista(
+	            new AsignaturasView(app),
+	            "Asignaturas",
+	            "Gestion integral de asignaturas en el sistema"
+	        )
+	    );
+	
+	    JButton btnGuardar = new JButton("Guardar");
+	    btnGuardar.setFocusable(false);
+	    btnGuardar.setForeground(Color.WHITE);
+	    btnGuardar.setBackground(new Color(14, 48, 170));
+	    btnGuardar.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    btnGuardar.setPreferredSize(new Dimension(180, 45));
+	    btnGuardar.addActionListener(new ActionListener() {
 
-    JPanel panelSuperior = new JPanel(new BorderLayout());
-    panelSuperior.setBackground(new Color(245, 247, 250));
-    panelSuperior.setBorder(BorderFactory.createEmptyBorder(25, 40, 10, 40));
+	        public void actionPerformed(ActionEvent e) {
 
-    JLabel subtitulo1 = new JLabel("Editar Asignatura seleccionada");
-    subtitulo1.setForeground(azul_principal);
-    subtitulo1.setFont(new Font("Times New Roman", Font.BOLD, 28));
-    
-    JButton volver = new JButton("Volver");
-    volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
-    volver.setBorder(null);
-    volver.setFocusable(false);
-    volver.setBorderPainted(false);
-    volver.setContentAreaFilled(false);	    
-    volver.setPreferredSize(new Dimension(200, 40));
-    volver.setForeground(new Color(0,0,0));
-    volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-    volver.addMouseListener(new MouseAdapter() {
-    	@Override
-    	public void mouseEntered(MouseEvent e) {
-    		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16Azul.png")));
-    		volver.setForeground(azul_principal);
-    	}
+	            LineBorder bordeRojo = new LineBorder(Color.RED, 2, true);
+	            LineBorder bordeNormal = new LineBorder(new Color(180,180,180), 1, true);
 
-    	@Override
-    	public void mouseExited(MouseEvent e) {
-    		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
-    		volver.setForeground(new Color(0, 0, 0));
-    	}
-    });	    	
-    volver.addActionListener(e ->
-        app.cambiarVista(new AsignaturasView(app),
-        "Asignaturas",
-        "Gestion integral de asignaturas en el sistema")
-    );
-    
-    panelSuperior.add(volver, BorderLayout.EAST);
-    panelSuperior.add(subtitulo1, BorderLayout.WEST);
+	            txtGrupo.setBorder(bordeNormal);
+	            txtAsignatura.setBorder(bordeNormal);
+	            txtCreditos.setBorder(bordeNormal);
 
-    JPanel panelCentroWrapper = new JPanel(new BorderLayout());
-    panelCentroWrapper.setBackground(new Color(245, 247, 250));
-    panelCentroWrapper.setBorder(BorderFactory.createEmptyBorder(0, 40, 20, 40));
+	            boolean valido = true;
 
-    JPanel tarjeta = new JPanel();
-    tarjeta.setBackground(Color.WHITE);
-    tarjeta.setLayout(new GridBagLayout());
-    tarjeta.setBorder(BorderFactory.createCompoundBorder(
-        BorderFactory.createLineBorder(new Color(220,220,220), 1, true),
-        BorderFactory.createEmptyBorder(35, 35, 35, 35)
-    ));
+	            if(txtGrupo.getText().trim().isEmpty()) {
+	                txtGrupo.setBorder(bordeRojo);
+	                valido = false;
+	            }
 
-    GridBagConstraints gbc = new GridBagConstraints();
-    gbc.insets = new Insets(10, 10, 10, 10);
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.weightx = 1;
+	            if(txtAsignatura.getText().trim().isEmpty()) {
+	                txtAsignatura.setBorder(bordeRojo);
+	                valido = false;
+	            }
 
-    JLabel lblNombreGrupo = new JLabel("Clave");
-    lblNombreGrupo.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	            if(
+	                txtCreditos.getText().trim().isEmpty()
+	                || !txtCreditos.getText().matches("\\d+")
+	            ) {
 
-    JLabel lblAsignatura = new JLabel("Nombre de la asignatura");
-    lblAsignatura.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	                txtCreditos.setBorder(bordeRojo);
+	                valido = false;
+	            }
 
-    JTextField txtGrupo = new JTextField(clave);
-    txtGrupo.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-    txtGrupo.setPreferredSize(new Dimension(200, 45));
-    
-    JTextField txtAsignatura = new JTextField(nombre);
-    txtAsignatura.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-    txtAsignatura.setPreferredSize(new Dimension(200, 45));
+	            if(valido) {
 
-   
+	                boolean actualizado =
+	                    controller.editarAsignatura(
+	                        clave,
+	                        txtAsignatura.getText(),
+	                        txtGrupo.getText(),
+	                        comboSemestre.getSelectedIndex() + 1,
+	                        Integer.parseInt(txtCreditos.getText())
+	                    );
 
-    JLabel lblSemestre = new JLabel("Semestre");
-    lblSemestre.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	                if(actualizado) {
 
-    JLabel lblCapacidad = new JLabel("Créditos");
-    lblCapacidad.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	                    JOptionPane.showMessageDialog(
+	                        null,
+	                        "Asignatura actualizada correctamente",
+	                        "Exito",
+	                        JOptionPane.INFORMATION_MESSAGE
+	                    );
 
-    JComboBox<String> comboSemestre = new JComboBox<>();
-    comboSemestre.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-    comboSemestre.setPreferredSize(new Dimension(200, 45));
+	                    app.cambiarVista(
+	                        new AsignaturasView(app),
+	                        "Asignaturas",
+	                        "Gestion integral de asignaturas en el sistema"
+	                    );
 
-    comboSemestre.addItem("1er semestre");
-    comboSemestre.addItem("2do semestre");
-    comboSemestre.addItem("3er semestre");
-    comboSemestre.addItem("4to semestre");
-    comboSemestre.addItem("5to semestre");
-    comboSemestre.addItem("6to semestre");
-    comboSemestre.addItem("7mo semestre");
-    comboSemestre.addItem("8vo semestre");
-    comboSemestre.addItem("9no semestre");
+	                } else {
 
-    JTextField txtCreditos = new JTextField(creditos+"");
-    txtCreditos.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-    txtCreditos.setPreferredSize(new Dimension(200, 45));
-
-    gbc.gridx = 0;
-    gbc.gridy = 0;
-    tarjeta.add(lblNombreGrupo, gbc);
-
-    gbc.gridx = 1;
-    tarjeta.add(lblAsignatura, gbc);
-
-    gbc.gridx = 0;
-    gbc.gridy = 1;
-    tarjeta.add(txtGrupo, gbc);
-
-    gbc.gridx = 1;
-    tarjeta.add(txtAsignatura, gbc);
-
-    gbc.gridx = 0;
-    gbc.gridy = 2;
-    tarjeta.add(lblSemestre, gbc);
-
-    gbc.gridx = 1;
-    tarjeta.add(lblCapacidad, gbc);
-
-    gbc.gridx = 0;
-    gbc.gridy = 3;
-    tarjeta.add(comboSemestre, gbc);
-
-    gbc.gridx = 1;
-    tarjeta.add(txtCreditos, gbc);
-
-    JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
-    panelBotones.setBackground(Color.WHITE);
-
-    JButton btnCancelar = new JButton("Cancelar");
-    btnCancelar.setFocusable(false);
-    btnCancelar.setForeground(new Color(180, 0, 0));
-    btnCancelar.setBackground(Color.WHITE);
-    btnCancelar.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-    btnCancelar.setBorder(new LineBorder(new Color(180, 0, 0), 2, true));
-    btnCancelar.setPreferredSize(new Dimension(180, 45));
-
-    btnCancelar.addActionListener(e ->
-        app.cambiarVista(
-            new AsignaturasView(app),
-            "Asignaturas",
-            "Gestion integral de asignaturas en el sistema"
-        )
-    );
-
-    JButton btnGuardar = new JButton("Guardar");
-    btnGuardar.setFocusable(false);
-    btnGuardar.setForeground(Color.WHITE);
-    btnGuardar.setBackground(new Color(14, 48, 170));
-    btnGuardar.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-    btnGuardar.setPreferredSize(new Dimension(180, 45));
-
-    panelBotones.add(btnCancelar);
-    panelBotones.add(btnGuardar);
-
-    gbc.gridx = 0;
-    gbc.gridy = 4;
-    gbc.gridwidth = 2;
-    gbc.anchor = GridBagConstraints.EAST;
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-
-    tarjeta.add(panelBotones, gbc);
-
-    panelCentroWrapper.add(tarjeta, BorderLayout.NORTH);
-
-    contenedor.add(panelSuperior, BorderLayout.NORTH);
-    contenedor.add(panelCentroWrapper, BorderLayout.CENTER);
-
-    app.cambiarVista(
-        contenedor,
-        "Asignaturas",
-        "Gestion integral de asignaturas en el sistema"
-    );
+	                    JOptionPane.showMessageDialog(
+	                        null,
+	                        "No se pudo actualizar la asignatura",
+	                        "Error",
+	                        JOptionPane.ERROR_MESSAGE
+	                    );
+	                }
+	            }
+	        }
+	    });
+	
+	    panelBotones.add(btnCancelar);
+	    panelBotones.add(btnGuardar);
+	
+	    gbc.gridx = 0;
+	    gbc.gridy = 4;
+	    gbc.gridwidth = 2;
+	    gbc.anchor = GridBagConstraints.EAST;
+	    gbc.fill = GridBagConstraints.HORIZONTAL;
+	
+	    tarjeta.add(panelBotones, gbc);
+	
+	    panelCentroWrapper.add(tarjeta, BorderLayout.NORTH);
+	
+	    contenedor.add(panelSuperior, BorderLayout.NORTH);
+	    contenedor.add(panelCentroWrapper, BorderLayout.CENTER);
+	
+	    app.cambiarVista(
+	        contenedor,
+	        "Asignaturas",
+	        "Gestion integral de asignaturas en el sistema"
+	    );
     }
 
 	public void eliminarAsignatura(int fila) {
