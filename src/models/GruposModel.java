@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JOptionPane;
 
@@ -220,196 +222,269 @@ public class GruposModel {
         return asignaturas;
     }
     
-	public boolean addGrupo(
-	        String nombre,
-	        String turno,
-	        int capacidad,
-	
-	        String asignatura1,
-	        String docente1,
-	
-	        String asignatura2,
-	        String docente2,
-	
-	        String asignatura3,
-	        String docente3,
-	
-	        String asignatura4,
-	        String docente4,
-	        
-	        String asignatura5,
+    public boolean addGrupo(
+            String nombre,
+            String turno,
+            int capacidad,
+
+            String asignatura1,
+            String docente1,
+
+            String asignatura2,
+            String docente2,
+
+            String asignatura3,
+            String docente3,
+
+            String asignatura4,
+            String docente4,
+
+            String asignatura5,
             String docente5,
-            
+
             String asignatura6,
             String docente6
-	) {
-	
-	    String queryGrupo = """
-	            INSERT INTO GRUPOS(
-	                nombre,
-	                turno,
-	                capacidad
-	            )
-	            VALUES(?,?,?)
-	            """;
-	
-	    String queryAsignatura = """
-	            SELECT id_asignatura
-	            FROM ASIGNATURAS
-	            WHERE nombre = ?
-	            """;
-	
-	    String queryDocente = """
-	            SELECT id_docente
-	            FROM DOCENTES
-	            WHERE CONCAT(
-	                nombre,' ',
-	                apellido_paterno,' ',
-	                apellido_materno
-	            ) = ?
-	            """;
-	
-	    String queryGA = """
-	            INSERT INTO GRUPO_ASIGNATURA(
-	                id_grupo,
-	                id_asignatura,
-	                id_docente
-	            )
-	            VALUES(?,?,?)
-	            """;
-	
-	    Connection conn = null;
-	
-	    try {
-	
-	        Class.forName("com.mysql.cj.jdbc.Driver");
-	
-	        conn = DriverManager.getConnection(
-	                URL,
-	                USER,
-	                PASS
-	        );
-	
-	        PreparedStatement psGrupo =
-	                conn.prepareStatement(
-	                        queryGrupo,
-	                        Statement.RETURN_GENERATED_KEYS
-	                );
-	
-	        psGrupo.setString(1, nombre);
-	        psGrupo.setString(2, turno);
-	        psGrupo.setInt(3, capacidad);
-	
-	        int rows = psGrupo.executeUpdate();
-	
-	        if(rows > 0) {
-	
-	            ResultSet rsGrupo =
-	                    psGrupo.getGeneratedKeys();
-	
-	            int idGrupo = 0;
-	
-	            if(rsGrupo.next()) {
-	                idGrupo = rsGrupo.getInt(1);
-	            }
-	
-	            String[] asignaturas = {
-	                    asignatura1,
-	                    asignatura2,
-	                    asignatura3,
-	                    asignatura4,
-	                    asignatura5,
-	                    asignatura6
-	            };
-	
-	            String[] docentes = {
-	                    docente1,
-	                    docente2,
-	                    docente3,
-	                    docente4,
-	                    docente5,
-	                    docente6
-	            };
-	
-	            for(int i = 0; i < 6; i++) {
+    ) {
 
-	                if(
-	                    asignaturas[i].equals("Sin selección")
-	                    || docentes[i].equals("Sin selección")
-	                ) {
-	                    continue;
-	                }
+        String queryGrupo = """
+                INSERT INTO GRUPOS(
+                    nombre,
+                    turno,
+                    capacidad
+                )
+                VALUES(?,?,?)
+                """;
 
-	                int idAsignatura = -1;
-	                int idDocente = -1;
+        String queryAsignatura = """
+                SELECT id_asignatura
+                FROM ASIGNATURAS
+                WHERE nombre = ?
+                """;
 
-	                PreparedStatement psAsignatura =
-	                        conn.prepareStatement(queryAsignatura);
+        String queryDocente = """
+                SELECT id_docente
+                FROM DOCENTES
+                WHERE CONCAT(
+                    nombre,' ',
+                    apellido_paterno,' ',
+                    apellido_materno
+                ) = ?
+                """;
 
-	                psAsignatura.setString(1, asignaturas[i]);
+        String queryGA = """
+                INSERT INTO GRUPO_ASIGNATURA(
+                    id_grupo,
+                    id_asignatura,
+                    id_docente
+                )
+                VALUES(?,?,?)
+                """;
 
-	                ResultSet rsAsignatura =
-	                        psAsignatura.executeQuery();
+        Connection conn = null;
 
-	                if(rsAsignatura.next()) {
+        try {
 
-	                    idAsignatura =
-	                            rsAsignatura.getInt("id_asignatura");
-	                }
+            Class.forName("com.mysql.cj.jdbc.Driver");
 
-	                rsAsignatura.close();
-	                psAsignatura.close();
-
-	                PreparedStatement psDocente =
-	                        conn.prepareStatement(queryDocente);
-
-	                psDocente.setString(1, docentes[i]);
-
-	                ResultSet rsDocente =
-	                        psDocente.executeQuery();
-
-	                if(rsDocente.next()) {
-
-	                    idDocente =
-	                            rsDocente.getInt("id_docente");
-	                }
-
-	                rsDocente.close();
-	                psDocente.close();
-
-	                if(idAsignatura == -1 || idDocente == -1) {
-	                    continue;
-	                }
-
-	                PreparedStatement psGA =
-	                        conn.prepareStatement(queryGA);
-
-	                psGA.setInt(1, idGrupo);
-	                psGA.setInt(2, idAsignatura);
-	                psGA.setInt(3, idDocente);
-
-	                psGA.executeUpdate();
-
-	                psGA.close();
-	            }
-	
-	            rsGrupo.close();
-	            psGrupo.close();
-	            conn.close();
-	
-	            return true;
-	        }
-	
-	    } catch(Exception e) {
-	        e.printStackTrace();
-	        JOptionPane.showMessageDialog(
-	                null,
-	                e.getMessage()
+            conn = DriverManager.getConnection(
+                    URL,
+                    USER,
+                    PASS
             );
-	    }
-	
-	    return false;
-	}
+
+            conn.setAutoCommit(false);
+
+            String[] asignaturas = {
+                    asignatura1,
+                    asignatura2,
+                    asignatura3,
+                    asignatura4,
+                    asignatura5,
+                    asignatura6
+            };
+
+            String[] docentes = {
+                    docente1,
+                    docente2,
+                    docente3,
+                    docente4,
+                    docente5,
+                    docente6
+            };
+
+            Set<String> materiasUsadas = new HashSet<>();
+            Set<String> docentesUsados = new HashSet<>();
+
+            for(int i = 0; i < 6; i++) {
+
+                if(
+                    asignaturas[i].equals("Sin selección")
+                    || docentes[i].equals("Sin selección")
+                ) {
+                    continue;
+                }
+
+                if(materiasUsadas.contains(asignaturas[i])) {
+
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Error, hay asignaturas repetidas."
+                    );
+
+                    conn.rollback();
+
+                    return false;
+                }
+
+                if(docentesUsados.contains(docentes[i])) {
+
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Error, hay docentes repetidos."
+                    );
+
+                    conn.rollback();
+
+                    return false;
+                }
+
+                materiasUsadas.add(asignaturas[i]);
+                docentesUsados.add(docentes[i]);
+            }
+
+            PreparedStatement psGrupo =
+                    conn.prepareStatement(
+                            queryGrupo,
+                            Statement.RETURN_GENERATED_KEYS
+                    );
+
+            psGrupo.setString(1, nombre);
+            psGrupo.setString(2, turno);
+            psGrupo.setInt(3, capacidad);
+
+            int rows = psGrupo.executeUpdate();
+
+            if(rows > 0) {
+
+                ResultSet rsGrupo =
+                        psGrupo.getGeneratedKeys();
+
+                int idGrupo = 0;
+
+                if(rsGrupo.next()) {
+                    idGrupo = rsGrupo.getInt(1);
+                }
+
+                for(int i = 0; i < 6; i++) {
+
+                    if(
+                        asignaturas[i].equals("Sin selección")
+                        || docentes[i].equals("Sin selección")
+                    ) {
+                        continue;
+                    }
+
+                    Integer idAsignatura = null;
+                    Integer idDocente = null;
+
+                    PreparedStatement psAsignatura =
+                            conn.prepareStatement(queryAsignatura);
+
+                    psAsignatura.setString(1, asignaturas[i]);
+
+                    ResultSet rsAsignatura =
+                            psAsignatura.executeQuery();
+
+                    if(rsAsignatura.next()) {
+
+                        idAsignatura =
+                                rsAsignatura.getInt(
+                                        "id_asignatura"
+                                );
+                    }
+
+                    rsAsignatura.close();
+                    psAsignatura.close();
+
+                    PreparedStatement psDocente =
+                            conn.prepareStatement(queryDocente);
+
+                    psDocente.setString(1, docentes[i]);
+
+                    ResultSet rsDocente =
+                            psDocente.executeQuery();
+
+                    if(rsDocente.next()) {
+
+                        idDocente =
+                                rsDocente.getInt(
+                                        "id_docente"
+                                );
+                    }
+
+                    rsDocente.close();
+                    psDocente.close();
+
+                    if(idAsignatura == null || idDocente == null) {
+                        continue;
+                    }
+
+                    PreparedStatement psGA =
+                            conn.prepareStatement(queryGA);
+
+                    psGA.setInt(1, idGrupo);
+                    psGA.setInt(2, idAsignatura);
+                    psGA.setInt(3, idDocente);
+
+                    psGA.executeUpdate();
+
+                    psGA.close();
+                }
+
+                rsGrupo.close();
+                psGrupo.close();
+
+                conn.commit();
+
+                return true;
+            }
+
+        } catch(Exception e) {
+
+            try {
+
+                if(conn != null) {
+                    conn.rollback();
+                }
+
+            } catch(Exception ex) {
+                ex.printStackTrace();
+            }
+
+            e.printStackTrace();
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Error, algunos datos están duplicados, intente de nuevo."
+            );
+
+        } finally {
+
+            try {
+
+                if(conn != null) {
+
+                    conn.setAutoCommit(true);
+                    conn.close();
+                }
+
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return false;
+    }
 	
 	public boolean eliminarGrupo(String nombreGrupo) {
 	

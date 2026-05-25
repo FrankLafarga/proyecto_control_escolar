@@ -57,23 +57,12 @@ public class GruposView extends JPanel {
     
     GruposController controller = new GruposController();
     
-    private ImageIcon iconoOriginal =
-            new ImageIcon(getClass().getResource("/resources/activo-icon.png"));
-
-    private Image imagenEscalada =
-            iconoOriginal.getImage().getScaledInstance(136,26,Image.SCALE_SMOOTH);
-
-    private ImageIcon iconoActivo =
-            new ImageIcon(imagenEscalada);
-
-    private ImageIcon iconoinOriginal =
-            new ImageIcon(getClass().getResource("/resources/inactivo-icon.png"));
-
-    private Image imageninEscalada =
-            iconoinOriginal.getImage().getScaledInstance(136,26,Image.SCALE_SMOOTH);
-
-    private ImageIcon iconoInactivo =
-            new ImageIcon(imageninEscalada);
+    private ImageIcon iconoOriginal =new ImageIcon(getClass().getResource("/resources/activo-icon.png"));
+    private Image imagenEscalada =iconoOriginal.getImage().getScaledInstance(136,26,Image.SCALE_SMOOTH);
+    private ImageIcon iconoActivo =new ImageIcon(imagenEscalada);
+    private ImageIcon iconoinOriginal =new ImageIcon(getClass().getResource("/resources/inactivo-icon.png"));
+    private Image imageninEscalada =iconoinOriginal.getImage().getScaledInstance(136,26,Image.SCALE_SMOOTH);
+    private ImageIcon iconoInactivo =new ImageIcon(imageninEscalada);
 
     public GruposView(AppView app) {
 		this.app = app;
