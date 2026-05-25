@@ -214,4 +214,90 @@ public class DocentesModel {
     	
     	return false;
     }
+    
+    public boolean existeClave(String clave) {
+
+    	String sql = """
+    			SELECT clave
+    			FROM DOCENTES
+    			WHERE clave = ?
+    			""";
+
+    	try(
+    			Connection con = DriverManager.getConnection(URL, USER, PASS);
+    			PreparedStatement ps = con.prepareStatement(sql)
+    	){
+
+    		ps.setString(1, clave);
+
+    		try(ResultSet rs = ps.executeQuery()) {
+
+    			return rs.next();
+    		}
+
+    	}catch(Exception e) {
+    		e.printStackTrace();
+    	}
+
+    	return false;
+    }
+    
+    public boolean updateDocente(
+    		String claveOriginal,
+    		String nuevaClave,
+    		String nombre,
+    		String apellidoPat,
+    		String apellidoMat,
+    		String correo,
+    		String telefono,
+    		String fecha,
+    		String grado,
+    		String area,
+    		String estatus
+    ) {
+
+    	String sql = """
+    			UPDATE DOCENTES
+    			SET
+    				clave=?,
+    				nombre=?,
+    				apellido_paterno=?,
+    				apellido_materno=?,
+    				correo=?,
+    				telefono=?,
+    				fecha_nacimiento=?,
+    				grado_estudios=?,
+    				area_estudios=?,
+    				estatus=?
+    			WHERE clave=?
+    			""";
+
+    	try(
+    			Connection con = DriverManager.getConnection(URL, USER, PASS);
+    			PreparedStatement ps = con.prepareStatement(sql)
+    	){
+
+    		ps.setString(1, nuevaClave);
+    		ps.setString(2, nombre);
+    		ps.setString(3, apellidoPat);
+    		ps.setString(4, apellidoMat);
+    		ps.setString(5, correo);
+    		ps.setString(6, telefono);
+    		ps.setString(7, fecha);
+    		ps.setString(8, grado);
+    		ps.setString(9, area);
+    		ps.setString(10, estatus);
+    		ps.setString(11, claveOriginal);
+
+    		int filas = ps.executeUpdate();
+
+    		return filas > 0;
+
+    	}catch(Exception e) {
+
+    		e.printStackTrace();
+    	}
+
+    	return false;
+    }
 }

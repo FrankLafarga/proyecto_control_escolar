@@ -102,6 +102,42 @@ public class DocentesController {
     	return flag;
     }
     
+    public boolean existeClave(String clave) {
+
+    	return model.existeClave(clave);
+    }
+
+    public boolean updateDocente(
+    		String claveOriginal,
+    		String nuevaClave,
+    		String nombre,
+    		String apellidoPat,
+    		String apellidoMat,
+    		String correo,
+    		String telefono,
+    		String fecha,
+    		String grado,
+    		String area,
+    		String estatus
+    ) {
+
+    	boolean flag = model.updateDocente(
+    			claveOriginal,
+    			nuevaClave,
+    			nombre,
+    			apellidoPat,
+    			apellidoMat,
+    			correo,
+    			telefono,
+    			fecha,
+    			grado,
+    			area,
+    			estatus
+    	);
+
+    	return flag;
+    }
+    
     public boolean eliminarDocente(String clave) {
 
         return model.eliminarDocente(clave);
