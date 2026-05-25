@@ -116,6 +116,22 @@ public class AlumnosController {
         );
     }
     
+    public boolean grupoLleno(int idGrupo){
+
+        return model.grupoLleno(idGrupo);
+    }
+    
+    public boolean grupoLlenoEditar(
+            int idGrupo,
+            String matricula
+    ){
+
+        return model.grupoLlenoEditar(
+                idGrupo,
+                matricula
+        );
+    }
+    
     public boolean eliminarAlumno(String matricula) {
 
         return model.eliminarAlumno(matricula);

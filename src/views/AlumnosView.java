@@ -956,7 +956,34 @@ public class AlumnosView extends JPanel {
 				    }
 				
 				    String grupoSeleccionado =cbGrupo.getSelectedItem().toString();
-				    Integer idGrupo =controller.obtenerIdGrupo(grupoSeleccionado);
+				    Integer idGrupo = null;
+
+				    if(!grupoSeleccionado.equals("Sin grupo")){
+
+				        idGrupo =
+				                controller.obtenerIdGrupo(
+				                        grupoSeleccionado
+				                );
+				    }
+				    
+				    if(idGrupo != null){
+
+				        boolean lleno =
+				                controller.grupoLlenoEditar(
+				                        idGrupo,
+				                        matriculaOriginal
+				                );
+
+				        if(lleno){
+
+				            JOptionPane.showMessageDialog(
+				                    null,
+				                    "El grupo ya alcanzó su capacidad máxima"
+				            );
+
+				            return;
+				        }
+				    }
 
 				    if(controller.updateAlumno(
 				            matriculaOriginal,
@@ -1376,6 +1403,19 @@ public class AlumnosView extends JPanel {
 				            );
 				    }
 
+				    if(grupo != null){
+
+				        if(controller.grupoLleno(grupo)){
+
+				            JOptionPane.showMessageDialog(
+				                    null,
+				                    "El grupo ya alcanzó su capacidad máxima"
+				            );
+
+				            return;
+				        }
+				    }
+				    
 				    controller.addAlumno(
 				            txtMatricula.getText(),
 				            cbSemestre.getSelectedIndex() + 1,

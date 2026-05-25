@@ -203,6 +203,123 @@ public class AlumnosModel {
 	        return false;
     }
 	
+	public boolean grupoLleno(int idGrupo){
+
+	    String sql = """
+	        SELECT 
+	            g.capacidad,
+	            COUNT(a.matricula) AS total
+	        FROM GRUPOS g
+	        LEFT JOIN ALUMNOS a
+	            ON g.id_grupo = a.id_grupo
+	        WHERE g.id_grupo = ?
+	        GROUP BY g.capacidad
+	    """;
+
+	    try(
+	        Connection con =
+	                DriverManager.getConnection(
+	                        URL,
+	                        USER,
+	                        PASS
+	                );
+
+	        PreparedStatement ps =
+	                con.prepareStatement(sql)
+	    ){
+
+	        ps.setInt(1, idGrupo);
+
+	        ResultSet rs = ps.executeQuery();
+
+	        if(rs.next()){
+
+	            int capacidad =
+	                    rs.getInt("capacidad");
+
+	            int total =
+	                    rs.getInt("total");
+
+	            return total >= capacidad;
+	        }
+
+	    }catch(Exception e){
+	        e.printStackTrace();
+	    }
+
+	    return false;
+	}
+	
+	public boolean grupoLlenoEditar(
+	        int idGrupo,
+	        String matriculaOriginal
+	){
+	
+	    String sqlCapacidad = """
+	        SELECT capacidad
+	        FROM GRUPOS
+	        WHERE id_grupo = ?
+	    """;
+	
+	    String sqlTotal = """
+	        SELECT COUNT(*)
+	        FROM ALUMNOS
+	        WHERE id_grupo = ?
+	        AND matricula <> ?
+	    """;
+	
+	    try(
+	        Connection con =
+	                DriverManager.getConnection(
+	                        URL,
+	                        USER,
+	                        PASS
+	                )
+	    ){
+	
+	        int capacidad = 0;
+	        int total = 0;
+	
+	        PreparedStatement psCap =
+	                con.prepareStatement(sqlCapacidad);
+	
+	        psCap.setInt(1, idGrupo);
+	
+	        ResultSet rsCap = psCap.executeQuery();
+	
+	        if(rsCap.next()){
+	
+	            capacidad = rsCap.getInt("capacidad");
+	        }
+	
+	        rsCap.close();
+	        psCap.close();
+	
+	        PreparedStatement psTotal =
+	                con.prepareStatement(sqlTotal);
+	
+	        psTotal.setInt(1, idGrupo);
+	        psTotal.setString(2, matriculaOriginal);
+	
+	        ResultSet rsTotal = psTotal.executeQuery();
+	
+	        if(rsTotal.next()){
+	
+	            total = rsTotal.getInt(1);
+	        }
+	
+	        rsTotal.close();
+	        psTotal.close();
+	
+	        return total >= capacidad;
+	
+	    }catch(Exception e){
+	        e.printStackTrace();
+	    }
+	
+	    return false;
+	}
+	
 	public boolean eliminarAlumno(String matricula) {
 
 	    String sql = """
