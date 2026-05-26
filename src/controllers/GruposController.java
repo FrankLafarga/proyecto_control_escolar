@@ -92,6 +92,58 @@ public class GruposController {
 
         return model.eliminarGrupo(nombreGrupo);
     }
+    
+    public boolean editarGrupo(
+            int idGrupo,
+            String nombre,
+            String turno,
+            int capacidad,
+
+            String asignatura1,
+            String docente1,
+
+            String asignatura2,
+            String docente2,
+
+            String asignatura3,
+            String docente3,
+
+            String asignatura4,
+            String docente4,
+
+            String asignatura5,
+            String docente5,
+
+            String asignatura6,
+            String docente6
+    ) {
+
+        return model.editarGrupo(
+
+                idGrupo,
+                nombre,
+                turno,
+                capacidad,
+
+                asignatura1,
+                docente1,
+
+                asignatura2,
+                docente2,
+
+                asignatura3,
+                docente3,
+
+                asignatura4,
+                docente4,
+
+                asignatura5,
+                docente5,
+
+                asignatura6,
+                docente6
+        );
+    }
 
     public int getIdGrupo() {
         return model.getIdGrupo();

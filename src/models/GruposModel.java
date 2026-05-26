@@ -524,6 +524,264 @@ public class GruposModel {
 	
 	    return false;
 	}
+	
+	public boolean editarGrupo(
+	        int idGrupo,
+	        String nombre,
+	        String turno,
+	        int capacidad,
+
+	        String asignatura1,
+	        String docente1,
+
+	        String asignatura2,
+	        String docente2,
+
+	        String asignatura3,
+	        String docente3,
+
+	        String asignatura4,
+	        String docente4,
+
+	        String asignatura5,
+	        String docente5,
+
+	        String asignatura6,
+	        String docente6
+	) {
+
+	    String queryGrupo = """
+	            UPDATE GRUPOS
+	            SET nombre = ?,
+	                turno = ?,
+	                capacidad = ?
+	            WHERE id_grupo = ?
+	            """;
+
+	    String queryEliminarGA = """
+	            DELETE FROM GRUPO_ASIGNATURA
+	            WHERE id_grupo = ?
+	            """;
+
+	    String queryAsignatura = """
+	            SELECT id_asignatura
+	            FROM ASIGNATURAS
+	            WHERE nombre = ?
+	            """;
+
+	    String queryDocente = """
+	            SELECT id_docente
+	            FROM DOCENTES
+	            WHERE CONCAT(
+	                nombre,' ',
+	                apellido_paterno,' ',
+	                apellido_materno
+	            ) = ?
+	            """;
+
+	    String queryGA = """
+	            INSERT INTO GRUPO_ASIGNATURA(
+	                id_grupo,
+	                id_asignatura,
+	                id_docente
+	            )
+	            VALUES(?,?,?)
+	            """;
+
+	    Connection conn = null;
+
+	    try {
+
+	        Class.forName("com.mysql.cj.jdbc.Driver");
+
+	        conn = DriverManager.getConnection(
+	                URL,
+	                USER,
+	                PASS
+	        );
+
+	        conn.setAutoCommit(false);
+
+	        String[] asignaturas = {
+	                asignatura1,
+	                asignatura2,
+	                asignatura3,
+	                asignatura4,
+	                asignatura5,
+	                asignatura6
+	        };
+
+	        String[] docentes = {
+	                docente1,
+	                docente2,
+	                docente3,
+	                docente4,
+	                docente5,
+	                docente6
+	        };
+
+	        Set<String> materiasUsadas = new HashSet<>();
+	        Set<String> docentesUsados = new HashSet<>();
+
+	        for(int i = 0; i < 6; i++) {
+
+	            if(
+	                asignaturas[i].equals("Sin selección")
+	                || docentes[i].equals("Sin selección")
+	            ) {
+	                continue;
+	            }
+
+	            if(materiasUsadas.contains(asignaturas[i])) {
+
+	                JOptionPane.showMessageDialog(
+	                        null,
+	                        "Error, hay asignaturas repetidas."
+	                );
+
+	                conn.rollback();
+
+	                return false;
+	            }
+
+	            if(docentesUsados.contains(docentes[i])) {
+
+	                JOptionPane.showMessageDialog(
+	                        null,
+	                        "Error, hay docentes repetidos."
+	                );
+
+	                conn.rollback();
+
+	                return false;
+	            }
+
+	            materiasUsadas.add(asignaturas[i]);
+	            docentesUsados.add(docentes[i]);
+	        }
+
+	        PreparedStatement psGrupo =
+	                conn.prepareStatement(queryGrupo);
+
+	        psGrupo.setString(1, nombre);
+	        psGrupo.setString(2, turno);
+	        psGrupo.setInt(3, capacidad);
+	        psGrupo.setInt(4, idGrupo);
+
+	        psGrupo.executeUpdate();
+
+	        psGrupo.close();
+
+	        PreparedStatement psEliminar =
+	                conn.prepareStatement(queryEliminarGA);
+
+	        psEliminar.setInt(1, idGrupo);
+
+	        psEliminar.executeUpdate();
+
+	        psEliminar.close();
+
+	        for(int i = 0; i < 6; i++) {
+
+	            if(
+	                asignaturas[i].equals("Sin selección")
+	                || docentes[i].equals("Sin selección")
+	            ) {
+	                continue;
+	            }
+
+	            Integer idAsignatura = null;
+	            Integer idDocente = null;
+
+	            PreparedStatement psAsignatura =
+	                    conn.prepareStatement(queryAsignatura);
+
+	            psAsignatura.setString(1, asignaturas[i]);
+
+	            ResultSet rsAsignatura =
+	                    psAsignatura.executeQuery();
+
+	            if(rsAsignatura.next()) {
+
+	                idAsignatura =
+	                        rsAsignatura.getInt(
+	                                "id_asignatura"
+	                        );
+	            }
+
+	            rsAsignatura.close();
+	            psAsignatura.close();
+
+	            PreparedStatement psDocente =
+	                    conn.prepareStatement(queryDocente);
+
+	            psDocente.setString(1, docentes[i]);
+
+	            ResultSet rsDocente =
+	                    psDocente.executeQuery();
+
+	            if(rsDocente.next()) {
+
+	                idDocente =
+	                        rsDocente.getInt(
+	                                "id_docente"
+	                        );
+	            }
+
+	            rsDocente.close();
+	            psDocente.close();
+
+	            if(idAsignatura == null || idDocente == null) {
+	                continue;
+	            }
+
+	            PreparedStatement psGA =
+	                    conn.prepareStatement(queryGA);
+
+	            psGA.setInt(1, idGrupo);
+	            psGA.setInt(2, idAsignatura);
+	            psGA.setInt(3, idDocente);
+
+	            psGA.executeUpdate();
+
+	            psGA.close();
+	        }
+
+	        conn.commit();
+
+	        return true;
+
+	    } catch(Exception e) {
+
+	        try {
+
+	            if(conn != null) {
+	                conn.rollback();
+	            }
+
+	        } catch(Exception ex) {
+	            ex.printStackTrace();
+	        }
+
+	        e.printStackTrace();
+
+	    } finally {
+
+	        try {
+
+	            if(conn != null) {
+
+	                conn.setAutoCommit(true);
+	                conn.close();
+	            }
+
+	        } catch(Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    return false;
+	}
     
     public int getIdGrupo() {
         return idGrupo;

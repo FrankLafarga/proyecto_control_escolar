@@ -530,190 +530,482 @@ public class GruposView extends JPanel {
     
     public void editarGrupo(int fila) {
 
-    JPanel contenedor = new JPanel(new BorderLayout());
-    contenedor.setBackground(new Color(245, 247, 250));
+	    JPanel contenedor = new JPanel(new BorderLayout());
+	    contenedor.setBackground(new Color(245, 247, 250));
+	
+	    JPanel panelSuperior = new JPanel(new BorderLayout());
+	    panelSuperior.setBackground(new Color(245, 247, 250));
+	    panelSuperior.setBorder(BorderFactory.createEmptyBorder(25, 40, 10, 40));
+	
+	    JLabel subtitulo1 = new JLabel("Editar grupo seleccionado");
+	    subtitulo1.setForeground(azul_principal);
+	    subtitulo1.setFont(new Font("Times New Roman", Font.BOLD, 28));
+	
+	    JButton volver = new JButton("Volver");
+	    volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
+	    volver.setBorder(null);
+	    volver.setFocusable(false);
+	    volver.setBorderPainted(false);
+	    volver.setContentAreaFilled(false);
+	    volver.setPreferredSize(new Dimension(200, 40));
+	    volver.setForeground(new Color(0,0,0));
+	    volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+	
+	    volver.addMouseListener(new MouseAdapter() {
+	
+	        @Override
+	        public void mouseEntered(MouseEvent e) {
+	            volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16Azul.png")));
+	            volver.setForeground(azul_principal);
+	        }
+	
+	        @Override
+	        public void mouseExited(MouseEvent e) {
+	            volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
+	            volver.setForeground(new Color(0, 0, 0));
+	        }
+	    });
+	
+	    volver.addActionListener(e ->
+	        app.cambiarVista(
+	            new GruposView(app),
+	            "Grupos",
+	            "Gestion integral de grupos en el sistema"
+	        )
+	    );
+	
+	    panelSuperior.add(volver, BorderLayout.EAST);
+	    panelSuperior.add(subtitulo1, BorderLayout.WEST);
+	
+	    JPanel panelCentroWrapper = new JPanel(new BorderLayout());
+	    panelCentroWrapper.setBackground(new Color(245, 247, 250));
+	    panelCentroWrapper.setBorder(BorderFactory.createEmptyBorder(0, 40, 20, 40));
+	
+	    JPanel tarjeta = new JPanel();
+	    tarjeta.setBackground(Color.WHITE);
+	    tarjeta.setLayout(new GridBagLayout());
+	
+	    tarjeta.setBorder(BorderFactory.createCompoundBorder(
+	        BorderFactory.createLineBorder(new Color(220,220,220), 1, true),
+	        BorderFactory.createEmptyBorder(35, 35, 35, 35)
+	    ));
+	
+	    GridBagConstraints gbc = new GridBagConstraints();
+	    gbc.insets = new Insets(10, 10, 10, 10);
+	    gbc.fill = GridBagConstraints.HORIZONTAL;
+	    gbc.weightx = 1;
+	
+	    JLabel lblNombreGrupo = new JLabel("Nombre del grupo");
+	    lblNombreGrupo.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	
+	    JLabel lblTurno = new JLabel("Turno");
+	    lblTurno.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	
+	    JTextField txtGrupo = new JTextField(nombre);
+	    txtGrupo.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    txtGrupo.setPreferredSize(new Dimension(200, 45));
+	
+	    JComboBox<String> comboTurno = new JComboBox<>();
+	    comboTurno.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    comboTurno.setPreferredSize(new Dimension(200, 45));
+	
+	    comboTurno.addItem("Matutino");
+	    comboTurno.addItem("Vespertino");
+	
+	    comboTurno.setSelectedItem(turno);
+	
+	    JLabel lblCapacidad = new JLabel("Capacidad");
+	    lblCapacidad.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	
+	    JTextField txtCapacidad = new JTextField(capacidad+"");
+	    txtCapacidad.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    txtCapacidad.setPreferredSize(new Dimension(200, 45));
+	
+	    JLabel lblAsignatura1 = new JLabel("Asignatura 1");
+	    lblAsignatura1.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	    JComboBox<String> comboAsignatura1 = new JComboBox<>();
+	    comboAsignatura1.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JLabel lblAsignatura2 = new JLabel("Asignatura 2");
+	    lblAsignatura2.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	    JComboBox<String> comboAsignatura2 = new JComboBox<>();
+	    comboAsignatura2.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JLabel lblAsignatura3 = new JLabel("Asignatura 3");
+	    lblAsignatura3.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	    JComboBox<String> comboAsignatura3 = new JComboBox<>();
+	    comboAsignatura3.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JLabel lblAsignatura4 = new JLabel("Asignatura 4");
+	    lblAsignatura4.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	    JComboBox<String> comboAsignatura4 = new JComboBox<>();
+	    comboAsignatura4.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JLabel lblDocente1 = new JLabel("Docente 1");
+	    lblDocente1.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	    JComboBox<String> comboDocente1 = new JComboBox<>();
+	    comboDocente1.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JLabel lblDocente2 = new JLabel("Docente 2");
+	    lblDocente2.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	    JComboBox<String> comboDocente2 = new JComboBox<>();
+	    comboDocente2.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JLabel lblDocente3 = new JLabel("Docente 3");
+	    lblDocente3.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	    JComboBox<String> comboDocente3 = new JComboBox<>();
+	    comboDocente3.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JLabel lblDocente4 = new JLabel("Docente 4");
+	    lblDocente4.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	    JComboBox<String> comboDocente4 = new JComboBox<>();
+	    comboDocente4.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JLabel lblAsignatura5 = new JLabel("Asignatura 5");
+	    lblAsignatura5.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	    JComboBox<String> comboAsignatura5 = new JComboBox<>();
+	    comboAsignatura5.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JLabel lblAsignatura6 = new JLabel("Asignatura 6");
+	    lblAsignatura6.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	    JComboBox<String> comboAsignatura6 = new JComboBox<>();
+	    comboAsignatura6.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JLabel lblDocente5 = new JLabel("Docente 5");
+	    lblDocente5.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	    JComboBox<String> comboDocente5 = new JComboBox<>();
+	    comboDocente5.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    JLabel lblDocente6 = new JLabel("Docente 6");
+	    lblDocente6.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	    JComboBox<String> comboDocente6 = new JComboBox<>();
+	    comboDocente6.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	
+	    comboAsignatura1.addItem("Sin selección");
+	    comboAsignatura2.addItem("Sin selección");
+	    comboAsignatura3.addItem("Sin selección");
+	    comboAsignatura4.addItem("Sin selección");
+	    comboAsignatura5.addItem("Sin selección");
+	    comboAsignatura6.addItem("Sin selección");
+	
+	    comboDocente1.addItem("Sin selección");
+	    comboDocente2.addItem("Sin selección");
+	    comboDocente3.addItem("Sin selección");
+	    comboDocente4.addItem("Sin selección");
+	    comboDocente5.addItem("Sin selección");
+	    comboDocente6.addItem("Sin selección");
+	
+	    ArrayList<String> asignaturas = controller.obtenerAsignaturas();
+	
+	    for(String asignatura : asignaturas) {
+	
+	        comboAsignatura1.addItem(asignatura);
+	        comboAsignatura2.addItem(asignatura);
+	        comboAsignatura3.addItem(asignatura);
+	        comboAsignatura4.addItem(asignatura);
+	        comboAsignatura5.addItem(asignatura);
+	        comboAsignatura6.addItem(asignatura);
+	    }
+	
+	    ArrayList<String> docentes = controller.obtenerDocentes();
+	
+	    for(String docente : docentes) {
+	
+	        comboDocente1.addItem(docente);
+	        comboDocente2.addItem(docente);
+	        comboDocente3.addItem(docente);
+	        comboDocente4.addItem(docente);
+	        comboDocente5.addItem(docente);
+	        comboDocente6.addItem(docente);
+	    }
+	    
+	    String asignaturasGrupo = controller.getAsignaturas();
+	    String docentesGrupo = controller.getNombresDocentes();
 
-    JPanel panelSuperior = new JPanel(new BorderLayout());
-    panelSuperior.setBackground(new Color(245, 247, 250));
-    panelSuperior.setBorder(BorderFactory.createEmptyBorder(25, 40, 10, 40));
+	    String[] asignaturasSeparadas = asignaturasGrupo.split(", ");
+	    String[] docentesSeparados = docentesGrupo.split(", ");
 
-    JLabel subtitulo1 = new JLabel("Editar Grupo seleccionado");
-    subtitulo1.setForeground(azul_principal);
-    subtitulo1.setFont(new Font("Times New Roman", Font.BOLD, 28));
-    
-    JButton volver = new JButton("Volver");
-    volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
-    volver.setBorder(null);
-    volver.setFocusable(false);
-    volver.setBorderPainted(false);
-    volver.setContentAreaFilled(false);	    
-    volver.setPreferredSize(new Dimension(200, 40));
-    volver.setForeground(new Color(0,0,0));
-    volver.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-    volver.addMouseListener(new MouseAdapter() {
-    	@Override
-    	public void mouseEntered(MouseEvent e) {
-    		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16Azul.png")));
-    		volver.setForeground(azul_principal);
-    	}
+	    if(asignaturasSeparadas.length > 0)
+	        comboAsignatura1.setSelectedItem(asignaturasSeparadas[0]);
 
-    	@Override
-    	public void mouseExited(MouseEvent e) {
-    		volver.setIcon(new ImageIcon(App.class.getResource("/resources/flecha16}.png")));
-    		volver.setForeground(new Color(0, 0, 0));
-    	}
-    });	    	
-    volver.addActionListener(e ->
-        app.cambiarVista(new GruposView(app),
-        "Grupos",
-        "Gestion integral de grupos en el sistema")
-    );
-    
-    panelSuperior.add(volver, BorderLayout.EAST);
-    panelSuperior.add(subtitulo1, BorderLayout.WEST);
+	    if(asignaturasSeparadas.length > 1)
+	        comboAsignatura2.setSelectedItem(asignaturasSeparadas[1]);
 
-    JPanel panelCentroWrapper = new JPanel(new BorderLayout());
-    panelCentroWrapper.setBackground(new Color(245, 247, 250));
-    panelCentroWrapper.setBorder(BorderFactory.createEmptyBorder(0, 40, 20, 40));
+	    if(asignaturasSeparadas.length > 2)
+	        comboAsignatura3.setSelectedItem(asignaturasSeparadas[2]);
 
-    JPanel tarjeta = new JPanel();
-    tarjeta.setBackground(Color.WHITE);
-    tarjeta.setLayout(new GridBagLayout());
-    tarjeta.setBorder(BorderFactory.createCompoundBorder(
-        BorderFactory.createLineBorder(new Color(220,220,220), 1, true),
-        BorderFactory.createEmptyBorder(35, 35, 35, 35)
-    ));
+	    if(asignaturasSeparadas.length > 3)
+	        comboAsignatura4.setSelectedItem(asignaturasSeparadas[3]);
 
-    GridBagConstraints gbc = new GridBagConstraints();
-    gbc.insets = new Insets(10, 10, 10, 10);
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.weightx = 1;
+	    if(asignaturasSeparadas.length > 4)
+	        comboAsignatura5.setSelectedItem(asignaturasSeparadas[4]);
 
-    JLabel lblNombreGrupo = new JLabel("Nombre del grupo");
-    lblNombreGrupo.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	    if(asignaturasSeparadas.length > 5)
+	        comboAsignatura6.setSelectedItem(asignaturasSeparadas[5]);
 
-    JLabel lblSemestre = new JLabel("Semestre");
-    lblSemestre.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	    if(docentesSeparados.length > 0)
+	        comboDocente1.setSelectedItem(docentesSeparados[0]);
 
-    JTextField txtGrupo = new JTextField(nombre);
-    txtGrupo.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-    txtGrupo.setPreferredSize(new Dimension(200, 45));
+	    if(docentesSeparados.length > 1)
+	        comboDocente2.setSelectedItem(docentesSeparados[1]);
 
-    JComboBox<String> comboSemestre = new JComboBox<>();
-    comboSemestre.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-    comboSemestre.setPreferredSize(new Dimension(200, 45));
+	    if(docentesSeparados.length > 2)
+	        comboDocente3.setSelectedItem(docentesSeparados[2]);
 
-    comboSemestre.addItem("1er semestre");
-    comboSemestre.addItem("2do semestre");
-    comboSemestre.addItem("3er semestre");
-    comboSemestre.addItem("4to semestre");
-    comboSemestre.addItem("5to semestre");
-    comboSemestre.addItem("6to semestre");
-    comboSemestre.addItem("7mo semestre");
-    comboSemestre.addItem("8vo semestre");
-    comboSemestre.addItem("9no semestre");
+	    if(docentesSeparados.length > 3)
+	        comboDocente4.setSelectedItem(docentesSeparados[3]);
 
-    JLabel lblTurno = new JLabel("Turno");
-    lblTurno.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	    if(docentesSeparados.length > 4)
+	        comboDocente5.setSelectedItem(docentesSeparados[4]);
 
-    JLabel lblCapacidad = new JLabel("Capacidad");
-    lblCapacidad.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+	    if(docentesSeparados.length > 5)
+	        comboDocente6.setSelectedItem(docentesSeparados[5]);
+	    
+	    
+	
+	    gbc.gridx = 0;
+	    gbc.gridy = 0;
+	    tarjeta.add(lblNombreGrupo, gbc);
+	
+	    gbc.gridx = 1;
+	    tarjeta.add(lblTurno, gbc);
+	
+	    gbc.gridx = 0;
+	    gbc.gridy = 1;
+	    tarjeta.add(txtGrupo, gbc);
+	
+	    gbc.gridx = 1;
+	    tarjeta.add(comboTurno, gbc);
+	
+	    gbc.gridx = 0;
+	    gbc.gridy = 2;
+	    tarjeta.add(lblCapacidad, gbc);
+	
+	    gbc.gridx = 1;
+	    tarjeta.add(new JLabel(""), gbc);
+	
+	    gbc.gridx = 0;
+	    gbc.gridy = 3;
+	    tarjeta.add(txtCapacidad, gbc);
+	
+	    gbc.gridx = 0;
+	    gbc.gridy = 4;
+	    tarjeta.add(lblAsignatura1, gbc);
+	
+	    gbc.gridx = 1;
+	    tarjeta.add(lblDocente1, gbc);
+	
+	    gbc.gridx = 0;
+	    gbc.gridy = 5;
+	    tarjeta.add(comboAsignatura1, gbc);
+	
+	    gbc.gridx = 1;
+	    tarjeta.add(comboDocente1, gbc);
+	
+	    gbc.gridx = 0;
+	    gbc.gridy = 6;
+	    tarjeta.add(lblAsignatura2, gbc);
+	
+	    gbc.gridx = 1;
+	    tarjeta.add(lblDocente2, gbc);
+	
+	    gbc.gridx = 0;
+	    gbc.gridy = 7;
+	    tarjeta.add(comboAsignatura2, gbc);
+	
+	    gbc.gridx = 1;
+	    tarjeta.add(comboDocente2, gbc);
+	
+	    gbc.gridx = 0;
+	    gbc.gridy = 8;
+	    tarjeta.add(lblAsignatura3, gbc);
+	
+	    gbc.gridx = 1;
+	    tarjeta.add(lblDocente3, gbc);
+	
+	    gbc.gridx = 0;
+	    gbc.gridy = 9;
+	    tarjeta.add(comboAsignatura3, gbc);
+	
+	    gbc.gridx = 1;
+	    tarjeta.add(comboDocente3, gbc);
+	
+	    gbc.gridx = 0;
+	    gbc.gridy = 10;
+	    tarjeta.add(lblAsignatura4, gbc);
+	
+	    gbc.gridx = 1;
+	    tarjeta.add(lblDocente4, gbc);
+	
+	    gbc.gridx = 0;
+	    gbc.gridy = 11;
+	    tarjeta.add(comboAsignatura4, gbc);
+	
+	    gbc.gridx = 1;
+	    tarjeta.add(comboDocente4, gbc);
+	
+	    gbc.gridx = 0;
+	    gbc.gridy = 12;
+	    tarjeta.add(lblAsignatura5, gbc);
+	
+	    gbc.gridx = 1;
+	    tarjeta.add(lblDocente5, gbc);
+	
+	    gbc.gridx = 0;
+	    gbc.gridy = 13;
+	    tarjeta.add(comboAsignatura5, gbc);
+	
+	    gbc.gridx = 1;
+	    tarjeta.add(comboDocente5, gbc);
+	
+	    gbc.gridx = 0;
+	    gbc.gridy = 14;
+	    tarjeta.add(lblAsignatura6, gbc);
+	
+	    gbc.gridx = 1;
+	    tarjeta.add(lblDocente6, gbc);
+	
+	    gbc.gridx = 0;
+	    gbc.gridy = 15;
+	    tarjeta.add(comboAsignatura6, gbc);
+	
+	    gbc.gridx = 1;
+	    tarjeta.add(comboDocente6, gbc);
+	
+	    JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
+	    panelBotones.setBackground(Color.WHITE);
+	
+	    JButton btnCancelar = new JButton("Cancelar");
+	    btnCancelar.setFocusable(false);
+	    btnCancelar.setForeground(new Color(180, 0, 0));
+	    btnCancelar.setBackground(Color.WHITE);
+	    btnCancelar.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    btnCancelar.setBorder(new LineBorder(new Color(180, 0, 0), 2, true));
+	    btnCancelar.setPreferredSize(new Dimension(180, 45));
+	
+	    btnCancelar.addActionListener(e ->
+	        app.cambiarVista(
+	            new GruposView(app),
+	            "Grupos",
+	            "Gestion integral de grupos en el sistema"
+	        )
+	    );
+	
+	    JButton btnGuardar = new JButton("Guardar");
+	    btnGuardar.setFocusable(false);
+	    btnGuardar.setForeground(Color.WHITE);
+	    btnGuardar.setBackground(new Color(14, 48, 170));
+	    btnGuardar.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    btnGuardar.setPreferredSize(new Dimension(180, 45));
+	    btnGuardar.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
 
-    JComboBox<String> comboTurno = new JComboBox<>();
-    comboTurno.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-    comboTurno.setPreferredSize(new Dimension(200, 45));
+	            LineBorder bordeRojo = new LineBorder(Color.RED, 2, true);
+	            LineBorder bordeNormal = new LineBorder(new Color(180,180,180), 1, true);
 
-    if(turno.equals("MATUTINO")) {	
-    	comboTurno.addItem(turno);
-    	comboTurno.addItem("VESPERTINO");
-    }
-    else{comboTurno.addItem(turno);
-    	comboTurno.addItem("MATUTINO");
-    }
-    
-    
+	            txtGrupo.setBorder(bordeNormal);
+	            txtCapacidad.setBorder(bordeNormal);
 
-    JTextField txtCapacidad = new JTextField();
-    txtCapacidad.setText(capacidad+"");
-    txtCapacidad.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-    txtCapacidad.setPreferredSize(new Dimension(200, 45));
+	            boolean valido = true;
 
-    gbc.gridx = 0;
-    gbc.gridy = 0;
-    tarjeta.add(lblNombreGrupo, gbc);
+	            if(txtGrupo.getText().trim().isEmpty()) {
+	                txtGrupo.setBorder(bordeRojo);
+	                valido = false;
+	            }
 
-    gbc.gridx = 1;
-    tarjeta.add(lblSemestre, gbc);
+	            if(txtCapacidad.getText().trim().isEmpty()
+	                    || !txtCapacidad.getText().matches("\\d+")) {
 
-    gbc.gridx = 0;
-    gbc.gridy = 1;
-    tarjeta.add(txtGrupo, gbc);
+	                txtCapacidad.setBorder(bordeRojo);
+	                valido = false;
+	            }
 
-    gbc.gridx = 1;
-    tarjeta.add(comboSemestre, gbc);
+	            if(valido) {
 
-    gbc.gridx = 0;
-    gbc.gridy = 2;
-    tarjeta.add(lblTurno, gbc);
+	                boolean editado = controller.editarGrupo(
 
-    gbc.gridx = 1;
-    tarjeta.add(lblCapacidad, gbc);
+	                    idGrupo,
+	                    txtGrupo.getText().trim(),
+	                    comboTurno.getSelectedItem().toString(),
+	                    Integer.parseInt(txtCapacidad.getText().trim()),
 
-    gbc.gridx = 0;
-    gbc.gridy = 3;
-    tarjeta.add(comboTurno, gbc);
+	                    comboAsignatura1.getSelectedItem().toString(),
+	                    comboDocente1.getSelectedItem().toString(),
 
-    gbc.gridx = 1;
-    tarjeta.add(txtCapacidad, gbc);
+	                    comboAsignatura2.getSelectedItem().toString(),
+	                    comboDocente2.getSelectedItem().toString(),
 
-    JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
-    panelBotones.setBackground(Color.WHITE);
+	                    comboAsignatura3.getSelectedItem().toString(),
+	                    comboDocente3.getSelectedItem().toString(),
 
-    JButton btnCancelar = new JButton("Cancelar");
-    btnCancelar.setFocusable(false);
-    btnCancelar.setForeground(new Color(180, 0, 0));
-    btnCancelar.setBackground(Color.WHITE);
-    btnCancelar.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-    btnCancelar.setBorder(new LineBorder(new Color(180, 0, 0), 2, true));
-    btnCancelar.setPreferredSize(new Dimension(180, 45));
+	                    comboAsignatura4.getSelectedItem().toString(),
+	                    comboDocente4.getSelectedItem().toString(),
 
-    btnCancelar.addActionListener(e ->
-        app.cambiarVista(
-            new GruposView(app),
-            "Grupos",
-            "Gestion integral de grupos en el sistema"
-        )
-    );
+	                    comboAsignatura5.getSelectedItem().toString(),
+	                    comboDocente5.getSelectedItem().toString(),
 
-    JButton btnGuardar = new JButton("Guardar");
-    btnGuardar.setFocusable(false);
-    btnGuardar.setForeground(Color.WHITE);
-    btnGuardar.setBackground(new Color(14, 48, 170));
-    btnGuardar.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-    btnGuardar.setPreferredSize(new Dimension(180, 45));
+	                    comboAsignatura6.getSelectedItem().toString(),
+	                    comboDocente6.getSelectedItem().toString()
+	                );
 
-    panelBotones.add(btnCancelar);
-    panelBotones.add(btnGuardar);
+	                if(editado) {
 
-    gbc.gridx = 0;
-    gbc.gridy = 4;
-    gbc.gridwidth = 2;
-    gbc.anchor = GridBagConstraints.EAST;
-    gbc.fill = GridBagConstraints.HORIZONTAL;
+	                    JOptionPane.showMessageDialog(
+	                        null,
+	                        "Grupo editado correctamente"
+	                    );
 
-    tarjeta.add(panelBotones, gbc);
+	                    app.cambiarVista(
+	                        new GruposView(app),
+	                        "Grupos",
+	                        "Gestion integral de grupos en el sistema"
+	                    );
 
-    panelCentroWrapper.add(tarjeta, BorderLayout.NORTH);
+	                } else {
 
-    contenedor.add(panelSuperior, BorderLayout.NORTH);
-    contenedor.add(panelCentroWrapper, BorderLayout.CENTER);
-
-    app.cambiarVista(
-        contenedor,
-        "Grupo",
-        "Gestion integral de grupos en el sistema"
-    );
-    }
+	                    JOptionPane.showMessageDialog(
+	                        null,
+	                        "No se pudo editar el grupo",
+	                        "Error",
+	                        JOptionPane.ERROR_MESSAGE
+	                    );
+	                }
+	            }
+	        }
+	    });
+	
+	    panelBotones.add(btnCancelar);
+	    panelBotones.add(btnGuardar);
+	
+	    gbc.gridx = 0;
+	    gbc.gridy = 16;
+	    gbc.gridwidth = 2;
+	    gbc.anchor = GridBagConstraints.EAST;
+	    gbc.fill = GridBagConstraints.HORIZONTAL;
+	
+	    tarjeta.add(panelBotones, gbc);
+	
+	    panelCentroWrapper.add(tarjeta, BorderLayout.NORTH);
+	
+	    JScrollPane scroll = new JScrollPane(panelCentroWrapper);
+	
+	    scroll.setBorder(null);
+	
+	    scroll.getVerticalScrollBar().setUnitIncrement(16);
+	
+	    scroll.setHorizontalScrollBarPolicy(
+	        JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
+	    );
+	
+	    contenedor.add(panelSuperior, BorderLayout.NORTH);
+	    contenedor.add(scroll, BorderLayout.CENTER);
+	
+	    app.cambiarVista(
+	        contenedor,
+	        "Grupo",
+	        "Gestion integral de grupos en el sistema"
+	    );
+	}
     
     public void eliminarGrupo(int fila) {
 
