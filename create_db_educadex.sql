@@ -98,37 +98,42 @@ INSERT INTO USUARIOS (username,password_hash,rol,estatus) VALUES
 ('francisco lafarga','1234','DEV','ACTIVO'),
 ('yahir mendez','1234','DEV','ACTIVO');
 
-INSERT INTO DOCENTES (clave,nombre,apellido_paterno,apellido_materno,correo,telefono,fecha_nacimiento,grado_estudios,area_estudios,estatus,avatar) VALUES
-('DOC001','Jonathan Giovanni','Soto','Muñoz','docente001@educadex.edu.mx','6121000001','1985-02-11','Doctorado','Programacion','ACTIVO',NULL),
-('DOC002','Elvia Esthela','Aispuro','Félix','docente002@educadex.edu.mx','6121000002','1979-07-23','Maestría','Historia','ACTIVO',NULL),
-('DOC003','Samuel','Montané','Baños','docente003@educadex.edu.mx','6121000003','1982-09-16','Doctorado','Matematicas','ACTIVO',NULL),
-('DOC004','Claudia','Sheinbaum','Pardo','docente004@educadex.edu.mx','6121000004','1962-06-24','Doctorado','Fisica','ACTIVO',NULL),
-('DOC005','Andres Manuel','Lopez','Obrador','docente005@educadex.edu.mx','6121000005','1953-11-13','Licenciatura','Historia','ACTIVO',NULL),
-('DOC006','Ibai','Llanos','Garatea','docente006@educadex.edu.mx','6121000006','1995-03-26','Licenciatura','Ingles','ACTIVO',NULL),
-('DOC007','Illo Juan','Lafarga','Castro','docente007@educadex.edu.mx','6121000007','1994-08-04','Maestría','Programacion','ACTIVO',NULL),
-('DOC008','Joaquín Archivaldo','Guzmán','Loera','docente008@educadex.edu.mx','6121000008','1957-04-04','Licenciatura','Biologia','ACTIVO',NULL),
-('DOC009','Víctor Alejandro','Mendívil','Ramírez','docente009@educadex.edu.mx','6121000009','1991-01-18','Maestría','Quimica','ACTIVO',NULL),
-('DOC010','Natanael','Monge','Cano','docente010@educadex.edu.mx','6121000010','1996-10-05','Licenciatura','Matematicas','ACTIVO',NULL),
-('DOC011','Jose','Morales','Carrillo','docente011@educadex.edu.mx','6121000011','1977-04-04','Maestría','Historia','ACTIVO',NULL),
-('DOC012','Fernanda','Rojas','Aguirre','docente012@educadex.edu.mx','6121000012','1984-07-29','Doctorado','Programacion','ACTIVO',NULL),
-('DOC013','Ricardo','Navarro','Ortega','docente013@educadex.edu.mx','6121000013','1982-06-08','Licenciatura','Biologia','ACTIVO',NULL),
-('DOC014','Valeria','Reyes','Moreno','docente014@educadex.edu.mx','6121000014','1989-09-17','Maestría','Ingles','ACTIVO',NULL),
-('DOC015','Jorge','Mendoza','Ferrer','docente015@educadex.edu.mx','6121000015','1981-02-22','Doctorado','Matematicas','ACTIVO',NULL),
-('DOC016','Paola','Ortiz','Leal','docente016@educadex.edu.mx','6121000016','1986-03-14','Licenciatura','Fisica','ACTIVO',NULL),
-('DOC017','Miguel','Silva','Valdez','docente017@educadex.edu.mx','6121000017','1979-08-11','Maestría','Quimica','ACTIVO',NULL),
-('DOC018','Daniela','Cruz','Macias','docente018@educadex.edu.mx','6121000018','1988-05-02','Doctorado','Historia','ACTIVO',NULL),
-('DOC019','Hector','Dominguez','Trejo','docente019@educadex.edu.mx','6121000019','1983-04-19','Licenciatura','Programacion','ACTIVO',NULL),
-('DOC020','Cecilia','Guerrero','Lara','docente020@educadex.edu.mx','6121000020','1987-09-08','Maestría','Biologia','ACTIVO',NULL),
-('DOC021','Alberto','Lopez','Diaz','docente021@educadex.edu.mx','6121000021','1982-01-01','Doctorado','Ingles','ACTIVO',NULL),
-('DOC022','Diana','Gomez','Ruiz','docente022@educadex.edu.mx','6121000022','1981-03-11','Licenciatura','Matematicas','ACTIVO',NULL),
-('DOC023','Ramon','Perez','Soto','docente023@educadex.edu.mx','6121000023','1978-07-07','Maestría','Fisica','ACTIVO',NULL),
-('DOC024','Karla','Torres','Campos','docente024@educadex.edu.mx','6121000024','1986-10-10','Doctorado','Quimica','ACTIVO',NULL),
-('DOC025','Omar','Ramirez','Pena','docente025@educadex.edu.mx','6121000025','1980-02-18','Licenciatura','Historia','ACTIVO',NULL),
-('DOC026','Gabriela','Flores','Molina','docente026@educadex.edu.mx','6121000026','1988-06-20','Maestría','Programacion','ACTIVO',NULL),
-('DOC027','Sergio','Vega','Ibarra','docente027@educadex.edu.mx','6121000027','1984-11-14','Doctorado','Biologia','ACTIVO',NULL),
-('DOC028','Martha','Castillo','Salas','docente028@educadex.edu.mx','6121000028','1983-04-27','Licenciatura','Ingles','ACTIVO',NULL),
-('DOC029','Arturo','Morales','Carrillo','docente029@educadex.edu.mx','6121000029','1981-09-03','Maestría','Matematicas','ACTIVO',NULL),
-('DOC030','Patricia','Rojas','Aguirre','docente030@educadex.edu.mx','6121000030','1989-12-16','Doctorado','Fisica','ACTIVO',NULL);
+INSERT INTO DOCENTES
+(clave,nombre,apellido_paterno,apellido_materno,correo,telefono,fecha_nacimiento,grado_estudios,area_estudios,estatus,avatar)
+VALUES
+
+('DOC001','Jonathan Giovanni','Soto','Muñoz','docente001@educadex.edu.mx','6121000001','1985-02-11','Doctorado','Programacion','ACTIVO','/resources/avatar1.png'),
+('DOC002','Elvia Esthela','Aispuro','Félix','docente002@educadex.edu.mx','6121000002','1979-07-23','Maestría','Historia','ACTIVO','/resources/avatar4.png'),
+('DOC003','Samuel','Montané','Baños','docente003@educadex.edu.mx','6121000003','1982-09-16','Doctorado','Matematicas','ACTIVO','/resources/avatar2.png'),
+('DOC004','Claudia','Sheinbaum','Pardo','docente004@educadex.edu.mx','6121000004','1962-06-24','Doctorado','Fisica','ACTIVO','/resources/avatar5.png'),
+('DOC005','Andres Manuel','Lopez','Obrador','docente005@educadex.edu.mx','6121000005','1953-11-13','Licenciatura','Historia','ACTIVO','/resources/avatar3.png'),
+('DOC006','Ibai','Llanos','Garatea','docente006@educadex.edu.mx','6121000006','1995-03-26','Licenciatura','Ingles','ACTIVO','/resources/avatar1.png'),
+('DOC007','Illo Juan','Lafarga','Castro','docente007@educadex.edu.mx','6121000007','1994-08-04','Maestría','Programacion','ACTIVO','/resources/avatar2.png'),
+('DOC008','Joaquín Archivaldo','Guzmán','Loera','docente008@educadex.edu.mx','6121000008','1957-04-04','Licenciatura','Biologia','ACTIVO','/resources/avatar3.png'),
+('DOC009','Víctor Alejandro','Mendívil','Ramírez','docente009@educadex.edu.mx','6121000009','1991-01-18','Maestría','Quimica','ACTIVO','/resources/avatar1.png'),
+('DOC010','Natanael','Monge','Cano','docente010@educadex.edu.mx','6121000010','1996-10-05','Licenciatura','Matematicas','ACTIVO','/resources/avatar2.png'),
+
+('DOC011','Jose','Morales','Carrillo','docente011@educadex.edu.mx','6121000011','1977-04-04','Maestría','Historia','ACTIVO','/resources/avatar3.png'),
+('DOC012','Fernanda','Rojas','Aguirre','docente012@educadex.edu.mx','6121000012','1984-07-29','Doctorado','Programacion','ACTIVO','/resources/avatar6.png'),
+('DOC013','Ricardo','Navarro','Ortega','docente013@educadex.edu.mx','6121000013','1982-06-08','Licenciatura','Biologia','ACTIVO','/resources/avatar1.png'),
+('DOC014','Valeria','Reyes','Moreno','docente014@educadex.edu.mx','6121000014','1989-09-17','Maestría','Ingles','ACTIVO','/resources/avatar4.png'),
+('DOC015','Jorge','Mendoza','Ferrer','docente015@educadex.edu.mx','6121000015','1981-02-22','Doctorado','Matematicas','ACTIVO','/resources/avatar2.png'),
+('DOC016','Paola','Ortiz','Leal','docente016@educadex.edu.mx','6121000016','1986-03-14','Licenciatura','Fisica','ACTIVO','/resources/avatar5.png'),
+('DOC017','Miguel','Silva','Valdez','docente017@educadex.edu.mx','6121000017','1979-08-11','Maestría','Quimica','ACTIVO','/resources/avatar3.png'),
+('DOC018','Daniela','Cruz','Macias','docente018@educadex.edu.mx','6121000018','1988-05-02','Doctorado','Historia','ACTIVO','/resources/avatar6.png'),
+('DOC019','Hector','Dominguez','Trejo','docente019@educadex.edu.mx','6121000019','1983-04-19','Licenciatura','Programacion','ACTIVO','/resources/avatar1.png'),
+('DOC020','Cecilia','Guerrero','Lara','docente020@educadex.edu.mx','6121000020','1987-09-08','Maestría','Biologia','ACTIVO','/resources/avatar4.png'),
+
+('DOC021','Alberto','Lopez','Diaz','docente021@educadex.edu.mx','6121000021','1982-01-01','Doctorado','Ingles','ACTIVO','/resources/avatar2.png'),
+('DOC022','Diana','Gomez','Ruiz','docente022@educadex.edu.mx','6121000022','1981-03-11','Licenciatura','Matematicas','ACTIVO','/resources/avatar5.png'),
+('DOC023','Ramon','Perez','Soto','docente023@educadex.edu.mx','6121000023','1978-07-07','Maestría','Fisica','ACTIVO','/resources/avatar3.png'),
+('DOC024','Karla','Torres','Campos','docente024@educadex.edu.mx','6121000024','1986-10-10','Doctorado','Quimica','ACTIVO','/resources/avatar6.png'),
+('DOC025','Omar','Ramirez','Pena','docente025@educadex.edu.mx','6121000025','1980-02-18','Licenciatura','Historia','ACTIVO','/resources/avatar1.png'),
+('DOC026','Gabriela','Flores','Molina','docente026@educadex.edu.mx','6121000026','1988-06-20','Maestría','Programacion','ACTIVO','/resources/avatar4.png'),
+('DOC027','Sergio','Vega','Ibarra','docente027@educadex.edu.mx','6121000027','1984-11-14','Doctorado','Biologia','ACTIVO','/resources/avatar2.png'),
+('DOC028','Martha','Castillo','Salas','docente028@educadex.edu.mx','6121000028','1983-04-27','Licenciatura','Ingles','ACTIVO','/resources/avatar5.png'),
+('DOC029','Arturo','Morales','Carrillo','docente029@educadex.edu.mx','6121000029','1981-09-03','Maestría','Matematicas','ACTIVO','/resources/avatar3.png'),
+('DOC030','Patricia','Rojas','Aguirre','docente030@educadex.edu.mx','6121000030','1989-12-16','Doctorado','Fisica','ACTIVO','/resources/avatar6.png');
 
 INSERT INTO ASIGNATURAS (nombre,clave,semestre,creditos) VALUES
 ('Matematicas I','MAT101',1,8),
@@ -522,3 +527,22 @@ INSERT INTO ALUMNOS (matricula,semestre,carrera,genero,nombre,apellido_paterno,a
 ('ALU0298',9,'Ingenieria en Software','Femenino','Martha','Pacheco','Cortes','alu0298@educadex.edu.mx','6127000298','2001-11-19',7.99,'ACTIVO',NULL,10),
 ('ALU0299',9,'Ingenieria en Software','Masculino','Daniel','Pacheco','Ruiz','alu0299@educadex.edu.mx','6127000299','2002-12-20',8.36,'ACTIVO',NULL,10),
 ('ALU0300',9,'Ingenieria en Software','Femenino','Patricia','Ortiz','Ortega','alu0300@educadex.edu.mx','6127000300','2003-01-21',8.73,'ACTIVO',NULL,10);
+
+UPDATE ALUMNOS
+SET avatar =
+CASE
+    WHEN genero='Masculino' THEN
+        CASE FLOOR(1 + RAND()*3)
+            WHEN 1 THEN '/resources/avatar-alumno1.png'
+            WHEN 2 THEN '/resources/avatar-alumno2.png'
+            ELSE '/resources/avatar-alumno3.png'
+        END
+
+    WHEN genero='Femenino' THEN
+        CASE FLOOR(4 + RAND()*3)
+            WHEN 4 THEN '/resources/avatar-alumno4.png'
+            WHEN 5 THEN '/resources/avatar-alumno5.png'
+            ELSE '/resources/avatar-alumno6.png'
+        END
+END
+WHERE id_grupo IS NOT NULL;
