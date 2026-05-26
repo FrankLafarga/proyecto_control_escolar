@@ -75,23 +75,43 @@ public class AsignaturasModel {
         	        a.clave,
         	        a.semestre,
         	        a.creditos,
-        	        IFNULL(g.nombre, 'Sin grupo') AS grupo,
+
         	        IFNULL(
-        	            CONCAT(
-        	                d.nombre,' ',
-        	                d.apellido_paterno,' ',
-        	                d.apellido_materno
+        	            GROUP_CONCAT(DISTINCT g.nombre SEPARATOR ', '),
+        	            'Sin grupo'
+        	        ) AS grupos,
+
+        	        IFNULL(
+        	            GROUP_CONCAT(
+        	                DISTINCT CONCAT(
+        	                    d.nombre,' ',
+        	                    d.apellido_paterno,' ',
+        	                    d.apellido_materno
+        	                )
+        	                SEPARATOR ', '
         	            ),
         	            'Sin docente'
-        	        ) AS docente
+        	        ) AS docentes
+
         	    FROM ASIGNATURAS a
+
         	    LEFT JOIN GRUPO_ASIGNATURA ga 
         	        ON a.id_asignatura = ga.id_asignatura
+
         	    LEFT JOIN GRUPOS g 
         	        ON ga.id_grupo = g.id_grupo
+
         	    LEFT JOIN DOCENTES d 
         	        ON ga.id_docente = d.id_docente
+
         	    WHERE a.clave=?
+
+        	    GROUP BY 
+        	        a.id_asignatura,
+        	        a.nombre,
+        	        a.clave,
+        	        a.semestre,
+        	        a.creditos
         	""";
 
         try(
@@ -111,8 +131,8 @@ public class AsignaturasModel {
                         rs.getString("clave"),
                         rs.getInt("semestre"),
                         rs.getInt("creditos"),
-                        rs.getString("grupo"),
-                        rs.getString("docente")
+                        rs.getString("grupos"),
+                        rs.getString("docentes")
                     };
                 }
             }

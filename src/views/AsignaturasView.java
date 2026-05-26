@@ -3,9 +3,11 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import com.itextpdf.text.*;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -13,6 +15,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileOutputStream;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -31,6 +35,15 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import constructor_ventanas.App;
 import controllers.AsignaturasController;
@@ -282,8 +295,8 @@ public class AsignaturasView extends JPanel {
         JLabel semestreLabel = new JLabel("Semestre: " + semestre);
         JLabel claveLabel = new JLabel("Clave: " + clave);
         JLabel creditosLabel = new JLabel("Créditos: " + creditos);
-        JLabel grupoLabel = new JLabel("Grupo: " + grupo);
-        JLabel docenteLabel = new JLabel("Docente: " + docente);
+        JLabel grupoLabel = new JLabel("Grupo(s): " + grupo);
+        JLabel docenteLabel = new JLabel("Docente(s): " + docente);
 
         JLabel[] datos = {
             semestreLabel,
@@ -330,6 +343,9 @@ public class AsignaturasView extends JPanel {
         pdf.setPreferredSize(new Dimension(180, 40));
         pdf.setFocusable(false);
         pdf.setContentAreaFilled(false);
+        pdf.addActionListener(e -> {
+            generarPDFAsignatura();
+        });
 
         panelBoton.add(pdf);
 
@@ -936,6 +952,198 @@ public class AsignaturasView extends JPanel {
     	creditos = controller.getCreditos();
     	grupo = controller.getGrupo();
     	docente = controller.getDocente();
+    }
+    
+    public void generarPDFAsignatura() {
+
+        try {
+
+            String ruta =
+                    "Asignatura_" + clave + ".pdf";
+
+            Document documento = new Document();
+
+            PdfWriter.getInstance(
+                    documento,
+                    new FileOutputStream(ruta)
+            );
+
+            documento.open();
+            
+            Image logoVirrete = Image.getInstance(
+                    App.class.getResource(
+                            "/resources/logo_virrete-32x32.png"
+                    )
+            );
+            
+            logoVirrete.scaleAbsolute(60, 60);
+            logoVirrete.setAbsolutePosition(500, 770);
+
+            documento.add(logoVirrete);
+
+            com.itextpdf.text.Font tituloFont = new com.itextpdf.text.Font(
+            		com.itextpdf.text.Font.FontFamily.HELVETICA,
+                            24,
+                            com.itextpdf.text.Font.BOLD
+                    );
+
+            com.itextpdf.text.Font subtituloFont = new com.itextpdf.text.Font(
+                            com.itextpdf.text.Font.FontFamily.HELVETICA,
+                            16,
+                            com.itextpdf.text.Font.BOLD,
+                            BaseColor.WHITE
+                    );
+
+            com.itextpdf.text.Font textoFont = new com.itextpdf.text.Font(
+                            com.itextpdf.text.Font.FontFamily.HELVETICA,
+                            14,
+                            com.itextpdf.text.Font.NORMAL
+                    );
+
+            Paragraph titulo = new Paragraph(
+                    "Detalle de Asignatura",
+                    tituloFont
+            );
+
+            titulo.setAlignment(Element.ALIGN_CENTER);
+
+            documento.add(titulo);
+
+            documento.add(new Paragraph(" "));
+
+            PdfPTable tablaPDF = new PdfPTable(2);
+
+            tablaPDF.setWidthPercentage(100);
+
+            tablaPDF.setSpacingBefore(10f);
+
+            tablaPDF.setWidths(new float[]{3f, 7f});
+
+            PdfPCell celda1;
+
+            celda1 = new PdfPCell(
+                    new Phrase("Nombre", subtituloFont)
+            );
+
+            celda1.setBackgroundColor(
+                    new BaseColor(14,48,170)
+            );
+
+            tablaPDF.addCell(celda1);
+
+            tablaPDF.addCell(
+                    new Phrase(nombre, textoFont)
+            );
+
+
+
+            celda1 = new PdfPCell(
+                    new Phrase("Clave", subtituloFont)
+            );
+
+            celda1.setBackgroundColor(
+                    new BaseColor(14,48,170)
+            );
+
+            tablaPDF.addCell(celda1);
+
+            tablaPDF.addCell(
+                    new Phrase(clave, textoFont)
+            );
+
+
+
+            celda1 = new PdfPCell(
+                    new Phrase("Semestre", subtituloFont)
+            );
+
+            celda1.setBackgroundColor(
+                    new BaseColor(14,48,170)
+            );
+
+            tablaPDF.addCell(celda1);
+
+            tablaPDF.addCell(
+                    new Phrase(semestre + "", textoFont)
+            );
+
+
+
+            celda1 = new PdfPCell(
+                    new Phrase("Creditos", subtituloFont)
+            );
+
+            celda1.setBackgroundColor(
+                    new BaseColor(14,48,170)
+            );
+
+            tablaPDF.addCell(celda1);
+
+            tablaPDF.addCell(
+                    new Phrase(creditos + "", textoFont)
+            );
+
+
+
+            celda1 = new PdfPCell(
+                    new Phrase("Grupo(s)", subtituloFont)
+            );
+
+            celda1.setBackgroundColor(
+                    new BaseColor(14,48,170)
+            );
+
+            tablaPDF.addCell(celda1);
+
+            tablaPDF.addCell(
+                    new Phrase(grupo, textoFont)
+            );
+
+
+
+            celda1 = new PdfPCell(
+                    new Phrase("Docente(s)", subtituloFont)
+            );
+
+            celda1.setBackgroundColor(
+                    new BaseColor(14,48,170)
+            );
+
+            tablaPDF.addCell(celda1);
+
+            tablaPDF.addCell(
+                    new Phrase(docente, textoFont)
+            );
+
+            documento.add(tablaPDF);
+
+            documento.add(new Paragraph(" "));
+            documento.add(new Paragraph(" "));
+            documento.add(new Paragraph(
+                    "Documento generado por el sistema EDUCADEX",
+                    textoFont
+            ));
+
+            documento.close();
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    "PDF generado correctamente"
+            );
+
+            Desktop.getDesktop().open(
+                    new File(ruta)
+            );
+
+        } catch(Exception e) {
+
+            e.printStackTrace();
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Error al generar PDF"
+            );
+        }
     }
    
 }
