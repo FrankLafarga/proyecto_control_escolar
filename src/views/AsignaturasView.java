@@ -439,6 +439,8 @@ public class AsignaturasView extends JPanel {
 	    comboSemestre.addItem("7mo semestre");
 	    comboSemestre.addItem("8vo semestre");
 	    comboSemestre.addItem("9no semestre");
+	    
+        comboSemestre.setSelectedIndex(semestre-1);
 	
 	    JTextField txtCreditos = new JTextField(creditos+"");
 	    txtCreditos.setFont(new Font("Segoe UI", Font.PLAIN, 18));
@@ -564,7 +566,13 @@ public class AsignaturasView extends JPanel {
 	                        JOptionPane.ERROR_MESSAGE
 	                    );
 	                }
-	            }
+	            }else {
+	            	JOptionPane.showMessageDialog(
+            				null,
+            				"Rellene los campos correctamente",
+            				"Error",
+            				JOptionPane.ERROR_MESSAGE
+	            );}
 	        }
 	    });
 	
@@ -736,7 +744,7 @@ public class AsignaturasView extends JPanel {
 	    comboSemestre.addItem("8vo semestre");
 	    comboSemestre.addItem("9no semestre");
 	
-	    JTextField txtCreditos = new JTextField("6");
+	    JTextField txtCreditos = new JTextField();
 	    txtCreditos.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 	    txtCreditos.setPreferredSize(new Dimension(200, 45));
 	
@@ -853,7 +861,13 @@ public class AsignaturasView extends JPanel {
         				);
     	        	}
     	        		
-	        	}
+	        	}else {
+	            	JOptionPane.showMessageDialog(
+            				null,
+            				"Rellene los campos correctamente",
+            				"Error",
+            				JOptionPane.ERROR_MESSAGE
+	            );}
 	    	}
 	    });
 	

@@ -714,7 +714,13 @@ public class DocentesView extends JPanel {
 							"Docentes",
 							"Gestion integral de docentes en el sistema"
 					);
-				}
+				} else {
+	            	JOptionPane.showMessageDialog(
+            				null,
+            				"Rellene los campos correctamente",
+            				"Error",
+            				JOptionPane.ERROR_MESSAGE
+	            );}
 			}
 		});
 	
@@ -847,6 +853,15 @@ public class DocentesView extends JPanel {
 	
 	    JLabel lblGrado = new JLabel("Grado de estudios");
 	    lblGrado.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+	    
+	    String[] grados = {
+				"Licenciatura",
+				"Maestría",
+				"Doctorado"
+		};
+	
+		JComboBox<String> cbGrado = new JComboBox<>(grados);
+		cbGrado.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 	
 	    JLabel lblAvatar = new JLabel("Avatar");
 	    lblAvatar.setHorizontalAlignment(SwingConstants.CENTER);
@@ -859,15 +874,12 @@ public class DocentesView extends JPanel {
 	    JTextField txtClave = new JTextField();
 	    txtClave.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 	
-	    JTextField txtGrado = new JTextField();
-	    txtGrado.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-	
 	    JLabel imagen = new JLabel("");
 	    imagen.setHorizontalAlignment(SwingConstants.CENTER);
 	    imagen.setIcon(new ImageIcon(App.class.getResource("/resources/logo_virrete-32x32.png")));
 	
 	    panelCentro.add(txtClave);
-	    panelCentro.add(txtGrado);
+	    panelCentro.add(cbGrado);
 	    panelCentro.add(imagen);
 	
 	    JLabel lblEstatus = new JLabel("Estatus");
@@ -1001,7 +1013,7 @@ public class DocentesView extends JPanel {
 	            LineBorder bordeNormal = new LineBorder(new Color(180,180,180), 1, true);
 	
 	            txtClave.setBorder(bordeNormal);
-	            txtGrado.setBorder(bordeNormal);
+	            cbGrado.setBorder(bordeNormal);
 	            cbEstatus.setBorder(bordeNormal);
 	            cbArea.setBorder(bordeNormal);
 	            txtNombre.setBorder(bordeNormal);
@@ -1015,11 +1027,6 @@ public class DocentesView extends JPanel {
 	
 	            if(txtClave.getText().trim().isEmpty()) {
 	                txtClave.setBorder(bordeRojo);
-	                valido = false;
-	            }
-	
-	            if(txtGrado.getText().trim().isEmpty() || txtGrado.getText().matches(".*\\d.*")) {
-	                txtGrado.setBorder(bordeRojo);
 	                valido = false;
 	            }
 	
@@ -1064,7 +1071,7 @@ public class DocentesView extends JPanel {
 	            			txtEmail.getText().trim(),
 	            			txtTelefono.getText().trim(),
 	            			txtFecha.getText().trim(),
-	            			txtGrado.getText().trim(),
+	            			cbGrado.getSelectedItem().toString(),
 	            			cbArea.getSelectedItem().toString(),
 	            			cbEstatus.getSelectedItem().toString()
 	            	);
@@ -1094,7 +1101,13 @@ public class DocentesView extends JPanel {
 	            				JOptionPane.ERROR_MESSAGE
 	            		);
 	            	}
-	            }
+	            } else {
+	            	JOptionPane.showMessageDialog(
+            				null,
+            				"Rellene los campos correctamente",
+            				"Error",
+            				JOptionPane.ERROR_MESSAGE
+	            );}
 	        }
 	    });
 	

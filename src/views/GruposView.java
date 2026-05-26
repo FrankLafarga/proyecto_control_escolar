@@ -970,7 +970,13 @@ public class GruposView extends JPanel {
 	                        JOptionPane.ERROR_MESSAGE
 	                    );
 	                }
-	            }
+	            }else {
+	            	JOptionPane.showMessageDialog(
+            				null,
+            				"Rellene los campos correctamente",
+            				"Error",
+            				JOptionPane.ERROR_MESSAGE
+	            );}
 	        }
 	    });
 	
@@ -1454,7 +1460,13 @@ public class GruposView extends JPanel {
 	                        JOptionPane.ERROR_MESSAGE
 	                    );
 	                }
-	            }
+	            }else {
+	            	JOptionPane.showMessageDialog(
+            				null,
+            				"Rellene los campos correctamente",
+            				"Error",
+            				JOptionPane.ERROR_MESSAGE
+	            );}
 	        }
 	    });
 	

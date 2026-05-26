@@ -298,14 +298,14 @@ public class AlumnosView extends JPanel {
     						.addPreferredGap(ComponentPlacement.UNRELATED)
     						.addComponent(lblNewLabel_7_1, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)
     						.addPreferredGap(ComponentPlacement.RELATED)
-    						.addComponent(lblNewLabel_7_1_1, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)))
+    						.addComponent(lblNewLabel_7_1_1, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE)))
     				.addContainerGap(225, Short.MAX_VALUE))
     	);
     	gl_panel_11.setVerticalGroup(
     		gl_panel_11.createParallelGroup(Alignment.LEADING)
     			.addGroup(gl_panel_11.createSequentialGroup()
     				.addGap(20)
-    				.addComponent(lblNewLabel_6, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+    				.addComponent(lblNewLabel_6, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
     				.addGap(18)
     				.addGroup(gl_panel_11.createParallelGroup(Alignment.BASELINE)
     					.addComponent(lblNewLabel_7)
@@ -1008,7 +1008,13 @@ public class AlumnosView extends JPanel {
 				    };
 				
 				    app.cambiarVista(new AlumnosView(app),"Alumnos","Gestion integral de alumnos en el sistema");
-				}
+				}else {
+	            	JOptionPane.showMessageDialog(
+            				null,
+            				"Rellene los campos correctamente",
+            				"Error",
+            				JOptionPane.ERROR_MESSAGE
+	            );}
 			}
 		});
 	
@@ -1442,7 +1448,13 @@ public class AlumnosView extends JPanel {
 				            "Alumnos",
 				            "Gestion integral de alumnos en el sistema"
 				    );
-				}
+				}else {
+	            	JOptionPane.showMessageDialog(
+            				null,
+            				"Rellene los campos correctamente",
+            				"Error",
+            				JOptionPane.ERROR_MESSAGE
+	            );}
 			}
 		});
 	
