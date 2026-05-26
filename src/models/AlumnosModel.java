@@ -187,12 +187,29 @@ public class AlumnosModel {
 	            }
 	
 	            int rowsAffected = ps.executeUpdate();
-	
+
 	            if(rowsAffected > 0) {
-	
+
+	                String sqlEvento = """
+	                    INSERT INTO EVENTOS(descripcion)
+	                    VALUES(?)
+	                """;
+
+	                PreparedStatement psEvento =
+	                        conn.prepareStatement(sqlEvento);
+
+	                psEvento.setString(
+	                        1,
+	                        "Nuevo alumno registrado: " +
+	                        nombre + " " + apellidoPat
+	                );
+
+	                psEvento.executeUpdate();
+
+	                psEvento.close();
 	                ps.close();
 	                conn.close();
-	
+
 	                return true;
 	            }
 	

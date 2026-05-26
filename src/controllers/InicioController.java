@@ -19,5 +19,6 @@ public class InicioController {
     	view.setLblDocentes(model.getDocentes());
     	view.setLblGrupos(model.getGrupos());
     	view.setLblAsignaturas(model.getAsignaturas());
+    	view.setEventos(model.obtenerEventos());
     }
 }

@@ -28,6 +28,42 @@ public class InicioModel {
 
         return 0;
     }
+    
+    public String[] obtenerEventos() {
+
+        String[] eventos = new String[3];
+
+        String sql = """
+            SELECT descripcion
+            FROM EVENTOS
+            ORDER BY fecha DESC
+            LIMIT 3
+        """;
+
+        try (
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://127.0.0.1:3306/educadex",
+                    "root",
+                    "educadex2026");
+
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            ResultSet rs = stmt.executeQuery()
+        ) {
+
+            int i = 0;
+
+            while(rs.next()) {
+                eventos[i] = rs.getString("descripcion");
+                i++;
+            }
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return eventos;
+    }
 
     public int getAlumnos() {
         return contar("ALUMNOS");

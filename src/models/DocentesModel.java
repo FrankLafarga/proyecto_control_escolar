@@ -201,13 +201,29 @@ public class DocentesModel {
     		int rowsAffected = ps.executeUpdate();
     		
     		if(rowsAffected > 0) {
-    			
-    			ps.close();
-    			conn.close();
-    			
-    			return true;
-    		}
-    		
+
+    		    String sqlEvento = """
+    		        INSERT INTO EVENTOS(descripcion)
+    		        VALUES(?)
+    		    """;
+
+    		    PreparedStatement psEvento =
+    		            conn.prepareStatement(sqlEvento);
+
+    		    psEvento.setString(
+    		            1,
+    		            "Nuevo docente registrado: " +
+    		            nombre + " " + apellidoPat
+    		    );
+
+    		    psEvento.executeUpdate();
+
+    		    psEvento.close();
+    		    ps.close();
+    		    conn.close();
+
+    		    return true;
+    		}    		
     	}catch(Exception e) {
     		e.printStackTrace();
     	}

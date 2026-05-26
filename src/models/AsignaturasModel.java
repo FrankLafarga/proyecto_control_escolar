@@ -248,6 +248,26 @@ public class AsignaturasModel {
 
             int rowsAffected = ps.executeUpdate();
 
+            if(rowsAffected > 0) {
+
+                String sqlEvento = """
+                    INSERT INTO EVENTOS(descripcion)
+                    VALUES(?)
+                """;
+
+                PreparedStatement psEvento =
+                        conn.prepareStatement(sqlEvento);
+
+                psEvento.setString(
+                        1,
+                        "Nueva asignatura creada: " + nombre
+                );
+
+                psEvento.executeUpdate();
+
+                psEvento.close();
+            }
+
             ps.close();
             conn.close();
 

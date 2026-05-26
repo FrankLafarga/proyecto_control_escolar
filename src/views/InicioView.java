@@ -11,17 +11,19 @@ public class InicioView extends JPanel {
     
 	private InicioController controller;
     private AppView app;
-    private int lblDocentes;
-    private int lblAlumnos;
-    private int lblGrupos;
-    private int lblAsignaturas;
+    private JLabel lblDocentes;
+    private JLabel lblAlumnos;
+    private JLabel lblGrupos;
+    private JLabel lblAsignaturas;
+    private JLabel evento1;
+    private JLabel evento2;
+    private JLabel evento3;
 
     public InicioView(AppView app) {
         this.app = app;
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
-        controller=new InicioController(this);
         Color dorado = new Color(208, 135, 0);
         Color verde_lima = new Color(3, 233, 38);
         Color rojo_claro = new Color(255, 77, 77);
@@ -102,11 +104,11 @@ public class InicioView extends JPanel {
         panel_25.setOpaque(false);
         panel_centro_docentes.add(panel_25);
 
-        JLabel lblNewLabel_11 = new JLabel("  "+lblDocentes);
-        lblNewLabel_11.setForeground(azul_principal);
-        lblNewLabel_11.setFont(new Font("Times New Roman", Font.BOLD, 40));
-        lblNewLabel_11.setFocusable(false);
-        panel_centro_docentes.add(lblNewLabel_11);
+        lblDocentes = new JLabel("  0");
+        lblDocentes.setForeground(azul_principal);
+        lblDocentes.setFont(new Font("Times New Roman", Font.BOLD, 40));
+        lblDocentes.setFocusable(false);
+        panel_centro_docentes.add(lblDocentes);
 
         JLabel lblNewLabel_12 = new JLabel("    Docentes");
         lblNewLabel_12.setFont(new Font("Segoe UI", Font.PLAIN, 20));
@@ -155,11 +157,11 @@ public class InicioView extends JPanel {
         panel_25_1.setOpaque(false);
         panel_centro_alumnos.add(panel_25_1);
 
-        JLabel lblNewLabel_11_1 = new JLabel("  "+lblAlumnos);
-        lblNewLabel_11_1.setForeground(azul_principal);
-        lblNewLabel_11_1.setFont(new Font("Times New Roman", Font.BOLD, 40));
-        lblNewLabel_11_1.setFocusable(false);
-        panel_centro_alumnos.add(lblNewLabel_11_1);
+        lblAlumnos = new JLabel("  0");
+        lblAlumnos.setForeground(azul_principal);
+        lblAlumnos.setFont(new Font("Times New Roman", Font.BOLD, 40));
+        lblAlumnos.setFocusable(false);
+        panel_centro_alumnos.add(lblAlumnos);
 
         JLabel lblNewLabel_12_1 = new JLabel("    Alumnos");
         lblNewLabel_12_1.setFont(new Font("Segoe UI", Font.PLAIN, 20));
@@ -207,11 +209,11 @@ public class InicioView extends JPanel {
         panel_25_3.setOpaque(false);
         panel_centro_grupos.add(panel_25_3);
 
-        JLabel lblNewLabel_11_3 = new JLabel("  "+lblGrupos);
-        lblNewLabel_11_3.setForeground(azul_principal);
-        lblNewLabel_11_3.setFont(new Font("Times New Roman", Font.BOLD, 40));
-        lblNewLabel_11_3.setFocusable(false);
-        panel_centro_grupos.add(lblNewLabel_11_3);
+        lblGrupos = new JLabel("  0");
+        lblGrupos.setForeground(azul_principal);
+        lblGrupos.setFont(new Font("Times New Roman", Font.BOLD, 40));
+        lblGrupos.setFocusable(false);
+        panel_centro_grupos.add(lblGrupos);
 
         JLabel lblNewLabel_12_3 = new JLabel("    Grupos");
         lblNewLabel_12_3.setFont(new Font("Segoe UI", Font.PLAIN, 20));
@@ -259,11 +261,11 @@ public class InicioView extends JPanel {
         panel_25_2.setOpaque(false);
         panel_centro_asignaturas.add(panel_25_2);
 
-        JLabel lblNewLabel_11_2 = new JLabel("  "+lblAsignaturas);
-        lblNewLabel_11_2.setForeground(azul_principal);
-        lblNewLabel_11_2.setFont(new Font("Times New Roman", Font.BOLD, 40));
-        lblNewLabel_11_2.setFocusable(false);
-        panel_centro_asignaturas.add(lblNewLabel_11_2);
+        lblAsignaturas = new JLabel("  0");
+        lblAsignaturas.setForeground(azul_principal);
+        lblAsignaturas.setFont(new Font("Times New Roman", Font.BOLD, 40));
+        lblAsignaturas.setFocusable(false);
+        panel_centro_asignaturas.add(lblAsignaturas);
 
         JLabel lblNewLabel_12_2 = new JLabel("    Asignaturas");
         lblNewLabel_12_2.setFont(new Font("Segoe UI", Font.PLAIN, 20));
@@ -305,40 +307,63 @@ public class InicioView extends JPanel {
         panel_sur.add(panel_24, BorderLayout.CENTER);
         panel_24.setLayout(new GridLayout(4, 1, 0, 5));
 
-        JLabel lblNewLabel_7 = new JLabel("Nuevo registro de alumno:");
-        lblNewLabel_7.setBackground(new Color(240, 240, 240));
-        lblNewLabel_7.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-        panel_24.add(lblNewLabel_7);
+        evento1 = new JLabel("Nuevo registro de alumno:");
+        evento1.setBackground(new Color(240, 240, 240));
+        evento1.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        panel_24.add(evento1);
 
-        JLabel lblNewLabel_8 = new JLabel("Asignación reciente:");
-        lblNewLabel_8.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-        lblNewLabel_8.setBackground(new Color(240, 240, 240));
-        panel_24.add(lblNewLabel_8);
+        evento2 = new JLabel("Asignación reciente:");
+        evento2.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        evento2.setBackground(new Color(240, 240, 240));
+        panel_24.add(evento2);
 
-        JLabel lblNewLabel_9 = new JLabel("Actualización reciente:");
-        lblNewLabel_9.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-        lblNewLabel_9.setBackground(new Color(240, 240, 240));
-        panel_24.add(lblNewLabel_9);
+        evento3 = new JLabel("Actualización reciente:");
+        evento3.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        evento3.setBackground(new Color(240, 240, 240));
+        panel_24.add(evento3);
+        
+        controller=new InicioController(this);
     }
     
-    public int getLblDocentes() { return lblDocentes; }
-    public int getLblAlumnos() { return lblAlumnos; }
-    public int getLblGrupos() { return lblGrupos; }
-    public int getLblAsignaturas() { return lblAsignaturas; }
+    public JLabel getLblDocentes() { return lblDocentes; }
+    public JLabel getLblAlumnos() { return lblAlumnos; }
+    public JLabel getLblGrupos() { return lblGrupos; }
+    public JLabel getLblAsignaturas() { return lblAsignaturas; }
 
-	public void setLblDocentes(int lblDocentes) {
-		this.lblDocentes = lblDocentes;
+	public void setLblDocentes(int total) {
+		lblDocentes.setText("  " + total);
 	}
 
-	public void setLblAlumnos(int lblAlumnos) {
-		this.lblAlumnos = lblAlumnos;
+	public void setLblAlumnos(int total) {
+    	lblAlumnos.setText("  " + total);
 	}
 
-	public void setLblGrupos(int lblGrupos) {
-		this.lblGrupos = lblGrupos;
+	public void setLblGrupos(int total) {
+		lblGrupos.setText("  " + total);
 	}
 
-	public void setLblAsignaturas(int lblAsignaturas) {
-		this.lblAsignaturas = lblAsignaturas;
+	public void setLblAsignaturas(int total) {
+		lblAsignaturas.setText("  " + total);
 	}
+	
+	public void setEventos(String[] eventos) {
+
+    evento1.setText(
+        eventos[0] != null ?
+        eventos[0] :
+        "Sin eventos"
+    );
+
+    evento2.setText(
+        eventos[1] != null ?
+        eventos[1] :
+        "Sin eventos"
+    );
+
+    evento3.setText(
+        eventos[2] != null ?
+        eventos[2] :
+        "Sin eventos"
+    );
+}
 }

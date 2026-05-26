@@ -366,14 +366,34 @@ public class GruposModel {
 
             if(rows > 0) {
 
-                ResultSet rsGrupo =
+                String sqlEvento = """
+                    INSERT INTO EVENTOS(descripcion)
+                    VALUES(?)
+                """;
+
+                PreparedStatement psEvento =
+                        conn.prepareStatement(sqlEvento);
+
+                psEvento.setString(
+                        1,
+                        "Nuevo grupo creado: " + nombre
+                );
+
+                psEvento.executeUpdate();
+
+                psEvento.close();
+                
+                ResultSet generatedKeys =
                         psGrupo.getGeneratedKeys();
 
                 int idGrupo = 0;
 
-                if(rsGrupo.next()) {
-                    idGrupo = rsGrupo.getInt(1);
+                if(generatedKeys.next()) {
+
+                    idGrupo = generatedKeys.getInt(1);
                 }
+
+                generatedKeys.close();
 
                 for(int i = 0; i < 6; i++) {
 
@@ -441,10 +461,9 @@ public class GruposModel {
                     psGA.close();
                 }
 
-                rsGrupo.close();
-                psGrupo.close();
-
                 conn.commit();
+
+                psGrupo.close();
 
                 return true;
             }

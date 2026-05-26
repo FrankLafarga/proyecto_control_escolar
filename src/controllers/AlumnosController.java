@@ -243,5 +243,7 @@ public class AlumnosController {
     public String getEstatus() {
         return estatus;
     }
+    
+    
 
 }
