@@ -83,7 +83,8 @@ public class DocentesController {
     		String fecha,
     		String grado,
     		String area,
-    		String estatus
+    		String estatus,
+    		String avatar
     ) {
     	
     	boolean flag = model.make(
@@ -96,7 +97,8 @@ public class DocentesController {
     			fecha,
     			grado,
     			area,
-    			estatus
+    			estatus,
+    			avatar
     	);
     	
     	return flag;
@@ -118,7 +120,8 @@ public class DocentesController {
     		String fecha,
     		String grado,
     		String area,
-    		String estatus
+    		String estatus,
+    		String avatar
     ) {
 
     	boolean flag = model.updateDocente(
@@ -132,7 +135,8 @@ public class DocentesController {
     			fecha,
     			grado,
     			area,
-    			estatus
+    			estatus, 
+    			avatar
     	);
 
     	return flag;
@@ -200,8 +204,4 @@ public class DocentesController {
        	}
 		return null;
     }
-    
-    
-    
-    
 }

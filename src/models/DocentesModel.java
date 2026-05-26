@@ -154,7 +154,8 @@ public class DocentesModel {
     		String fecha,
     		String grado,
     		String area,
-    		String estatus
+    		String estatus,
+    		String avatar
     ) {
     	
     	String query = """
@@ -168,9 +169,11 @@ public class DocentesModel {
     				fecha_nacimiento,
     				grado_estudios,
     				area_estudios,
-    				estatus
+    				estatus,
+    				avatar
     			)
-    			VALUES(?,?,?,?,?,?,?,?,?,?)
+    			VALUES(?,?,?,?,?,?,?,?,?,?,?)
+    			
     			""";
     	
     	Connection conn = null;
@@ -197,6 +200,7 @@ public class DocentesModel {
     		ps.setString(8, grado);
     		ps.setString(9, area);
     		ps.setString(10, estatus);
+    		ps.setString(11, avatar);
     		
     		int rowsAffected = ps.executeUpdate();
     		
@@ -269,7 +273,8 @@ public class DocentesModel {
     		String fecha,
     		String grado,
     		String area,
-    		String estatus
+    		String estatus,
+    		String avatar
     ) {
 
     	String sql = """
@@ -284,7 +289,8 @@ public class DocentesModel {
     				fecha_nacimiento=?,
     				grado_estudios=?,
     				area_estudios=?,
-    				estatus=?
+    				estatus=?,
+    				avatar=?
     			WHERE clave=?
     			""";
 
@@ -303,7 +309,8 @@ public class DocentesModel {
     		ps.setString(8, grado);
     		ps.setString(9, area);
     		ps.setString(10, estatus);
-    		ps.setString(11, claveOriginal);
+    		ps.setString(11, avatar);
+    		ps.setString(12, claveOriginal);
 
     		int filas = ps.executeUpdate();
 

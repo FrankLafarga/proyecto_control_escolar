@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -18,6 +19,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -55,6 +57,9 @@ public class DocentesView extends JPanel {
 	private String apellidoMat;
 	
 	private ImageIcon imgEstatus;
+	
+	private JLabel imagen;
+	private String avatarSeleccionado = "/resources/avatar1.png";
 	
     public DocentesView(AppView app) {
 		this.app = app;
@@ -336,6 +341,25 @@ public class DocentesView extends JPanel {
     	    l.setFont(new Font("Segoe UI", Font.PLAIN, 20));
     	    l.setAlignmentX(Component.LEFT_ALIGNMENT);
     	}
+    	
+    	if(avatar == null || avatar.isEmpty()) {
+    	    avatar = "/resources/default-avatar.png";
+    	}
+
+    	ImageIcon iconoAvatar = new ImageIcon(
+    	        App.class.getResource(avatar)
+    	);
+
+    	Image imgAvatar = iconoAvatar.getImage()
+    	        .getScaledInstance(140, 140, Image.SCALE_SMOOTH);
+
+    	JLabel lblAvatar = new JLabel(new ImageIcon(imgAvatar));
+    	lblAvatar.setHorizontalAlignment(SwingConstants.CENTER);
+
+    	JPanel panelDerecha = new JPanel(new BorderLayout());
+    	panelDerecha.setBackground(Color.WHITE);
+
+    	panelDerecha.add(lblAvatar, BorderLayout.NORTH);
 
     	JPanel filaNombre = new JPanel(new FlowLayout(FlowLayout.LEFT));
     	filaNombre.setBackground(Color.WHITE);
@@ -357,6 +381,8 @@ public class DocentesView extends JPanel {
     	}
 
     	tarjeta.add(contenido, BorderLayout.CENTER);
+    	
+    	tarjeta.add(panelDerecha, BorderLayout.EAST);
 
     	JButton pdf = new JButton(
         		"<html>" +
@@ -469,13 +495,44 @@ public class DocentesView extends JPanel {
 		cbGrado.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		cbGrado.setSelectedItem(grado);
 	
-		JLabel imagen = new JLabel("");
-	    imagen.setHorizontalAlignment(SwingConstants.CENTER);
-	    imagen.setIcon(new ImageIcon(App.class.getResource("/resources/logo_virrete-32x32.png")));
-	
+		imagen = new JLabel();
+		imagen.setHorizontalAlignment(SwingConstants.CENTER);
+
+		if(avatar == null || avatar.isEmpty()) {
+		    avatar = "/resources/default-avatar.png";
+		}
+
+		ImageIcon iconoAvatar = new ImageIcon(
+		        App.class.getResource(avatar)
+		);
+		
+		avatarSeleccionado = avatar;
+
+		Image imgAvatar = iconoAvatar.getImage()
+		        .getScaledInstance(90, 90, Image.SCALE_SMOOTH);
+
+		imagen.setIcon(new ImageIcon(imgAvatar));
+
+		JButton btnAvatar = new JButton("Cambiar avatar");
+		btnAvatar.setFocusable(false);
+		btnAvatar.setForeground(Color.WHITE);
+		btnAvatar.setBackground(new Color(14, 48, 170));
+		btnAvatar.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+
+		btnAvatar.addActionListener(e -> {
+		    abrirSelectorAvatar();
+		});
+
 		panelCentro.add(txtClave);
 		panelCentro.add(cbGrado);
-		panelCentro.add(imagen);
+
+		JPanel panelAvatar = new JPanel(new BorderLayout());
+		panelAvatar.setBackground(Color.WHITE);
+
+		panelAvatar.add(imagen, BorderLayout.CENTER);
+		panelAvatar.add(btnAvatar, BorderLayout.SOUTH);
+
+		panelCentro.add(panelAvatar);
 	
 		JLabel lblEstatus = new JLabel("Estatus");
 		lblEstatus.setFont(new Font("Segoe UI", Font.PLAIN, 18));
@@ -693,7 +750,8 @@ public class DocentesView extends JPanel {
 							txtFecha.getText(),
 							cbGrado.getSelectedItem().toString(),
 							cbArea.getSelectedItem().toString(),
-							cbEstatus.getSelectedItem().toString()
+							cbEstatus.getSelectedItem().toString(),
+							avatarSeleccionado
 					)==true) {
 	
 						JOptionPane.showMessageDialog(
@@ -738,6 +796,7 @@ public class DocentesView extends JPanel {
 			"Docente",
 			"Editar Docente Seleccionado"
 		);
+	
 	}
 	
 	public void eliminarDocente(int fila) {
@@ -874,14 +933,39 @@ public class DocentesView extends JPanel {
 	    JTextField txtClave = new JTextField();
 	    txtClave.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 	
-	    JLabel imagen = new JLabel("");
+	    imagen = new JLabel();
 	    imagen.setHorizontalAlignment(SwingConstants.CENTER);
-	    imagen.setIcon(new ImageIcon(App.class.getResource("/resources/logo_virrete-32x32.png")));
+
+	    ImageIcon iconoAvatar = new ImageIcon(
+	            App.class.getResource(avatarSeleccionado)
+	    );
+
+	    Image imgAvatar = iconoAvatar.getImage()
+	            .getScaledInstance(90, 90, Image.SCALE_SMOOTH);
+
+	    imagen.setIcon(new ImageIcon(imgAvatar));
+
+	    JButton btnAvatar = new JButton("Elegir avatar");
+		btnAvatar.setFocusable(false);
+		btnAvatar.setForeground(Color.WHITE);
+		btnAvatar.setBackground(new Color(14, 48, 170));
+		btnAvatar.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+
+	    btnAvatar.addActionListener(e -> {
+	        abrirSelectorAvatar();
+	    });
 	
 	    panelCentro.add(txtClave);
 	    panelCentro.add(cbGrado);
-	    panelCentro.add(imagen);
-	
+
+	    JPanel panelAvatar = new JPanel(new BorderLayout());
+	    panelAvatar.setBackground(Color.WHITE);
+
+	    panelAvatar.add(imagen, BorderLayout.CENTER);
+	    panelAvatar.add(btnAvatar, BorderLayout.SOUTH);
+
+	    panelCentro.add(panelAvatar);
+	    
 	    JLabel lblEstatus = new JLabel("Estatus");
 	    lblEstatus.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 	
@@ -1073,7 +1157,9 @@ public class DocentesView extends JPanel {
 	            			txtFecha.getText().trim(),
 	            			cbGrado.getSelectedItem().toString(),
 	            			cbArea.getSelectedItem().toString(),
-	            			cbEstatus.getSelectedItem().toString()
+	            			cbEstatus.getSelectedItem().toString(),
+	            			avatarSeleccionado
+	            			
 	            	);
 	            	
 	            	if(agregado) {
@@ -1125,6 +1211,78 @@ public class DocentesView extends JPanel {
 	        "Docente",
 	        ""
 	    );
+	}
+	
+	public void abrirSelectorAvatar() {
+
+	    JDialog dialog = new JDialog();
+
+	    dialog.setTitle("Seleccionar avatar");
+	    dialog.setSize(500,400);
+	    dialog.setLocationRelativeTo(null);
+	    dialog.setModal(true);
+
+	    JPanel panel = new JPanel();
+
+	    panel.setBorder(
+	            BorderFactory.createEmptyBorder(15,15,15,15)
+	    );
+
+	    panel.setLayout(new GridLayout(2,3,15,15));
+
+	    String[] avatars = {
+	            "/resources/avatar1.png",
+	            "/resources/avatar2.png",
+	            "/resources/avatar3.png",
+	            "/resources/avatar4.png",
+	            "/resources/avatar5.png",
+	            "/resources/avatar6.png"
+	    };
+
+	    for(String ruta : avatars){
+
+	        ImageIcon icon = new ImageIcon(
+	                App.class.getResource(ruta)
+	        );
+
+	        Image img = icon.getImage()
+	                .getScaledInstance(100,100,Image.SCALE_SMOOTH);
+
+	        JButton btn = new JButton(
+	                new ImageIcon(img)
+	        );
+
+	        btn.setFocusPainted(false);
+
+	        btn.addActionListener(e -> {
+
+	            avatarSeleccionado = ruta;
+
+	            Image imagenNueva = icon.getImage()
+	                    .getScaledInstance(
+	                            90,
+	                            90,
+	                            Image.SCALE_SMOOTH
+	                    );
+
+	            imagen.setIcon(
+	                    new ImageIcon(imagenNueva)
+	            );
+
+	            JOptionPane.showMessageDialog(
+	                    dialog,
+	                    "Avatar seleccionado"
+	            );
+
+	            dialog.dispose();
+	        });
+
+	        panel.add(btn);
+	    }
+
+	    dialog.add(panel);
+
+	    dialog.setVisible(true);
 	}
 	
 	private void setTodo(int fila) {
