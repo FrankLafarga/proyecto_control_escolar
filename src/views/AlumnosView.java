@@ -20,6 +20,7 @@ import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -67,6 +68,10 @@ public class AlumnosView extends JPanel {
     private String estatus;
 
 	private AlumnosController controller = new AlumnosController();
+	
+	private JLabel imagen;
+	private String avatarSeleccionado = "/resources/avatar1.png";
+	private String avatar;
 	
 	Color azul_principal = new Color(14, 48, 170);
 
@@ -470,7 +475,13 @@ public class AlumnosView extends JPanel {
     	
     	JLabel lblNewLabel_11 = new JLabel("");
     	lblNewLabel_11.setHorizontalAlignment(SwingConstants.CENTER);
-    	lblNewLabel_11.setIcon(new ImageIcon(App.class.getResource("/resources/usuario_logo.png")));
+    	
+    	if(avatar == null || avatar.isEmpty()) {
+    	    avatar = "/resources/default-avatar.png";
+    	}
+    	ImageIcon iconoAvatar = new ImageIcon(App.class.getResource(avatar));
+    	Image imgAvatar = iconoAvatar.getImage().getScaledInstance(150,150,Image.SCALE_SMOOTH);
+    	lblNewLabel_11.setIcon(new ImageIcon(imgAvatar));
     	panel_26.add(lblNewLabel_11);
     	
     	JPanel panel_sur = new JPanel();
@@ -764,9 +775,12 @@ public class AlumnosView extends JPanel {
 	
 		JLabel lblEstatus = new JLabel("Estatus");
 		lblEstatus.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+		
+		JLabel lblAvatar = new JLabel("Avatar");
+		lblAvatar.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 	
 		panelCentro.add(lblEstatus);
-		panelCentro.add(new JLabel(""));
+		panelCentro.add(lblAvatar);
 		panelCentro.add(new JLabel(""));
 	
 		String[] opestatus = {
@@ -777,9 +791,31 @@ public class AlumnosView extends JPanel {
 		JComboBox<String> cbEstatus = new JComboBox<>(opestatus);
 		cbEstatus.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		cbEstatus.setSelectedItem(estatus);
-	
+		
+		imagen = new JLabel();
+		imagen.setHorizontalAlignment(SwingConstants.CENTER);
+
+		ImageIcon iconoAvatar = new ImageIcon(
+		        App.class.getResource(avatarSeleccionado)
+		);
+
+		Image imgAvatar = iconoAvatar.getImage()
+		        .getScaledInstance(90, 90, Image.SCALE_SMOOTH);
+
+		imagen.setIcon(new ImageIcon(imgAvatar));
+		
+	    JButton btnAvatar = new JButton("Elegir avatar");
+		btnAvatar.setFocusable(false);
+		btnAvatar.setForeground(Color.WHITE);
+		btnAvatar.setBackground(new Color(14, 48, 170));
+		btnAvatar.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+
+	    btnAvatar.addActionListener(e -> {
+	        abrirSelectorAvatar();
+	    });
+	    
 		panelCentro.add(cbEstatus);
-		panelCentro.add(new JLabel(""));
+		panelCentro.add(btnAvatar);
 		panelCentro.add(new JLabel(""));
 	
 		JLabel subtitulo2 = new JLabel("Información personal");
@@ -999,7 +1035,8 @@ public class AlumnosView extends JPanel {
 				            txtFecha.getText(),
 				            Double.parseDouble(txtPromedio.getText()),
 				            cbEstatus.getSelectedItem().toString(),
-				            idGrupo
+				            idGrupo,
+				            avatarSeleccionado
 				    )==true) {
 				    	JOptionPane.showMessageDialog(null,"Alumno actualizado correctamente" );
 				    }else{
@@ -1226,8 +1263,11 @@ public class AlumnosView extends JPanel {
 		JLabel lblEstatus = new JLabel("Estatus");
 		lblEstatus.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 	
+		JLabel lblAvatar = new JLabel("Avatar");
+		lblAvatar.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+		
 		panelCentro.add(lblEstatus);
-		panelCentro.add(new JLabel(""));
+		panelCentro.add(lblAvatar);
 		panelCentro.add(new JLabel(""));
 	
 		String[] estatus = {
@@ -1237,9 +1277,31 @@ public class AlumnosView extends JPanel {
 
 		JComboBox<String> cbEstatus = new JComboBox<>(estatus);
 		cbEstatus.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-	
+		
+		imagen = new JLabel();
+		imagen.setHorizontalAlignment(SwingConstants.CENTER);
+
+		ImageIcon iconoAvatar = new ImageIcon(
+		        App.class.getResource(avatarSeleccionado)
+		);
+
+		Image imgAvatar = iconoAvatar.getImage()
+		        .getScaledInstance(90, 90, Image.SCALE_SMOOTH);
+
+		imagen.setIcon(new ImageIcon(imgAvatar));
+		
+	    JButton btnAvatar = new JButton("Elegir avatar");
+		btnAvatar.setFocusable(false);
+		btnAvatar.setForeground(Color.WHITE);
+		btnAvatar.setBackground(new Color(14, 48, 170));
+		btnAvatar.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+
+	    btnAvatar.addActionListener(e -> {
+	        abrirSelectorAvatar();
+	    });
+	    
 		panelCentro.add(cbEstatus);
-		panelCentro.add(new JLabel(""));
+		panelCentro.add(btnAvatar);
 		panelCentro.add(new JLabel(""));
 	
 		JLabel subtitulo2 = new JLabel("Información personal");
@@ -1435,7 +1497,8 @@ public class AlumnosView extends JPanel {
 				            txtFecha.getText(),
 				            Double.parseDouble(txtPromedio.getText()),
 				            cbEstatus.getSelectedItem().toString(),
-				            grupo
+				            grupo,
+				            avatarSeleccionado
 				    );
 
 				    JOptionPane.showMessageDialog(
@@ -1473,8 +1536,80 @@ public class AlumnosView extends JPanel {
 			"Agregar alumno"
 		);
 		
+	
 		
-		
+	}
+    
+	public void abrirSelectorAvatar() {
+
+	    JDialog dialog = new JDialog();
+
+	    dialog.setTitle("Seleccionar avatar");
+	    dialog.setSize(500,400);
+	    dialog.setLocationRelativeTo(null);
+	    dialog.setModal(true);
+
+	    JPanel panel = new JPanel();
+
+	    panel.setBorder(
+	            BorderFactory.createEmptyBorder(15,15,15,15)
+	    );
+
+	    panel.setLayout(new GridLayout(2,3,15,15));
+
+	    String[] avatars = {
+	            "/resources/avatar-alumno1.png",
+	            "/resources/avatar-alumno2.png",
+	            "/resources/avatar-alumno3.png",
+	            "/resources/avatar-alumno4.png",
+	            "/resources/avatar-alumno5.png",
+	            "/resources/avatar-alumno6.png"
+	    };
+
+	    for(String ruta : avatars){
+
+	        ImageIcon icon = new ImageIcon(
+	                App.class.getResource(ruta)
+	        );
+
+	        Image img = icon.getImage()
+	                .getScaledInstance(100,100,Image.SCALE_SMOOTH);
+
+	        JButton btn = new JButton(
+	                new ImageIcon(img)
+	        );
+
+	        btn.setFocusPainted(false);
+
+	        btn.addActionListener(e -> {
+
+	            avatarSeleccionado = ruta;
+
+	            Image imagenNueva = icon.getImage()
+	                    .getScaledInstance(
+	                            90,
+	                            90,
+	                            Image.SCALE_SMOOTH
+	                    );
+
+	            imagen.setIcon(
+	                    new ImageIcon(imagenNueva)
+	            );
+
+	            JOptionPane.showMessageDialog(
+	                    dialog,
+	                    "Avatar seleccionado"
+	            );
+
+	            dialog.dispose();
+	        });
+
+	        panel.add(btn);
+	    }
+
+	    dialog.add(panel);
+
+	    dialog.setVisible(true);
 	}
     
     //este metodo es para mostrtar los datos de el alumno al que diste click y funciona en ver y en editar alumnop
@@ -1499,5 +1634,6 @@ public class AlumnosView extends JPanel {
 		genero = controller.getGenero();
 		telefono = controller.getTelefono();
 		estatus = controller.getEstatus();
+		avatar = controller.getAvatar();
     }  
 }

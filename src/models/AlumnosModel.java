@@ -73,7 +73,8 @@ public class AlumnosModel {
                 a.correo,
                 a.genero,
                 a.telefono,
-                a.estatus
+                a.estatus,
+                a.avatar
             FROM ALUMNOS a
             LEFT JOIN GRUPOS g ON a.id_grupo = g.id_grupo
             WHERE a.matricula = ?
@@ -104,7 +105,8 @@ public class AlumnosModel {
                         rs.getString("correo"),
                         rs.getString("genero"),
                         rs.getString("telefono"),
-                        rs.getString("estatus")
+                        rs.getString("estatus"),
+                        rs.getString("avatar")
                     };
                 }
             }
@@ -129,7 +131,8 @@ public class AlumnosModel {
 	            String fecha,
 	            double promedio,
 	            String estatus,
-	            Integer grupo
+	            Integer grupo,
+	            String avatar
 	    ) {
 	
 	        String query = """
@@ -146,9 +149,10 @@ public class AlumnosModel {
 	                    fecha_nacimiento,
 	                    promedio,
 	                    estatus,
-	                    id_grupo
+	                    id_grupo,
+	                    avatar
 	                )
-	                VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)
+	                VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)
 	                """;
 	
 	        Connection conn = null;
@@ -185,6 +189,8 @@ public class AlumnosModel {
 
 	                ps.setInt(13, grupo);
 	            }
+	            
+	            ps.setString(14, avatar);
 	
 	            int rowsAffected = ps.executeUpdate();
 
@@ -384,7 +390,8 @@ public class AlumnosModel {
 		        String fecha,
 		        double promedio,
 		        String estatus,
-		        Integer grupo
+		        Integer grupo,
+		        String avatar
 		) {
 
 		    String query = """
@@ -401,7 +408,8 @@ public class AlumnosModel {
 		                fecha_nacimiento = ?,
 		                promedio = ?,
 		                estatus = ?,
-		                id_grupo = ?
+		                id_grupo = ?,
+		                avatar = ?
 		            WHERE matricula = ?
 		            """;
 
@@ -439,8 +447,10 @@ public class AlumnosModel {
 
 		            ps.setInt(13, grupo);
 		        }
+		        
+		        ps.setString(14, avatar);
 
-		        ps.setString(14, matriculaOriginal);
+		        ps.setString(15, matriculaOriginal);
 
 		        int rowsAffected = ps.executeUpdate();
 

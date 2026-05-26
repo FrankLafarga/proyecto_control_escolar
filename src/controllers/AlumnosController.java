@@ -37,6 +37,8 @@ public class AlumnosController {
     private	Image imageninEscalada = iconoinOriginal.getImage().getScaledInstance(136,26,Image.SCALE_SMOOTH);
     private	ImageIcon iconoInactivo = new ImageIcon(imageninEscalada);
     
+    private String avatar;
+    
     public AlumnosController() {
         model = new AlumnosModel();
     }
@@ -80,6 +82,11 @@ public class AlumnosController {
             genero = alumno[11].toString();
             telefono = alumno[12].toString();
             estatus = alumno[13].toString();
+			if(alumno[14] == null || alumno[14].toString().isEmpty()) {
+			    avatar = "/resources/default-avatar.png";
+			} else {
+			    avatar = alumno[14].toString();
+			}
         }
     }
     
@@ -96,7 +103,8 @@ public class AlumnosController {
             String fecha,
             double promedio,
             String estatus,
-            Integer grupo
+            Integer grupo,
+            String avatar
     ) {
 
         return model.addAlumno(
@@ -112,7 +120,8 @@ public class AlumnosController {
                 fecha,
                 promedio,
                 estatus,
-                grupo
+                grupo,
+                avatar
         );
     }
     
@@ -151,7 +160,8 @@ public class AlumnosController {
             String fecha,
             double promedio,
             String estatus,
-            Integer grupo
+            Integer grupo,
+            String avatar 
     ) {
 
         return model.updateAlumno(
@@ -168,7 +178,8 @@ public class AlumnosController {
                 fecha,
                 promedio,
                 estatus,
-                grupo
+                grupo,
+                avatar
         );
     }
     
@@ -244,6 +255,8 @@ public class AlumnosController {
         return estatus;
     }
     
-    
+    public String getAvatar() {
+        return avatar;
+    }
 
 }
