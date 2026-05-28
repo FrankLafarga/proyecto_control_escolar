@@ -1,7 +1,6 @@
 package models;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -13,10 +12,6 @@ import java.util.Set;
 import javax.swing.JOptionPane;
 
 public class GruposModel {
-    
-    private static final String URL = "jdbc:mysql://localhost:3306/educadex";
-    private static final String USER = "root";
-    private static final String PASS = "educadex2026";
 
     private int idGrupo;
     private String nombre;
@@ -26,7 +21,6 @@ public class GruposModel {
     private String asignaturas;
     private String nombresDocentes;
 
-   
     public void obtenerGrupo(String nom) {
 
         String sql = """
@@ -65,16 +59,16 @@ public class GruposModel {
             GROUP BY g.id_grupo, g.nombre, g.turno, g.capacidad
         """;
 
-        try (
-            Connection con = DriverManager.getConnection(URL, USER, PASS);
+        try(
+            Connection con = Conexion.getConnection();
             PreparedStatement ps = con.prepareStatement(sql)
-        ) {
+        ){
 
             ps.setString(1, nom);
 
             ResultSet rs = ps.executeQuery();
 
-            if(rs.next()) {
+            if(rs.next()){
 
                 idGrupo = rs.getInt("id_grupo");
                 nombre = rs.getString("nombre");
@@ -85,7 +79,7 @@ public class GruposModel {
                 nombresDocentes = rs.getString("nombres_docentes");
             }
 
-        } catch (Exception e) {
+        }catch(Exception e){
             e.printStackTrace();
         }
     }
@@ -109,13 +103,13 @@ public class GruposModel {
             GROUP BY g.id_grupo, g.nombre, g.turno, g.capacidad
         """;
 
-        try (
-            Connection con = DriverManager.getConnection(URL, USER, PASS);
+        try(
+            Connection con = Conexion.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery()
-        ) {
+        ){
 
-            while (rs.next()) {
+            while(rs.next()){
 
                 lista.add(new Object[]{
                     rs.getString("nombre"),
@@ -126,13 +120,13 @@ public class GruposModel {
                 });
             }
 
-        } catch (Exception e) {
+        }catch(Exception e){
             e.printStackTrace();
         }
 
         return lista;
     }
-    
+
     public ArrayList<String> obtenerDocentes() {
 
         ArrayList<String> docentes = new ArrayList<>();
@@ -144,21 +138,15 @@ public class GruposModel {
 
         Connection conn = null;
 
-        try {
+        try{
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            conn = DriverManager.getConnection(
-                    URL,
-                    USER,
-                    PASS
-            );
+            conn = Conexion.getConnection();
 
             PreparedStatement ps = conn.prepareStatement(query);
 
             ResultSet rs = ps.executeQuery();
 
-            while(rs.next()) {
+            while(rs.next()){
 
                 String nombreCompleto =
                         rs.getString("nombre") + " "
@@ -172,13 +160,13 @@ public class GruposModel {
             ps.close();
             conn.close();
 
-        } catch(Exception e) {
+        }catch(Exception e){
             e.printStackTrace();
         }
 
         return docentes;
     }
-    
+
     public ArrayList<String> obtenerAsignaturas() {
 
         ArrayList<String> asignaturas = new ArrayList<>();
@@ -190,21 +178,15 @@ public class GruposModel {
 
         Connection conn = null;
 
-        try {
+        try{
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            conn = DriverManager.getConnection(
-                    URL,
-                    USER,
-                    PASS
-            );
+            conn = Conexion.getConnection();
 
             PreparedStatement ps = conn.prepareStatement(query);
 
             ResultSet rs = ps.executeQuery();
 
-            while(rs.next()) {
+            while(rs.next()){
 
                 asignaturas.add(
                         rs.getString("nombre")
@@ -215,13 +197,13 @@ public class GruposModel {
             ps.close();
             conn.close();
 
-        } catch(Exception e) {
+        }catch(Exception e){
             e.printStackTrace();
         }
 
         return asignaturas;
     }
-    
+
     public boolean addGrupo(
             String nombre,
             String turno,
@@ -244,7 +226,7 @@ public class GruposModel {
 
             String asignatura6,
             String docente6
-    ) {
+    ){
 
         String queryGrupo = """
                 INSERT INTO GRUPOS(
@@ -282,15 +264,9 @@ public class GruposModel {
 
         Connection conn = null;
 
-        try {
+        try{
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            conn = DriverManager.getConnection(
-                    URL,
-                    USER,
-                    PASS
-            );
+            conn = Conexion.getConnection();
 
             conn.setAutoCommit(false);
 
@@ -315,16 +291,16 @@ public class GruposModel {
             Set<String> materiasUsadas = new HashSet<>();
             Set<String> docentesUsados = new HashSet<>();
 
-            for(int i = 0; i < 6; i++) {
+            for(int i = 0; i < 6; i++){
 
                 if(
                     asignaturas[i].equals("Sin selección")
                     || docentes[i].equals("Sin selección")
-                ) {
+                ){
                     continue;
                 }
 
-                if(materiasUsadas.contains(asignaturas[i])) {
+                if(materiasUsadas.contains(asignaturas[i])){
 
                     JOptionPane.showMessageDialog(
                             null,
@@ -336,7 +312,7 @@ public class GruposModel {
                     return false;
                 }
 
-                if(docentesUsados.contains(docentes[i])) {
+                if(docentesUsados.contains(docentes[i])){
 
                     JOptionPane.showMessageDialog(
                             null,
@@ -364,7 +340,7 @@ public class GruposModel {
 
             int rows = psGrupo.executeUpdate();
 
-            if(rows > 0) {
+            if(rows > 0){
 
                 String sqlEvento = """
                     INSERT INTO EVENTOS(descripcion)
@@ -382,25 +358,25 @@ public class GruposModel {
                 psEvento.executeUpdate();
 
                 psEvento.close();
-                
+
                 ResultSet generatedKeys =
                         psGrupo.getGeneratedKeys();
 
                 int idGrupo = 0;
 
-                if(generatedKeys.next()) {
+                if(generatedKeys.next()){
 
                     idGrupo = generatedKeys.getInt(1);
                 }
 
                 generatedKeys.close();
 
-                for(int i = 0; i < 6; i++) {
+                for(int i = 0; i < 6; i++){
 
                     if(
                         asignaturas[i].equals("Sin selección")
                         || docentes[i].equals("Sin selección")
-                    ) {
+                    ){
                         continue;
                     }
 
@@ -415,7 +391,7 @@ public class GruposModel {
                     ResultSet rsAsignatura =
                             psAsignatura.executeQuery();
 
-                    if(rsAsignatura.next()) {
+                    if(rsAsignatura.next()){
 
                         idAsignatura =
                                 rsAsignatura.getInt(
@@ -434,7 +410,7 @@ public class GruposModel {
                     ResultSet rsDocente =
                             psDocente.executeQuery();
 
-                    if(rsDocente.next()) {
+                    if(rsDocente.next()){
 
                         idDocente =
                                 rsDocente.getInt(
@@ -445,7 +421,7 @@ public class GruposModel {
                     rsDocente.close();
                     psDocente.close();
 
-                    if(idAsignatura == null || idDocente == null) {
+                    if(idAsignatura == null || idDocente == null){
                         continue;
                     }
 
@@ -468,15 +444,15 @@ public class GruposModel {
                 return true;
             }
 
-        } catch(Exception e) {
+        }catch(Exception e){
 
-            try {
+            try{
 
-                if(conn != null) {
+                if(conn != null){
                     conn.rollback();
                 }
 
-            } catch(Exception ex) {
+            }catch(Exception ex){
                 ex.printStackTrace();
             }
 
@@ -487,63 +463,57 @@ public class GruposModel {
                     "Error, algunos datos están duplicados, intente de nuevo."
             );
 
-        } finally {
+        }finally{
 
-            try {
+            try{
 
-                if(conn != null) {
+                if(conn != null){
 
                     conn.setAutoCommit(true);
                     conn.close();
                 }
 
-            } catch(Exception e) {
+            }catch(Exception e){
                 e.printStackTrace();
             }
         }
 
         return false;
     }
-	
+
 	public boolean eliminarGrupo(String nombreGrupo) {
-	
+
 	    String queryEliminar = """
 	            DELETE FROM GRUPOS
 	            WHERE nombre = ?
 	            """;
-	
+
 	    Connection conn = null;
-	
-	    try {
-	
-	        Class.forName("com.mysql.cj.jdbc.Driver");
-	
-	        conn = DriverManager.getConnection(
-	                URL,
-	                USER,
-	                PASS
-	        );
-	
+
+	    try{
+
+	        conn = Conexion.getConnection();
+
 	        PreparedStatement ps =
 	                conn.prepareStatement(queryEliminar);
-	
+
 	        ps.setString(1, nombreGrupo);
-	
+
 	        int rows = ps.executeUpdate();
-	
+
 	        ps.close();
 	        conn.close();
-	
+
 	        return rows > 0;
-	
-	    } catch(Exception e) {
-	
+
+	    }catch(Exception e){
+
 	        e.printStackTrace();
 	    }
-	
+
 	    return false;
 	}
-	
+
 	public boolean editarGrupo(
 	        int idGrupo,
 	        String nombre,
@@ -567,7 +537,7 @@ public class GruposModel {
 
 	        String asignatura6,
 	        String docente6
-	) {
+	){
 
 	    String queryGrupo = """
 	            UPDATE GRUPOS
@@ -609,15 +579,9 @@ public class GruposModel {
 
 	    Connection conn = null;
 
-	    try {
+	    try{
 
-	        Class.forName("com.mysql.cj.jdbc.Driver");
-
-	        conn = DriverManager.getConnection(
-	                URL,
-	                USER,
-	                PASS
-	        );
+	        conn = Conexion.getConnection();
 
 	        conn.setAutoCommit(false);
 
@@ -642,16 +606,16 @@ public class GruposModel {
 	        Set<String> materiasUsadas = new HashSet<>();
 	        Set<String> docentesUsados = new HashSet<>();
 
-	        for(int i = 0; i < 6; i++) {
+	        for(int i = 0; i < 6; i++){
 
 	            if(
 	                asignaturas[i].equals("Sin selección")
 	                || docentes[i].equals("Sin selección")
-	            ) {
+	            ){
 	                continue;
 	            }
 
-	            if(materiasUsadas.contains(asignaturas[i])) {
+	            if(materiasUsadas.contains(asignaturas[i])){
 
 	                JOptionPane.showMessageDialog(
 	                        null,
@@ -663,7 +627,7 @@ public class GruposModel {
 	                return false;
 	            }
 
-	            if(docentesUsados.contains(docentes[i])) {
+	            if(docentesUsados.contains(docentes[i])){
 
 	                JOptionPane.showMessageDialog(
 	                        null,
@@ -700,12 +664,12 @@ public class GruposModel {
 
 	        psEliminar.close();
 
-	        for(int i = 0; i < 6; i++) {
+	        for(int i = 0; i < 6; i++){
 
 	            if(
 	                asignaturas[i].equals("Sin selección")
 	                || docentes[i].equals("Sin selección")
-	            ) {
+	            ){
 	                continue;
 	            }
 
@@ -720,7 +684,7 @@ public class GruposModel {
 	            ResultSet rsAsignatura =
 	                    psAsignatura.executeQuery();
 
-	            if(rsAsignatura.next()) {
+	            if(rsAsignatura.next()){
 
 	                idAsignatura =
 	                        rsAsignatura.getInt(
@@ -739,7 +703,7 @@ public class GruposModel {
 	            ResultSet rsDocente =
 	                    psDocente.executeQuery();
 
-	            if(rsDocente.next()) {
+	            if(rsDocente.next()){
 
 	                idDocente =
 	                        rsDocente.getInt(
@@ -750,7 +714,7 @@ public class GruposModel {
 	            rsDocente.close();
 	            psDocente.close();
 
-	            if(idAsignatura == null || idDocente == null) {
+	            if(idAsignatura == null || idDocente == null){
 	                continue;
 	            }
 
@@ -770,38 +734,38 @@ public class GruposModel {
 
 	        return true;
 
-	    } catch(Exception e) {
+	    }catch(Exception e){
 
-	        try {
+	        try{
 
-	            if(conn != null) {
+	            if(conn != null){
 	                conn.rollback();
 	            }
 
-	        } catch(Exception ex) {
+	        }catch(Exception ex){
 	            ex.printStackTrace();
 	        }
 
 	        e.printStackTrace();
 
-	    } finally {
+	    }finally{
 
-	        try {
+	        try{
 
-	            if(conn != null) {
+	            if(conn != null){
 
 	                conn.setAutoCommit(true);
 	                conn.close();
 	            }
 
-	        } catch(Exception e) {
+	        }catch(Exception e){
 	            e.printStackTrace();
 	        }
 	    }
 
 	    return false;
 	}
-    
+
     public int getIdGrupo() {
         return idGrupo;
     }
@@ -837,7 +801,7 @@ public class GruposModel {
     public int getDocentes() {
         return docentes;
     }
-    
+
     public String getAsignaturas() {
         return asignaturas;
     }
@@ -849,5 +813,4 @@ public class GruposModel {
     public void setDocentes(int docentes) {
         this.docentes = docentes;
     }
-
 }

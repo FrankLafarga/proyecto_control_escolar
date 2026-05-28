@@ -1,7 +1,6 @@
 package models;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -11,24 +10,23 @@ public class InicioModel {
 
         String sql = "SELECT COUNT(*) AS total FROM " + tabla;
 
-        try (Connection conn = DriverManager.getConnection(
-                "jdbc:mysql://127.0.0.1:3306/educadex",
-                "root",
-                "educadex2026");
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+        try(
+            Connection conn = Conexion.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery()
+        ){
 
-            if (rs.next()) {
+            if(rs.next()){
                 return rs.getInt("total");
             }
 
-        } catch (Exception e) {
+        }catch(Exception e){
             e.printStackTrace();
         }
 
         return 0;
     }
-    
+
     public String[] obtenerEventos() {
 
         String[] eventos = new String[3];
@@ -40,25 +38,20 @@ public class InicioModel {
             LIMIT 3
         """;
 
-        try (
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://127.0.0.1:3306/educadex",
-                    "root",
-                    "educadex2026");
-
+        try(
+            Connection conn = Conexion.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql);
-
             ResultSet rs = stmt.executeQuery()
-        ) {
+        ){
 
             int i = 0;
 
-            while(rs.next()) {
+            while(rs.next()){
                 eventos[i] = rs.getString("descripcion");
                 i++;
             }
 
-        } catch(Exception e) {
+        }catch(Exception e){
             e.printStackTrace();
         }
 

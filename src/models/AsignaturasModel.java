@@ -1,17 +1,12 @@
 package models;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AsignaturasModel {
-    
-    private static final String URL = "jdbc:mysql://localhost:3306/educadex";
-    private static final String USER = "root";
-    private static final String PASS = "educadex2026";
 
     public List<Object[]> obtenerDatosTabla() {
 
@@ -41,13 +36,14 @@ public class AsignaturasModel {
         	        ON ga.id_docente = d.id_docente
         	""";
 
-        try (
-            Connection con = DriverManager.getConnection(URL, USER, PASS);
+        try(
+            Connection con = Conexion.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery()
-        ) {
+        ){
 
-            while (rs.next()) {
+            while(rs.next()){
+
                 lista.add(new Object[]{
                     rs.getString("clave"),
                     rs.getString("nombre"),
@@ -58,13 +54,13 @@ public class AsignaturasModel {
                 });
             }
 
-        } catch (Exception e) {
+        }catch(Exception e){
             e.printStackTrace();
         }
 
         return lista;
     }
-    
+
     public Object[] verAsignatura(String clave) {
 
         Object[] asignatura = null;
@@ -115,13 +111,13 @@ public class AsignaturasModel {
         	""";
 
         try(
-            Connection con = DriverManager.getConnection(URL,USER,PASS);
+            Connection con = Conexion.getConnection();
             PreparedStatement ps = con.prepareStatement(sql)
         ){
 
             ps.setString(1, clave);
 
-            try(ResultSet rs=ps.executeQuery()){
+            try(ResultSet rs = ps.executeQuery()){
 
                 if(rs.next()){
 
@@ -143,7 +139,7 @@ public class AsignaturasModel {
 
         return asignatura;
     }
-    
+
     public boolean eliminarAsignatura(String nombreAsignatura) {
 
         String queryIdAsignatura = """
@@ -164,18 +160,11 @@ public class AsignaturasModel {
 
         Connection conn = null;
 
-        try {
+        try{
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = Conexion.getConnection();
 
-            conn = DriverManager.getConnection(
-                    URL,
-                    USER,
-                    PASS
-            );
-
-            PreparedStatement psId =
-                    conn.prepareStatement(queryIdAsignatura);
+            PreparedStatement psId = conn.prepareStatement(queryIdAsignatura);
 
             psId.setString(1, nombreAsignatura);
 
@@ -183,23 +172,19 @@ public class AsignaturasModel {
 
             int idAsignatura = -1;
 
-            if(rs.next()) {
+            if(rs.next()){
 
-                idAsignatura =
-                        rs.getInt("id_asignatura");
+                idAsignatura = rs.getInt("id_asignatura");
             }
 
             rs.close();
             psId.close();
 
-            if(idAsignatura == -1) {
+            if(idAsignatura == -1){
                 return false;
             }
 
-            PreparedStatement psGA =
-                    conn.prepareStatement(
-                            queryEliminarGA
-                    );
+            PreparedStatement psGA = conn.prepareStatement(queryEliminarGA);
 
             psGA.setInt(1, idAsignatura);
 
@@ -207,35 +192,31 @@ public class AsignaturasModel {
 
             psGA.close();
 
-            PreparedStatement psAsignatura =
-                    conn.prepareStatement(
-                            queryEliminarAsignatura
-                    );
+            PreparedStatement psAsignatura = conn.prepareStatement(queryEliminarAsignatura);
 
             psAsignatura.setInt(1, idAsignatura);
 
-            int rows =
-                    psAsignatura.executeUpdate();
+            int rows = psAsignatura.executeUpdate();
 
             psAsignatura.close();
             conn.close();
 
             return rows > 0;
 
-        } catch(Exception e) {
+        }catch(Exception e){
 
             e.printStackTrace();
         }
 
         return false;
     }
-    
+
     public boolean addAsignatura(
             String nombre,
             String clave,
             int semestre,
             int creditos
-    ) {
+    ){
 
         String query = """
                 INSERT INTO ASIGNATURAS(
@@ -249,15 +230,9 @@ public class AsignaturasModel {
 
         Connection conn = null;
 
-        try {
+        try{
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            conn = DriverManager.getConnection(
-                    URL,
-                    USER,
-                    PASS
-            );
+            conn = Conexion.getConnection();
 
             PreparedStatement ps = conn.prepareStatement(query);
 
@@ -268,15 +243,14 @@ public class AsignaturasModel {
 
             int rowsAffected = ps.executeUpdate();
 
-            if(rowsAffected > 0) {
+            if(rowsAffected > 0){
 
                 String sqlEvento = """
                     INSERT INTO EVENTOS(descripcion)
                     VALUES(?)
                 """;
 
-                PreparedStatement psEvento =
-                        conn.prepareStatement(sqlEvento);
+                PreparedStatement psEvento = conn.prepareStatement(sqlEvento);
 
                 psEvento.setString(
                         1,
@@ -293,20 +267,20 @@ public class AsignaturasModel {
 
             return rowsAffected > 0;
 
-        } catch(Exception e) {
+        }catch(Exception e){
             e.printStackTrace();
         }
 
         return false;
     }
-    
+
     public boolean editarAsignatura(
             String claveOriginal,
             String nombre,
             String clave,
             int semestre,
             int creditos
-    ) {
+    ){
 
         String query = """
                 UPDATE ASIGNATURAS
@@ -320,15 +294,8 @@ public class AsignaturasModel {
 
         try(
 
-            Connection conn =
-                    DriverManager.getConnection(
-                            URL,
-                            USER,
-                            PASS
-                    );
-
-            PreparedStatement ps =
-                    conn.prepareStatement(query)
+            Connection conn = Conexion.getConnection();
+            PreparedStatement ps = conn.prepareStatement(query)
 
         ){
 

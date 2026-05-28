@@ -1,17 +1,12 @@
 package models;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AlumnosModel {
-
-    private static final String URL = "jdbc:mysql://localhost:3306/educadex";
-    private static final String USER = "root";
-    private static final String PASS = "educadex2026";
 
     public List<Object[]> obtenerDatosTabla() {
 
@@ -29,13 +24,14 @@ public class AlumnosModel {
             LEFT JOIN GRUPOS g ON a.id_grupo = g.id_grupo
         """;
 
-        try (
-            Connection con = DriverManager.getConnection(URL, USER, PASS);
+        try(
+            Connection con = Conexion.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery()
-        ) {
+        ){
 
-            while (rs.next()) {
+            while(rs.next()){
+
                 lista.add(new Object[]{
                     rs.getString("matricula"),
                     rs.getString("nombre_completo"),
@@ -47,7 +43,7 @@ public class AlumnosModel {
                 });
             }
 
-        } catch (Exception e) {
+        }catch(Exception e){
             e.printStackTrace();
         }
 
@@ -80,18 +76,18 @@ public class AlumnosModel {
             WHERE a.matricula = ?
         """;
 
-        try (
-            Connection con = DriverManager.getConnection(URL, USER, PASS);
+        try(
+            Connection con = Conexion.getConnection();
             PreparedStatement ps = con.prepareStatement(sql)
-        ) {
+        ){
 
             ps.setString(1, matricula);
 
-            try (ResultSet rs = ps.executeQuery()) {
+            try(ResultSet rs = ps.executeQuery()){
 
-                if (rs.next()) {
+                if(rs.next()){
 
-                    alumno = new Object[] {
+                    alumno = new Object[]{
                         rs.getString("nombre"),
                         rs.getString("apellido_paterno"),
                         rs.getString("apellido_materno"),
@@ -111,486 +107,453 @@ public class AlumnosModel {
                 }
             }
 
-        } catch (Exception e) {
+        }catch(Exception e){
             e.printStackTrace();
         }
 
         return alumno;
     }
-    
-	public boolean addAlumno(
-	            String matricula,
-	            int semestre,
-	            String carrera,
-	            String genero,
-	            String nombre,
-	            String apellidoPat,
-	            String apellidoMat,
-	            String correo,
-	            String telefono,
-	            String fecha,
-	            double promedio,
-	            String estatus,
-	            Integer grupo,
-	            String avatar
-	    ) {
-	
-	        String query = """
-	                INSERT INTO ALUMNOS(
-	                    matricula,
-	                    semestre,
-	                    carrera,
-	                    genero,
-	                    nombre,
-	                    apellido_paterno,
-	                    apellido_materno,
-	                    correo,
-	                    telefono,
-	                    fecha_nacimiento,
-	                    promedio,
-	                    estatus,
-	                    id_grupo,
-	                    avatar
-	                )
-	                VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-	                """;
-	
-	        Connection conn = null;
-	
-	        try {
-	
-	            Class.forName("com.mysql.cj.jdbc.Driver");
-	
-	            conn = DriverManager.getConnection(
-	                    URL,
-	                    USER,
-	                    PASS
-	            );
-	
-	            PreparedStatement ps = conn.prepareStatement(query);
-	
-	            ps.setString(1, matricula);
-	            ps.setInt(2, semestre);
-	            ps.setString(3, carrera);
-	            ps.setString(4, genero);
-	            ps.setString(5, nombre);
-	            ps.setString(6, apellidoPat);
-	            ps.setString(7, apellidoMat);
-	            ps.setString(8, correo);
-	            ps.setString(9, telefono);
-	            ps.setDate(10, java.sql.Date.valueOf(fecha));
-	            ps.setDouble(11, promedio);
-	            ps.setString(12, estatus);
-	            if(grupo == null) {
 
-	                ps.setNull(13, java.sql.Types.INTEGER);
-
-	            } else {
-
-	                ps.setInt(13, grupo);
-	            }
-	            
-	            ps.setString(14, avatar);
-	
-	            int rowsAffected = ps.executeUpdate();
-
-	            if(rowsAffected > 0) {
-
-	                String sqlEvento = """
-	                    INSERT INTO EVENTOS(descripcion)
-	                    VALUES(?)
-	                """;
-
-	                PreparedStatement psEvento =
-	                        conn.prepareStatement(sqlEvento);
-
-	                psEvento.setString(
-	                        1,
-	                        "Nuevo alumno registrado: " +
-	                        nombre + " " + apellidoPat
-	                );
-
-	                psEvento.executeUpdate();
-
-	                psEvento.close();
-	                ps.close();
-	                conn.close();
-
-	                return true;
-	            }
-	
-	        } catch(Exception e) {
-	            e.printStackTrace();
-	        }
-	
-	        return false;
-    }
-	
-	public boolean grupoLleno(int idGrupo){
-
-	    String sql = """
-	        SELECT 
-	            g.capacidad,
-	            COUNT(a.matricula) AS total
-	        FROM GRUPOS g
-	        LEFT JOIN ALUMNOS a
-	            ON g.id_grupo = a.id_grupo
-	        WHERE g.id_grupo = ?
-	        GROUP BY g.capacidad
-	    """;
-
-	    try(
-	        Connection con =
-	                DriverManager.getConnection(
-	                        URL,
-	                        USER,
-	                        PASS
-	                );
-
-	        PreparedStatement ps =
-	                con.prepareStatement(sql)
-	    ){
-
-	        ps.setInt(1, idGrupo);
-
-	        ResultSet rs = ps.executeQuery();
-
-	        if(rs.next()){
-
-	            int capacidad =
-	                    rs.getInt("capacidad");
-
-	            int total =
-	                    rs.getInt("total");
-
-	            return total >= capacidad;
-	        }
-
-	    }catch(Exception e){
-	        e.printStackTrace();
-	    }
-
-	    return false;
-	}
-	
-	public boolean grupoLlenoEditar(
-	        int idGrupo,
-	        String matriculaOriginal
-	){
-	
-	    String sqlCapacidad = """
-	        SELECT capacidad
-	        FROM GRUPOS
-	        WHERE id_grupo = ?
-	    """;
-	
-	    String sqlTotal = """
-	        SELECT COUNT(*)
-	        FROM ALUMNOS
-	        WHERE id_grupo = ?
-	        AND matricula <> ?
-	    """;
-	
-	    try(
-	        Connection con =
-	                DriverManager.getConnection(
-	                        URL,
-	                        USER,
-	                        PASS
-	                )
-	    ){
-	
-	        int capacidad = 0;
-	        int total = 0;
-	
-	        PreparedStatement psCap =
-	                con.prepareStatement(sqlCapacidad);
-	
-	        psCap.setInt(1, idGrupo);
-	
-	        ResultSet rsCap = psCap.executeQuery();
-	
-	        if(rsCap.next()){
-	
-	            capacidad = rsCap.getInt("capacidad");
-	        }
-	
-	        rsCap.close();
-	        psCap.close();
-	
-	        PreparedStatement psTotal =
-	                con.prepareStatement(sqlTotal);
-	
-	        psTotal.setInt(1, idGrupo);
-	        psTotal.setString(2, matriculaOriginal);
-	
-	        ResultSet rsTotal = psTotal.executeQuery();
-	
-	        if(rsTotal.next()){
-	
-	            total = rsTotal.getInt(1);
-	        }
-	
-	        rsTotal.close();
-	        psTotal.close();
-	
-	        return total >= capacidad;
-	
-	    }catch(Exception e){
-	        e.printStackTrace();
-	    }
-	
-	    return false;
-	}
-	
-	public boolean eliminarAlumno(String matricula) {
-
-	    String sql = """
-	            DELETE FROM ALUMNOS
-	            WHERE matricula = ?
-	            """;
-
-	    try(
-	        Connection con =
-	                DriverManager.getConnection(
-	                        URL,
-	                        USER,
-	                        PASS
-	                );
-
-	        PreparedStatement ps =
-	                con.prepareStatement(sql)
-	    ){
-
-	        ps.setString(1, matricula);
-
-	        int rows = ps.executeUpdate();
-
-	        return rows > 0;
-
-	    } catch(Exception e) {
-
-	        e.printStackTrace();
-	    }
-
-	    return false;
-	}
-	 
-	public boolean updateAlumno(
-		        String matriculaOriginal,
-		        String matricula,
-		        int semestre,
-		        String carrera,
-		        String genero,
-		        String nombre,
-		        String apellidoPat,
-		        String apellidoMat,
-		        String correo,
-		        String telefono,
-		        String fecha,
-		        double promedio,
-		        String estatus,
-		        Integer grupo,
-		        String avatar
-		) {
-
-		    String query = """
-		            UPDATE ALUMNOS SET
-		                matricula = ?,
-		                semestre = ?,
-		                carrera = ?,
-		                genero = ?,
-		                nombre = ?,
-		                apellido_paterno = ?,
-		                apellido_materno = ?,
-		                correo = ?,
-		                telefono = ?,
-		                fecha_nacimiento = ?,
-		                promedio = ?,
-		                estatus = ?,
-		                id_grupo = ?,
-		                avatar = ?
-		            WHERE matricula = ?
-		            """;
-
-		    Connection conn = null;
-
-		    try {
-
-		        Class.forName("com.mysql.cj.jdbc.Driver");
-
-		        conn = DriverManager.getConnection(
-		                URL,
-		                USER,
-		                PASS
-		        );
-
-		        PreparedStatement ps = conn.prepareStatement(query);
-
-		        ps.setString(1, matricula);
-		        ps.setInt(2, semestre);
-		        ps.setString(3, carrera);
-		        ps.setString(4, genero);
-		        ps.setString(5, nombre);
-		        ps.setString(6, apellidoPat);
-		        ps.setString(7, apellidoMat);
-		        ps.setString(8, correo);
-		        ps.setString(9, telefono);
-		        ps.setDate(10, java.sql.Date.valueOf(fecha));
-		        ps.setDouble(11, promedio);
-		        ps.setString(12, estatus);
-		        if(grupo == null) {
-
-		            ps.setNull(13, java.sql.Types.INTEGER);
-
-		        } else {
-
-		            ps.setInt(13, grupo);
-		        }
-		        
-		        ps.setString(14, avatar);
-
-		        ps.setString(15, matriculaOriginal);
-
-		        int rowsAffected = ps.executeUpdate();
-
-		        ps.close();
-		        conn.close();
-
-		        return rowsAffected > 0;
-
-		    } catch(Exception e) {
-		        e.printStackTrace();
-		    }
-
-		    return false;
-	}
-	
-	public List<String> obtenerGrupos() {
-
-	    List<String> grupos = new ArrayList<>();
-
-	    String sql = "SELECT nombre FROM GRUPOS ORDER BY nombre";
-
-	    try(
-	        Connection con = DriverManager.getConnection(URL, USER, PASS);
-	        PreparedStatement ps = con.prepareStatement(sql);
-	        ResultSet rs = ps.executeQuery()
-	    ){
-	    	grupos.add("Sin grupo");
-	        while(rs.next()){
-	            grupos.add(rs.getString("nombre"));
-	        }
-
-	    }catch(Exception e){
-	        e.printStackTrace();
-	    }
-
-	    return grupos;
-	}
-	
-	public List<Object[]> obtenerAlumnosPorGrupo(int idGrupo){
-
-	    List<Object[]> lista = new ArrayList<>();
-
-	    String sql = """
-	        SELECT
-	            matricula,
-	            CONCAT(nombre,' ',apellido_paterno,' ',apellido_materno) AS nombre_completo,
-	            semestre,
-	            promedio,
-	            estatus
-	        FROM ALUMNOS
-	        WHERE id_grupo = ?
-	    """;
-
-	    try(
-	        Connection con = DriverManager.getConnection(URL, USER, PASS);
-	        PreparedStatement ps = con.prepareStatement(sql)
-	    ){
-
-	        ps.setInt(1, idGrupo);
-
-	        ResultSet rs = ps.executeQuery();
-
-	        while(rs.next()){
-
-	            lista.add(new Object[]{
-	                rs.getString("matricula"),
-	                rs.getString("nombre_completo"),
-	                rs.getInt("semestre"),
-	                rs.getDouble("promedio"),
-	                rs.getString("estatus")
-	            });
-	        }
-
-	    }catch(Exception e){
-	        e.printStackTrace();
-	    }
-
-	    return lista;
-	}
-	
-	public Integer obtenerIdGrupo(String nombreGrupo){
-
-    if(nombreGrupo == null || nombreGrupo.equals("Sin grupo")){
-        return null;
-    }
-
-    Integer id = null;
-
-    String sql = """
-            SELECT id_grupo
-            FROM GRUPOS
-            WHERE nombre = ?
-            """;
-
-    try(
-        Connection con = DriverManager.getConnection(URL,USER,PASS);
-        PreparedStatement ps = con.prepareStatement(sql)
+    public boolean addAlumno(
+            String matricula,
+            int semestre,
+            String carrera,
+            String genero,
+            String nombre,
+            String apellidoPat,
+            String apellidoMat,
+            String correo,
+            String telefono,
+            String fecha,
+            double promedio,
+            String estatus,
+            Integer grupo,
+            String avatar
     ){
 
-        ps.setString(1,nombreGrupo);
+        String query = """
+                INSERT INTO ALUMNOS(
+                    matricula,
+                    semestre,
+                    carrera,
+                    genero,
+                    nombre,
+                    apellido_paterno,
+                    apellido_materno,
+                    correo,
+                    telefono,
+                    fecha_nacimiento,
+                    promedio,
+                    estatus,
+                    id_grupo,
+                    avatar
+                )
+                VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                """;
 
-        ResultSet rs = ps.executeQuery();
+        Connection conn = null;
 
-        if(rs.next()){
-            id = rs.getInt("id_grupo");
+        try{
+
+            conn = Conexion.getConnection();
+
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            ps.setString(1, matricula);
+            ps.setInt(2, semestre);
+            ps.setString(3, carrera);
+            ps.setString(4, genero);
+            ps.setString(5, nombre);
+            ps.setString(6, apellidoPat);
+            ps.setString(7, apellidoMat);
+            ps.setString(8, correo);
+            ps.setString(9, telefono);
+            ps.setDate(10, java.sql.Date.valueOf(fecha));
+            ps.setDouble(11, promedio);
+            ps.setString(12, estatus);
+
+            if(grupo == null){
+
+                ps.setNull(13, java.sql.Types.INTEGER);
+
+            }else{
+
+                ps.setInt(13, grupo);
+            }
+
+            ps.setString(14, avatar);
+
+            int rowsAffected = ps.executeUpdate();
+
+            if(rowsAffected > 0){
+
+                String sqlEvento = """
+                    INSERT INTO EVENTOS(descripcion)
+                    VALUES(?)
+                """;
+
+                PreparedStatement psEvento = conn.prepareStatement(sqlEvento);
+
+                psEvento.setString(
+                        1,
+                        "Nuevo alumno registrado: " +
+                        nombre + " " + apellidoPat
+                );
+
+                psEvento.executeUpdate();
+
+                psEvento.close();
+                ps.close();
+                conn.close();
+
+                return true;
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
         }
 
-    }catch(Exception e){
-        e.printStackTrace();
+        return false;
     }
 
-    return id;
-	}
+    public boolean grupoLleno(int idGrupo){
 
-	public boolean existeMatricula(String matricula){
+        String sql = """
+            SELECT 
+                g.capacidad,
+                COUNT(a.matricula) AS total
+            FROM GRUPOS g
+            LEFT JOIN ALUMNOS a
+                ON g.id_grupo = a.id_grupo
+            WHERE g.id_grupo = ?
+            GROUP BY g.capacidad
+        """;
 
-	    String sql = """
-	        SELECT COUNT(*)
-	        FROM ALUMNOS
-	        WHERE matricula = ?
-	    """;
+        try(
+            Connection con = Conexion.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ){
 
-	    try(
-	        Connection con = DriverManager.getConnection(URL,USER,PASS);
-	        PreparedStatement ps = con.prepareStatement(sql)
-	    ){
+            ps.setInt(1, idGrupo);
 
-	        ps.setString(1, matricula);
+            ResultSet rs = ps.executeQuery();
 
-	        ResultSet rs = ps.executeQuery();
+            if(rs.next()){
 
-	        if(rs.next()){
-	            return rs.getInt(1) > 0;
-	        }
+                int capacidad = rs.getInt("capacidad");
+                int total = rs.getInt("total");
 
-	    }catch(Exception e){
-	        e.printStackTrace();
-	    }
+                return total >= capacidad;
+            }
 
-	    return false;
-	}
-	
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean grupoLlenoEditar(
+            int idGrupo,
+            String matriculaOriginal
+    ){
+
+        String sqlCapacidad = """
+            SELECT capacidad
+            FROM GRUPOS
+            WHERE id_grupo = ?
+        """;
+
+        String sqlTotal = """
+            SELECT COUNT(*)
+            FROM ALUMNOS
+            WHERE id_grupo = ?
+            AND matricula <> ?
+        """;
+
+        try(
+            Connection con = Conexion.getConnection()
+        ){
+
+            int capacidad = 0;
+            int total = 0;
+
+            PreparedStatement psCap = con.prepareStatement(sqlCapacidad);
+
+            psCap.setInt(1, idGrupo);
+
+            ResultSet rsCap = psCap.executeQuery();
+
+            if(rsCap.next()){
+
+                capacidad = rsCap.getInt("capacidad");
+            }
+
+            rsCap.close();
+            psCap.close();
+
+            PreparedStatement psTotal = con.prepareStatement(sqlTotal);
+
+            psTotal.setInt(1, idGrupo);
+            psTotal.setString(2, matriculaOriginal);
+
+            ResultSet rsTotal = psTotal.executeQuery();
+
+            if(rsTotal.next()){
+
+                total = rsTotal.getInt(1);
+            }
+
+            rsTotal.close();
+            psTotal.close();
+
+            return total >= capacidad;
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean eliminarAlumno(String matricula) {
+
+        String sql = """
+                DELETE FROM ALUMNOS
+                WHERE matricula = ?
+                """;
+
+        try(
+            Connection con = Conexion.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ){
+
+            ps.setString(1, matricula);
+
+            int rows = ps.executeUpdate();
+
+            return rows > 0;
+
+        }catch(Exception e){
+
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean updateAlumno(
+            String matriculaOriginal,
+            String matricula,
+            int semestre,
+            String carrera,
+            String genero,
+            String nombre,
+            String apellidoPat,
+            String apellidoMat,
+            String correo,
+            String telefono,
+            String fecha,
+            double promedio,
+            String estatus,
+            Integer grupo,
+            String avatar
+    ){
+
+        String query = """
+                UPDATE ALUMNOS SET
+                    matricula = ?,
+                    semestre = ?,
+                    carrera = ?,
+                    genero = ?,
+                    nombre = ?,
+                    apellido_paterno = ?,
+                    apellido_materno = ?,
+                    correo = ?,
+                    telefono = ?,
+                    fecha_nacimiento = ?,
+                    promedio = ?,
+                    estatus = ?,
+                    id_grupo = ?,
+                    avatar = ?
+                WHERE matricula = ?
+                """;
+
+        Connection conn = null;
+
+        try{
+
+            conn = Conexion.getConnection();
+
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            ps.setString(1, matricula);
+            ps.setInt(2, semestre);
+            ps.setString(3, carrera);
+            ps.setString(4, genero);
+            ps.setString(5, nombre);
+            ps.setString(6, apellidoPat);
+            ps.setString(7, apellidoMat);
+            ps.setString(8, correo);
+            ps.setString(9, telefono);
+            ps.setDate(10, java.sql.Date.valueOf(fecha));
+            ps.setDouble(11, promedio);
+            ps.setString(12, estatus);
+
+            if(grupo == null){
+
+                ps.setNull(13, java.sql.Types.INTEGER);
+
+            }else{
+
+                ps.setInt(13, grupo);
+            }
+
+            ps.setString(14, avatar);
+            ps.setString(15, matriculaOriginal);
+
+            int rowsAffected = ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+
+            return rowsAffected > 0;
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public List<String> obtenerGrupos() {
+
+        List<String> grupos = new ArrayList<>();
+
+        String sql = "SELECT nombre FROM GRUPOS ORDER BY nombre";
+
+        try(
+            Connection con = Conexion.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()
+        ){
+
+            grupos.add("Sin grupo");
+
+            while(rs.next()){
+
+                grupos.add(rs.getString("nombre"));
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return grupos;
+    }
+
+    public List<Object[]> obtenerAlumnosPorGrupo(int idGrupo){
+
+        List<Object[]> lista = new ArrayList<>();
+
+        String sql = """
+            SELECT
+                matricula,
+                CONCAT(nombre,' ',apellido_paterno,' ',apellido_materno) AS nombre_completo,
+                semestre,
+                promedio,
+                estatus
+            FROM ALUMNOS
+            WHERE id_grupo = ?
+        """;
+
+        try(
+            Connection con = Conexion.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ){
+
+            ps.setInt(1, idGrupo);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+
+                lista.add(new Object[]{
+                    rs.getString("matricula"),
+                    rs.getString("nombre_completo"),
+                    rs.getInt("semestre"),
+                    rs.getDouble("promedio"),
+                    rs.getString("estatus")
+                });
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return lista;
+    }
+
+    public Integer obtenerIdGrupo(String nombreGrupo){
+
+        if(nombreGrupo == null || nombreGrupo.equals("Sin grupo")){
+            return null;
+        }
+
+        Integer id = null;
+
+        String sql = """
+                SELECT id_grupo
+                FROM GRUPOS
+                WHERE nombre = ?
+                """;
+
+        try(
+            Connection con = Conexion.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ){
+
+            ps.setString(1, nombreGrupo);
+
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()){
+                id = rs.getInt("id_grupo");
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return id;
+    }
+
+    public boolean existeMatricula(String matricula){
+
+        String sql = """
+            SELECT COUNT(*)
+            FROM ALUMNOS
+            WHERE matricula = ?
+        """;
+
+        try(
+            Connection con = Conexion.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ){
+
+            ps.setString(1, matricula);
+
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()){
+                return rs.getInt(1) > 0;
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
 }

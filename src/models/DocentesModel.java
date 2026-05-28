@@ -1,17 +1,12 @@
 package models;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DocentesModel {
-	
-    private static final String URL = "jdbc:mysql://localhost:3306/educadex";
-    private static final String USER = "root";
-    private static final String PASS = "educadex2026";
 
     public List<Object[]> obtenerDatosTabla() {
 
@@ -26,13 +21,14 @@ public class DocentesModel {
         	    FROM DOCENTES d
         	""";
 
-        try (
-            Connection con = DriverManager.getConnection(URL, USER, PASS);
+        try(
+            Connection con = Conexion.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery()
-        ) {
+        ){
 
-            while (rs.next()) {
+            while(rs.next()){
+
                 lista.add(new Object[]{
                     rs.getString("clave"),
                     rs.getString("nombre_completo"),
@@ -42,13 +38,13 @@ public class DocentesModel {
                 });
             }
 
-        } catch (Exception e) {
+        }catch(Exception e){
             e.printStackTrace();
         }
 
         return lista;
     }
-    
+
     public Object[] verDocente(String clave) {
 
         Object[] docente = null;
@@ -76,13 +72,13 @@ public class DocentesModel {
         """;
 
         try(
-            Connection con=DriverManager.getConnection(URL,USER,PASS);
-            PreparedStatement ps=con.prepareStatement(sql)
+            Connection con = Conexion.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
         ){
 
             ps.setString(1, clave);
 
-            try(ResultSet rs=ps.executeQuery()){
+            try(ResultSet rs = ps.executeQuery()){
 
                 if(rs.next()){
 
@@ -109,8 +105,8 @@ public class DocentesModel {
         }
 
         return docente;
-    } 
-    
+    }
+
     public boolean eliminarDocente(String clave) {
 
         String sql = """
@@ -119,15 +115,8 @@ public class DocentesModel {
                 """;
 
         try(
-            Connection con =
-                    DriverManager.getConnection(
-                            URL,
-                            USER,
-                            PASS
-                    );
-
-            PreparedStatement ps =
-                    con.prepareStatement(sql)
+            Connection con = Conexion.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
         ){
 
             ps.setString(1, clave);
@@ -136,14 +125,14 @@ public class DocentesModel {
 
             return rows > 0;
 
-        } catch(Exception e) {
+        }catch(Exception e){
 
             e.printStackTrace();
         }
 
         return false;
     }
-    
+
     public boolean make(
     		String clave,
     		String nombre,
@@ -156,8 +145,8 @@ public class DocentesModel {
     		String area,
     		String estatus,
     		String avatar
-    ) {
-    	
+    ){
+
     	String query = """
     			INSERT INTO DOCENTES(
     				clave,
@@ -175,21 +164,15 @@ public class DocentesModel {
     			VALUES(?,?,?,?,?,?,?,?,?,?,?)
     			
     			""";
-    	
+
     	Connection conn = null;
-    	
-    	try {
-    		
-    		Class.forName("com.mysql.cj.jdbc.Driver");
-    		
-    		conn = DriverManager.getConnection(
-    				"jdbc:mysql://localhost:3306/educadex",
-    				"root",
-    				"educadex2026"
-    		);
-    		
+
+    	try{
+
+    		conn = Conexion.getConnection();
+
     		PreparedStatement ps = conn.prepareStatement(query);
-    		
+
     		ps.setString(1, clave);
     		ps.setString(2, nombre);
     		ps.setString(3, apellidoPat);
@@ -201,18 +184,17 @@ public class DocentesModel {
     		ps.setString(9, area);
     		ps.setString(10, estatus);
     		ps.setString(11, avatar);
-    		
+
     		int rowsAffected = ps.executeUpdate();
-    		
-    		if(rowsAffected > 0) {
+
+    		if(rowsAffected > 0){
 
     		    String sqlEvento = """
     		        INSERT INTO EVENTOS(descripcion)
     		        VALUES(?)
     		    """;
 
-    		    PreparedStatement psEvento =
-    		            conn.prepareStatement(sqlEvento);
+    		    PreparedStatement psEvento = conn.prepareStatement(sqlEvento);
 
     		    psEvento.setString(
     		            1,
@@ -227,14 +209,15 @@ public class DocentesModel {
     		    conn.close();
 
     		    return true;
-    		}    		
-    	}catch(Exception e) {
+    		}
+
+    	}catch(Exception e){
     		e.printStackTrace();
     	}
-    	
+
     	return false;
     }
-    
+
     public boolean existeClave(String clave) {
 
     	String sql = """
@@ -244,24 +227,24 @@ public class DocentesModel {
     			""";
 
     	try(
-    			Connection con = DriverManager.getConnection(URL, USER, PASS);
+    			Connection con = Conexion.getConnection();
     			PreparedStatement ps = con.prepareStatement(sql)
     	){
 
     		ps.setString(1, clave);
 
-    		try(ResultSet rs = ps.executeQuery()) {
+    		try(ResultSet rs = ps.executeQuery()){
 
     			return rs.next();
     		}
 
-    	}catch(Exception e) {
+    	}catch(Exception e){
     		e.printStackTrace();
     	}
 
     	return false;
     }
-    
+
     public boolean updateDocente(
     		String claveOriginal,
     		String nuevaClave,
@@ -275,7 +258,7 @@ public class DocentesModel {
     		String area,
     		String estatus,
     		String avatar
-    ) {
+    ){
 
     	String sql = """
     			UPDATE DOCENTES
@@ -295,7 +278,7 @@ public class DocentesModel {
     			""";
 
     	try(
-    			Connection con = DriverManager.getConnection(URL, USER, PASS);
+    			Connection con = Conexion.getConnection();
     			PreparedStatement ps = con.prepareStatement(sql)
     	){
 
@@ -316,7 +299,7 @@ public class DocentesModel {
 
     		return filas > 0;
 
-    	}catch(Exception e) {
+    	}catch(Exception e){
 
     		e.printStackTrace();
     	}
