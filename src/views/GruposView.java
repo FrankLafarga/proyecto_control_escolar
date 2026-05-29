@@ -3,6 +3,7 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -15,6 +16,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +29,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -37,6 +43,15 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import constructor_ventanas.App;
 import controllers.AlumnosController;
@@ -395,7 +410,9 @@ public class GruposView extends JPanel {
 	    pdf.setPreferredSize(new Dimension(180, 40));
 	    pdf.setFocusable(false);
 	    pdf.setContentAreaFilled(false);
-	
+	    pdf.addActionListener(e -> {
+            generarPDFGrupo();
+        });
 	    panelBoton.add(pdf);
 	
 	    tarjeta.add(Box.createVerticalStrut(20));
@@ -445,8 +462,7 @@ public class GruposView extends JPanel {
 		modelo.addColumn("Promedio");
 		modelo.addColumn("Estatus");
 		
-		List<Object[]> alumnos =
-		        alumnosController.obtenerAlumnosPorGrupo(this.idGrupo);
+		List<Object[]> alumnos =alumnosController.obtenerAlumnosPorGrupo(this.idGrupo);
 	
 		
 		for(Object[] filaAlumno : alumnos){
@@ -498,8 +514,7 @@ public class GruposView extends JPanel {
 		    BorderFactory.createEmptyBorder(5,5,5,5)
 		));
 		
-		panelTabla.add(Box.createVerticalStrut(10),
-		        BorderLayout.NORTH);
+		panelTabla.add(Box.createVerticalStrut(10), BorderLayout.NORTH);
 		
 		JPanel contenedorTabla = new JPanel(new BorderLayout());
 		contenedorTabla.setBackground(Color.WHITE);
@@ -1512,4 +1527,228 @@ public class GruposView extends JPanel {
 	    capacidad=controller.getCapacidad();
 	    docentes=controller.getDocentes();
     }
+    
+    public void generarPDFGrupo() {
+
+        try {
+
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Guardar PDF");
+            fileChooser.setSelectedFile(new File("Grupo_" + nombre + ".pdf"));
+
+            int userSelection = fileChooser.showSaveDialog(null);
+            if(userSelection != JFileChooser.APPROVE_OPTION) {
+                return;
+            }
+
+            File archivoGuardar = fileChooser.getSelectedFile();
+            String ruta = archivoGuardar.getAbsolutePath();
+            if(!ruta.toLowerCase().endsWith(".pdf")) {
+                ruta += ".pdf";
+            }
+
+            LocalDateTime fechaHora = LocalDateTime.now();
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            String timestamp = fechaHora.format(formato);
+
+            Document documento = new Document();
+            PdfWriter.getInstance(documento,new FileOutputStream(ruta));
+            documento.open();
+
+            com.itextpdf.text.Image logoVirrete = com.itextpdf.text.Image.getInstance(App.class.getResource("/resources/logo_pdf_educadex.png"));
+            logoVirrete.scaleToFit(300,80);
+            logoVirrete.setAlignment(Element.ALIGN_CENTER);
+            documento.add(logoVirrete);
+            documento.add(new Paragraph(" "));
+
+            com.itextpdf.text.Font tituloFont = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA,24,com.itextpdf.text.Font.NORMAL);
+            com.itextpdf.text.Font subtituloFont = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA,16,com.itextpdf.text.Font.BOLD,BaseColor.WHITE);
+            com.itextpdf.text.Font textoFont = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA,14,com.itextpdf.text.Font.NORMAL);
+            com.itextpdf.text.Font subtituloTablaFont = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA,11,com.itextpdf.text.Font.BOLD,BaseColor.WHITE);
+            
+            Paragraph titulo = new Paragraph("Detalle de Grupo",tituloFont);
+            titulo.setAlignment(Element.ALIGN_CENTER);
+            documento.add(titulo);
+
+            documento.add(new Paragraph(" "));
+            PdfPTable tablaPDF = new PdfPTable(2);
+            tablaPDF.setWidthPercentage(100);
+            tablaPDF.setSpacingBefore(10f);
+            tablaPDF.setWidths(new float[]{3f,7f});
+            tablaPDF.getDefaultCell().setBorderWidth(1.2f);
+            PdfPCell celda1;
+            PdfPCell celdaTexto;
+
+            // GRUPO
+            celda1 = new PdfPCell(new Phrase("Grupo",subtituloFont));
+            celda1.setBackgroundColor(new BaseColor(14,48,170));
+            celda1.setPadding(10f);
+            celda1.setMinimumHeight(35f);
+            celda1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            celda1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            tablaPDF.addCell(celda1);
+            
+            celdaTexto = new PdfPCell(new Phrase(nombre,textoFont));
+            celdaTexto.setPadding(10f);
+            celdaTexto.setMinimumHeight(35f);
+            celdaTexto.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            tablaPDF.addCell(celdaTexto);
+
+            // ID GRUPO
+            celda1 = new PdfPCell(new Phrase("ID Grupo",subtituloFont));
+            celda1.setBackgroundColor(new BaseColor(14,48,170));
+            celda1.setPadding(10f);
+            celda1.setMinimumHeight(35f);
+            celda1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            celda1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            tablaPDF.addCell(celda1);
+
+            celdaTexto = new PdfPCell(new Phrase(String.valueOf(idGrupo),textoFont));
+            celdaTexto.setPadding(10f);
+            celdaTexto.setMinimumHeight(35f);
+            celdaTexto.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            tablaPDF.addCell(celdaTexto);
+
+            // TURNO
+            celda1 = new PdfPCell(new Phrase("Turno",subtituloFont));
+            celda1.setBackgroundColor(new BaseColor(14,48,170));
+            celda1.setPadding(10f);
+            celda1.setMinimumHeight(35f);
+            celda1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            celda1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            tablaPDF.addCell(celda1);
+
+            celdaTexto = new PdfPCell(new Phrase(turno,textoFont));
+            celdaTexto.setPadding(10f);
+            celdaTexto.setMinimumHeight(35f);
+            celdaTexto.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            tablaPDF.addCell(celdaTexto);
+
+            // CAPACIDAD
+            celda1 = new PdfPCell(new Phrase("Capacidad",subtituloFont));
+            celda1.setBackgroundColor(new BaseColor(14,48,170));
+            celda1.setPadding(10f);
+            celda1.setMinimumHeight(35f);
+            celda1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            celda1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            tablaPDF.addCell(celda1);
+
+            celdaTexto = new PdfPCell(new Phrase(String.valueOf(capacidad),textoFont));
+            celdaTexto.setPadding(10f);
+            celdaTexto.setMinimumHeight(35f);
+            celdaTexto.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            tablaPDF.addCell(celdaTexto);
+
+            // DOCENTES
+            celda1 = new PdfPCell(new Phrase("Docentes",subtituloFont));
+            celda1.setBackgroundColor(new BaseColor(14,48,170));
+            celda1.setPadding(10f);
+            celda1.setMinimumHeight(35f);
+            celda1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            celda1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            tablaPDF.addCell(celda1);
+
+            celdaTexto = new PdfPCell(new Phrase(controller.getNombresDocentes(),textoFont));
+            celdaTexto.setPadding(10f);
+            celdaTexto.setMinimumHeight(35f);
+            celdaTexto.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            tablaPDF.addCell(celdaTexto);
+
+            // ASIGNATURAS
+            celda1 = new PdfPCell(new Phrase("Asignaturas",subtituloFont));
+            celda1.setBackgroundColor(new BaseColor(14,48,170));
+            celda1.setPadding(10f);
+            celda1.setMinimumHeight(35f);
+            celda1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            celda1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            tablaPDF.addCell(celda1);
+
+            celdaTexto = new PdfPCell(new Phrase(controller.getAsignaturas(),textoFont));
+            celdaTexto.setPadding(10f);
+            celdaTexto.setMinimumHeight(35f);
+            celdaTexto.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            tablaPDF.addCell(celdaTexto);
+            documento.add(tablaPDF);
+            
+            documento.add(new Paragraph(" "));
+            documento.add(new Paragraph(" "));
+
+            Paragraph tituloAlumnos = new Paragraph("Alumnos del grupo",tituloFont);
+            tituloAlumnos.setAlignment(Element.ALIGN_CENTER);
+            documento.add(tituloAlumnos);
+            documento.add(new Paragraph(" "));
+
+            PdfPTable tablaAlumnos = new PdfPTable(5);
+            tablaAlumnos.setWidthPercentage(100);
+            tablaAlumnos.setWidths(new float[]{3f,6f,3f,3f,2f});
+
+            String[] encabezados = {
+                    "Matrícula",
+                    "Nombre Completo",
+                    "Semestre",
+                    "Promedio",
+                    "Estatus"
+            };
+
+            for(String encabezado : encabezados){
+
+            	PdfPCell encabezadoCell = new PdfPCell(new Phrase(encabezado,subtituloTablaFont));
+            	
+                encabezadoCell.setBackgroundColor(new BaseColor(14,48,170));
+                encabezadoCell.setPadding(8f);
+                encabezadoCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                encabezadoCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+                tablaAlumnos.addCell(encabezadoCell);
+            }
+            List<Object[]> alumnos = alumnosController.obtenerAlumnosPorGrupo(this.idGrupo);
+            for(Object[] alumno : alumnos){
+
+                for(int i = 0; i < alumno.length; i++){
+
+                    String valor = alumno[i].toString();
+
+                    if(i == 4){
+
+                        if(valor.equals("ACTIVO")){
+                            valor = "Activo";
+                        }else{
+                            valor = "Inactivo";
+                        }
+                    }
+
+                    PdfPCell datoAlumno = new PdfPCell(new Phrase(valor,textoFont));
+
+                    datoAlumno.setPadding(8f);
+                    datoAlumno.setMinimumHeight(30f);
+                    datoAlumno.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    datoAlumno.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+                    tablaAlumnos.addCell(datoAlumno);
+                }
+            }
+            documento.add(tablaAlumnos);
+
+            documento.add(new Paragraph(" "));
+            documento.add(new Paragraph(" "));
+
+            Paragraph fechaPDF = new Paragraph("Fecha de generación: " + timestamp,textoFont);
+            fechaPDF.setAlignment(Element.ALIGN_RIGHT);
+            documento.add(fechaPDF);
+            documento.add(new Paragraph(" "));
+
+            documento.add(new Paragraph("Documento generado por el sistema EDUCADEX",textoFont));
+            documento.close();
+            JOptionPane.showMessageDialog(null,"PDF generado correctamente");
+            Desktop.getDesktop().open(new File(ruta));
+
+        } catch(Exception e) {
+
+            e.printStackTrace();
+
+            JOptionPane.showMessageDialog(null,"Error al generar PDF");
+        }
+    }
+    
+    
 }

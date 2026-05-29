@@ -17,6 +17,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -24,6 +26,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -958,191 +961,159 @@ public class AsignaturasView extends JPanel {
 
         try {
 
-            String ruta =
-                    "Asignatura_" + clave + ".pdf";
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Guardar PDF");
+            fileChooser.setSelectedFile(new File("Asignatura_" + clave + ".pdf"));
+            int userSelection = fileChooser.showSaveDialog(null);
 
+            if(userSelection != JFileChooser.APPROVE_OPTION) {
+                return;
+            }
+            File archivoGuardar = fileChooser.getSelectedFile();
+            String ruta = archivoGuardar.getAbsolutePath();
+
+            if(!ruta.toLowerCase().endsWith(".pdf")) {
+                ruta += ".pdf";
+            }
+
+            LocalDateTime fechaHora = LocalDateTime.now();
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            String timestamp = fechaHora.format(formato);
+            
             Document documento = new Document();
-
-            PdfWriter.getInstance(
-                    documento,
-                    new FileOutputStream(ruta)
-            );
-
+            PdfWriter.getInstance(documento,new FileOutputStream(ruta));
             documento.open();
-            
-            Image logoVirrete = Image.getInstance(
-                    App.class.getResource(
-                            "/resources/logo_virrete-32x32.png"
-                    )
-            );
-            
-            logoVirrete.scaleAbsolute(60, 60);
-            logoVirrete.setAbsolutePosition(500, 770);
 
+            Image logoVirrete = Image.getInstance(App.class.getResource("/resources/logo_pdf_educadex.png"));
+            logoVirrete.scaleToFit(300,80);
+            logoVirrete.setAlignment(Element.ALIGN_CENTER);
             documento.add(logoVirrete);
 
-            com.itextpdf.text.Font tituloFont = new com.itextpdf.text.Font(
-            		com.itextpdf.text.Font.FontFamily.HELVETICA,
-                            24,
-                            com.itextpdf.text.Font.BOLD
-                    );
-
-            com.itextpdf.text.Font subtituloFont = new com.itextpdf.text.Font(
-                            com.itextpdf.text.Font.FontFamily.HELVETICA,
-                            16,
-                            com.itextpdf.text.Font.BOLD,
-                            BaseColor.WHITE
-                    );
-
-            com.itextpdf.text.Font textoFont = new com.itextpdf.text.Font(
-                            com.itextpdf.text.Font.FontFamily.HELVETICA,
-                            14,
-                            com.itextpdf.text.Font.NORMAL
-                    );
-
-            Paragraph titulo = new Paragraph(
-                    "Detalle de Asignatura",
-                    tituloFont
-            );
+            documento.add(new Paragraph(" "));
+            
+            com.itextpdf.text.Font tituloFont = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA,24,com.itextpdf.text.Font.NORMAL);
+            com.itextpdf.text.Font subtituloFont = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA,16,com.itextpdf.text.Font.BOLD,BaseColor.WHITE);
+            com.itextpdf.text.Font textoFont = new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA,14,com.itextpdf.text.Font.NORMAL);
+            Paragraph titulo = new Paragraph("Detalle de Asignatura",tituloFont);
 
             titulo.setAlignment(Element.ALIGN_CENTER);
-
             documento.add(titulo);
-
             documento.add(new Paragraph(" "));
-
             PdfPTable tablaPDF = new PdfPTable(2);
 
             tablaPDF.setWidthPercentage(100);
-
             tablaPDF.setSpacingBefore(10f);
-
-            tablaPDF.setWidths(new float[]{3f, 7f});
-
+            tablaPDF.setWidths(new float[]{3f,7f});
+            tablaPDF.getDefaultCell().setBorderWidth(1.2f);
             PdfPCell celda1;
+            PdfPCell celdaTexto;
 
-            celda1 = new PdfPCell(
-                    new Phrase("Nombre", subtituloFont)
-            );
-
-            celda1.setBackgroundColor(
-                    new BaseColor(14,48,170)
-            );
-
+            // NOMBRE
+            celda1 = new PdfPCell(new Phrase("Nombre",subtituloFont));
+            celda1.setBackgroundColor(new BaseColor(14,48,170));
+            celda1.setPadding(10f);
+            celda1.setMinimumHeight(35f);
+            celda1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            celda1.setHorizontalAlignment(Element.ALIGN_CENTER);
             tablaPDF.addCell(celda1);
 
-            tablaPDF.addCell(
-                    new Phrase(nombre, textoFont)
-            );
+            celdaTexto = new PdfPCell(new Phrase(nombre,textoFont));
+            celdaTexto.setPadding(10f);
+            celdaTexto.setMinimumHeight(35f);
+            celdaTexto.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            tablaPDF.addCell(celdaTexto);
 
-
-
-            celda1 = new PdfPCell(
-                    new Phrase("Clave", subtituloFont)
-            );
-
-            celda1.setBackgroundColor(
-                    new BaseColor(14,48,170)
-            );
-
+            // CLAVE
+            celda1 = new PdfPCell(new Phrase("Clave",subtituloFont));
+            celda1.setBackgroundColor(new BaseColor(14,48,170));
+            celda1.setPadding(10f);
+            celda1.setMinimumHeight(35f);
+            celda1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            celda1.setHorizontalAlignment(Element.ALIGN_CENTER);
             tablaPDF.addCell(celda1);
 
-            tablaPDF.addCell(
-                    new Phrase(clave, textoFont)
-            );
+            celdaTexto = new PdfPCell(new Phrase(clave,textoFont));
+            celdaTexto.setPadding(10f);
+            celdaTexto.setMinimumHeight(35f);
+            celdaTexto.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            tablaPDF.addCell(celdaTexto);
 
-
-
-            celda1 = new PdfPCell(
-                    new Phrase("Semestre", subtituloFont)
-            );
-
-            celda1.setBackgroundColor(
-                    new BaseColor(14,48,170)
-            );
-
+            // SEMESTRE
+            celda1 = new PdfPCell(new Phrase("Semestre",subtituloFont));
+            celda1.setBackgroundColor(new BaseColor(14,48,170));
+            celda1.setPadding(10f);
+            celda1.setMinimumHeight(35f);
+            celda1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            celda1.setHorizontalAlignment(Element.ALIGN_CENTER);
             tablaPDF.addCell(celda1);
 
-            tablaPDF.addCell(
-                    new Phrase(semestre + "", textoFont)
-            );
+            celdaTexto = new PdfPCell(new Phrase(String.valueOf(semestre),textoFont));
+            celdaTexto.setPadding(10f);
+            celdaTexto.setMinimumHeight(35f);
+            celdaTexto.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            tablaPDF.addCell(celdaTexto);
 
-
-
-            celda1 = new PdfPCell(
-                    new Phrase("Creditos", subtituloFont)
-            );
-
-            celda1.setBackgroundColor(
-                    new BaseColor(14,48,170)
-            );
-
+            // CREDITOS
+            celda1 = new PdfPCell(new Phrase("Créditos",subtituloFont));
+            celda1.setBackgroundColor(new BaseColor(14,48,170));
+            celda1.setPadding(10f);
+            celda1.setMinimumHeight(35f);
+            celda1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            celda1.setHorizontalAlignment(Element.ALIGN_CENTER);
             tablaPDF.addCell(celda1);
 
-            tablaPDF.addCell(
-                    new Phrase(creditos + "", textoFont)
-            );
+            celdaTexto = new PdfPCell(new Phrase(String.valueOf(creditos),textoFont));
+            celdaTexto.setPadding(10f);
+            celdaTexto.setMinimumHeight(35f);
+            celdaTexto.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            tablaPDF.addCell(celdaTexto);
 
-
-
-            celda1 = new PdfPCell(
-                    new Phrase("Grupo(s)", subtituloFont)
-            );
-
-            celda1.setBackgroundColor(
-                    new BaseColor(14,48,170)
-            );
-
+            // GRUPOS
+            celda1 = new PdfPCell(new Phrase("Grupo(s)",subtituloFont));
+            celda1.setBackgroundColor(new BaseColor(14,48,170));
+            celda1.setPadding(10f);
+            celda1.setMinimumHeight(35f);
+            celda1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            celda1.setHorizontalAlignment(Element.ALIGN_CENTER);          
             tablaPDF.addCell(celda1);
+            
+            celdaTexto = new PdfPCell(new Phrase(grupo,textoFont));
+            celdaTexto.setPadding(10f);
+            celdaTexto.setMinimumHeight(35f);
+            celdaTexto.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            tablaPDF.addCell(celdaTexto);
 
-            tablaPDF.addCell(
-                    new Phrase(grupo, textoFont)
-            );
-
-
-
-            celda1 = new PdfPCell(
-                    new Phrase("Docente(s)", subtituloFont)
-            );
-
-            celda1.setBackgroundColor(
-                    new BaseColor(14,48,170)
-            );
-
+            // DOCENTES
+            celda1 = new PdfPCell(new Phrase("Docente(s)",subtituloFont));
+            celda1.setBackgroundColor(new BaseColor(14,48,170));
+            celda1.setPadding(10f);
+            celda1.setMinimumHeight(35f);
+            celda1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            celda1.setHorizontalAlignment(Element.ALIGN_CENTER);
             tablaPDF.addCell(celda1);
-
-            tablaPDF.addCell(
-                    new Phrase(docente, textoFont)
-            );
-
+            
+            celdaTexto = new PdfPCell(new Phrase(docente,textoFont));
+            celdaTexto.setPadding(10f);
+            celdaTexto.setMinimumHeight(35f);
+            celdaTexto.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            tablaPDF.addCell(celdaTexto);
+            
             documento.add(tablaPDF);
-
             documento.add(new Paragraph(" "));
             documento.add(new Paragraph(" "));
-            documento.add(new Paragraph(
-                    "Documento generado por el sistema EDUCADEX",
-                    textoFont
-            ));
-
+            Paragraph fechaPDF = new Paragraph("Fecha de generación: " + timestamp,textoFont);
+            fechaPDF.setAlignment(Element.ALIGN_RIGHT);
+            documento.add(fechaPDF);
+            documento.add(new Paragraph(" "));
+            documento.add(new Paragraph("Documento generado por el sistema EDUCADEX",textoFont));
             documento.close();
 
-            JOptionPane.showMessageDialog(
-                    null,
-                    "PDF generado correctamente"
-            );
-
-            Desktop.getDesktop().open(
-                    new File(ruta)
-            );
+            JOptionPane.showMessageDialog(null,"PDF generado correctamente");
+            Desktop.getDesktop().open(new File(ruta));
 
         } catch(Exception e) {
-
             e.printStackTrace();
-
-            JOptionPane.showMessageDialog(
-                    null,
-                    "Error al generar PDF"
-            );
+            JOptionPane.showMessageDialog(null,"Error al generar PDF");
         }
     }
    
