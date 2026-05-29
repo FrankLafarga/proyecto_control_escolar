@@ -8,7 +8,7 @@ public class AuthModel {
 
 	public UserModel validarUsuario(String user, String password) {
 
-	    String sql = "SELECT id_usuario, username, rol FROM usuarios WHERE username = ? AND password_hash = ? AND estatus='ACTIVO'";
+	    String sql = "SELECT id_usuario, username, rol FROM USUARIOS WHERE username = ? AND password_hash = ? AND estatus='ACTIVO'";
 
 	    try(
 	        Connection conn = Conexion.getConnection();
