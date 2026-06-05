@@ -40,6 +40,8 @@ import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -204,25 +206,37 @@ public class GruposView extends JPanel {
 	    	}
 	    });
 	
-	    txtBusqueda.addKeyListener(new java.awt.event.KeyAdapter() {
-	
-	    	@Override
-	    	public void keyReleased(java.awt.event.KeyEvent e) {
-	
-	    		String texto = txtBusqueda.getText();
-	
-	    		if(texto.equals("Buscar grupo...")) {
-	
-	    			sorter.setRowFilter(null);
-	    		}
-	    		else {
-	
-	    			sorter.setRowFilter(
-	    				RowFilter.regexFilter("(?i)" + texto)
-	    			);
-	    		}
-	    	}
-	    });
+	    txtBusqueda.getDocument().addDocumentListener(new DocumentListener() {
+
+		    private void filtrar() {
+		
+		        String texto = txtBusqueda.getText().trim();
+		
+		        if(texto.isEmpty() || texto.equals("Buscar grupo...")) {
+		            sorter.setRowFilter(null);
+		        }
+		        else {
+		            sorter.setRowFilter(
+		                RowFilter.regexFilter("(?i)" + texto)
+		            );
+		        }
+		    }
+		
+		    @Override
+		    public void insertUpdate(DocumentEvent e) {
+		        filtrar();
+		    }
+		
+		    @Override
+		    public void removeUpdate(DocumentEvent e) {
+		        filtrar();
+		    }
+		
+		    @Override
+		    public void changedUpdate(DocumentEvent e) {
+		        filtrar();
+		    }
+		});
 	
 	    tabla.getColumn("Acciones").setCellEditor(
 		    new PanelBotonesEditor(tabla, new AccionesTabla() {
